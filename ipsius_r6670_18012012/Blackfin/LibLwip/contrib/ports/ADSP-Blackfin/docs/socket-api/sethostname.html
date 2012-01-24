@@ -1,0 +1,79 @@
+Content-type: text/html
+
+<HTML><HEAD><TITLE>Manpage of GETHOSTNAME</TITLE>
+</HEAD><BODY>
+<H1>GETHOSTNAME</H1>
+Section: Linux Programmer's Manual (2)<BR>Updated: 22 July 1995<BR><A HREF="#index">Index</A>
+<A HREF="http://localhost/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+gethostname, sethostname - get/set host name
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="file:/usr/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int gethostname(char *</B><I>name</I><B>, size_t </B><I>len</I><B>);</B>
+
+<BR>
+
+<B>int sethostname(const char *</B><I>name</I><B>, size_t </B><I>len</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+These functions are used to access or to change the host name of the
+current processor. Note: This function is NOT supported by LwIP yet.
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+On success, zero is returned.  On error, -1 is returned, and
+<I>errno</I>
+
+is set appropriately.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+<I>len</I>
+
+is negative or, for
+<B>sethostname</B>,
+
+<I>len</I>
+
+is larger than the maximum allowed size.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>name</I>
+
+is an invalid address. <font color="red"> Not Supported </font>
+</DL>
+
+<A NAME="lbAJ">&nbsp;</A>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="http://localhost/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time:  GMT, April 18, 2003
+</BODY>
+</HTML>

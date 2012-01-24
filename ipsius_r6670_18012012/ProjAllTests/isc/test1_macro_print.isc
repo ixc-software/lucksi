@@ -1,0 +1,2 @@
+CS_Print "macro_print"
+CS_Print "Params are %p1% and %p2%!"

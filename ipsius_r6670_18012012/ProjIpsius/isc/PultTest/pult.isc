@@ -1,0 +1,96 @@
+// parameters:
+// PultName   
+// SipPoint
+// SoundType
+// Visible
+
+ObjCreate NObjPult %PultName% true
+
+	.LogLevel = 3
+
+	.SoundMode = LocalMode
+	.Sound.Type = %SoundType%
+	
+	// --------------------------------------------------
+
+    .KeyboardType = KbEmul
+	.KbDriver.EmbedDisp = true
+	
+	.KbDriver.Timing.PressedMs     = 20
+	.KbDriver.Timing.StartRepeatMs = 800
+	.KbDriver.Timing.RepeatMs      = 600
+					
+	.ViewSettings.Embeded = t // t/f
+	.ViewSettings.Width = 400
+	.ViewSettings.Height = 240 
+	.ViewSettings.SetThemeName "~IPSIUS_RELEASE~/ArmSdFatFs/PultGfx/Theme0/"
+	
+	.ViewSettings.UseNull f  
+			
+	// --------------------------------------------------
+	
+    .PhBook.SetPhotoPath "~IPSIUS_RELEASE~/ArmSdFatFs/PultGfx/ph/"
+    .PhBook.Clear
+    
+    .PhBook.Create("Чапманн", "шпионка", "ph chapman.jpg")
+    .PhBook.AddNumber("110")
+    .PhBook.AddNumber("120")    
+    .PhBook.AddDirectKey(0, 0, true)
+    .PhBook.AddDirectKey(1, 1, true)
+    
+    .PhBook.Create("Dead-Moroz", "GNU leader", "ph stallman.jpg")
+    .PhBook.AddNumber("5020")
+    .PhBook.AddDirectKey(2, 0, false)
+    
+    .PhBook.Create("Шура", "б-тъ", "ph sasha.jpg")
+    .PhBook.AddNumber("5999")
+    .PhBook.AddDirectKey(3, 0, t)
+
+    .PhBook.Create("SJphone", "SJphone", "asterisk.jpg")
+    .PhBook.AddNumber("130")
+    .PhBook.AddDirectKey(4, 0, true)
+        
+	.PhBook.List
+	
+	
+	.NumDialer.Clear 
+	.NumDialer.Set 3000 0 "*"
+	.NumDialer.AddDirection "5"  4
+	.NumDialer.AddDirection "51" 3
+		
+	// --------------------------------------------------
+	
+	.SipPoint = %SipPoint%
+
+	// --------------------------------------------------
+	
+	.CS_Set Settings
+	
+	.HandsfreeMicLevel 50
+	.HandsetMicLevel   50
+	.RingingLevel      100
+	
+    .StatusDebugMode t  
+    .EchoSetup "ace.ini"
+    
+	.TraceKbdDriver f
+	.TraceStates    f
+	.TraceCallMng   f 
+   
+
+	.CS_SetBack
+    
+	// --------------------------------------------------
+	
+	//.SetLocale "ru" 
+	// .SetLocale "uk"
+		
+	TestAsyncCmd t 1000
+		
+	.Enabled = true
+		
+	.Body.RuntimeInfo 
+	.Body.ViewVisible(%Visible%)
+	
+
+	

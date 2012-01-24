@@ -1,0 +1,8 @@
+ObjCreate NObjViewDebug view true
+    //.Prof.SetThemeName("F:\_IPSIUS_RELEASE\ArmSdFatFs\PultGfx\Theme0")
+    .Prof.SetThemeName("/mnt/IpsiusRelease/ArmSdFatFs/PultGfx/Theme0")
+    //.Prof.FullScreen = true
+    .Prof.Width = 800   //600//400//800
+    .Prof.Height = 480   //360//240//480
+    .Active = true  
+    //.Active = false   

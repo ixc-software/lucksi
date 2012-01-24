@@ -1,0 +1,130 @@
+
+
+// -------------------------------------------
+CS_Print "Stage: Init ------------------------------------- "
+// Remove all ROOT children
+CS_Set
+.ObjDeleteChildren
+
+ObjCreate NObjTestType defObj1
+
+ObjCreate NObjTestType defObj2 true
+.ObjCreate NObjTestType defObj21 true
+.ObjCreate NObjTestType defObj211 true
+
+// -------------------------------------------
+CS_Print "Stage: #define test (without exceptions) -------- "
+
+// #define _empty_					// OK: Empty string
+
+#define _2nd_path defObj2				// OK
+#define _211th_path "defObj2.defObj21.defObj211"	// OK: Check value quotes
+#define set2nd CS_Set defObj2				// OK: Value can be unquoted
+#define "createLocal" .ObjCreate NObjTestType		// OK: Check name quotes
+
+#define long comment \"// long comment\"		// OK: But defined name is "long"
+
+#define TType NObjTestType 
+#define create_and_set_defObj3 ObjCreate %TType% defObj3 true 		// OK
+#undef TType
+
+CS_Set
+
+// %set2nd%						// OK: But this just a comment
+
+CS_Set
+
+%set2nd%						// OK
+
+// %set2nd%; CS_Set %_211th_path%; %_empty_%%set2nd%	// OK: Multiple defines in line
+%set2nd%; CS_Set %_211th_path%; %set2nd%		// OK: Multiple defines in line
+
+CS_Set "%_2nd_path%.defObj21"				// OK: defObj2.defObj21>
+.defObj211.ObjCreate NObjTestType "defObj2111"		// OK
+%_2nd_path%.defObj21.defObj211.defObj2111.ObjDelete	// OK
+%set2nd%						// OK
+set2nd							// error: Invalid command
+.defObj21.ObjCreate NObjTestType "defObj212" true	// OK: defObj2.defObj21.defObj212>
+%createLocal%
+
+%create_and_set_defObj3%				// OK
+#undef create_and_set_defObj3
+
+ObjList false -1			
+
+CS_Print "Try to use defines in external file that was executed via CS_Exec. Error!"
+CS_Exec "TestDefineExtern.isc"				// error
+
+// -------------------------------------------
+CS_Print "Stage: #include test (without exceptions) ------- "
+
+CS_Print "Using defines in external file. All commands succeed"
+#include "TestDefineExtern.isc"
+
+CS_Print "Using define from external file. OK"
+%externCommandList%
+#undef externCommandList
+
+//CS_Print "Using #include via #define. OK"
+// %_include_file_%
+//#undef externCommandList
+
+CS_Print "Multiple includes in one file. OK"
+#include "TestIncludeExtern.isc"			
+#include <TestIncludeExtern.isc>			// OK: Check <>
+#include TestIncludeExtern.isc				// OK: Check without "" 
+#include TestIncludeExtern.isc
+#include TestIncludeExtern.isc
+#include TestIncludeExtern.isc
+#include TestIncludeExtern.isc
+#include TestIncludeExtern.isc
+#include TestIncludeExtern.isc
+#include TestIncludeExtern.isc
+
+// -------------------------------------------
+CS_Print "Stage: #undef test (without exceptions) --------- "
+
+// %_empty_%						// OK
+CS_Set %_211th_path%					// OK
+CS_Set %_2nd_path%					// OK
+%createLocal% true					// OK
+%set2nd%						// OK
+
+#undef long						// OK
+// #undef _empty_					// OK
+#undef createLocal					// OK
+
+CS_Set %_211th_path%					// OK
+CS_Set %_2nd_path%					// OK
+%set2nd%						// OK
+
+#undef set2nd
+
+CS_Set %_211th_path%					// OK
+CS_Set %_2nd_path%					// OK
+
+
+#undef _2nd_path
+#undef _211th_path					// OK
+
+#define set2nd CS_Set defObj2				// OK: define same in second time 
+
+%set2nd%
+
+#undef set2nd
+
+CS_Print "Test smart defined name replacing"
+#define smth success
+CS_Print "Current % of %smth% is 100%"   		// OK: replace only "smth"
+
+#define def def						// OK
+#undef %def%						// OK: at first, replace name, than undef 
+
+// -------------------------------------------
+CS_Print "Stage: Delete all created objects --------------- "
+
+ObjList
+
+defObj1.ObjDelete 
+defObj2.ObjDelete 
+defObj3.ObjDelete 

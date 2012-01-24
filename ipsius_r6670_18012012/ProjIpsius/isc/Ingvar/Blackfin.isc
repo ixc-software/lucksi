@@ -1,0 +1,38 @@
+CS_Exec "Header.isc"
+
+ObjCreate NObjHwFinder HwFinder true				// создаем HwFinder
+.LogLevel = 3										// включение/отключение трассировки
+.BoardFilter.Include "9, 19"						// указываем номера плат, которые будут обслуживаться 
+//.BoardFilter.Exclude "17"                         // указываем номера плат, которые не будут обслуживаться 
+.FirmwarePath = "~IPSIUS_RELEASE~/FWU/DevIpTdm/"    // путь к прошивкам 
+.Enabled = true										// запускаем HwFinder
+.Alias(9, "Board1")								// создание алиаса для платы
+.Alias(19, "Board2")
+
+ObjCreate  NObjResipLog ResipLog
+ResipLog.LogLevel = 3
+ResipLog.SetTraceType(All, Debug)
+
+
+ObjCreate NObjSipUserAgent sip true
+	.LogLevel = 3						 // включение/отключение трассировки
+	.AddTransport(5064)
+	.AddAccessPoint("dss1", "sip:spss1@192.168.0.240:5060", "spss1") // nane, uri, password
+	.dss1.DefaultRegistrationRetryTimeSec = 30
+	.dss1.SetAsDefaultReceiver
+	.Enabled = true
+
+ObjCreate NObjDss1ToSip ipsius true  // создание шлюза
+.LogLevel = 0						 // включение/отключение трассировки
+.SipPoint = sip.dss1
+.ToDss1.CallingAddrNoDigit = UsePilotNumber
+.ToDss1.PilotNumber = "2222"	
+
+.FromDss1.CopyContactToFrom = f
+
+// создание Dss1Trunk 
+
+CS_Exec "Dss1Trunk.isc" "TrunkName = Trunk1; BoardName = Board1; HwType = E1; Side = TE; UseAlaw = true; LiuSyncMaster = false"
+CS_Exec "Dss1Trunk.isc" "TrunkName = Trunk2; BoardName = Board2; HwType = E1; Side = TE; UseAlaw = true; LiuSyncMaster = false"
+
+ipsius.Enabled = true  // включаем шлюз

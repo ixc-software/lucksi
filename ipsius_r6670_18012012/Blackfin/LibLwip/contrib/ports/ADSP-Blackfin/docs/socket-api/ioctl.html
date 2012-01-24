@@ -1,0 +1,90 @@
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of ioctl</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>IOCTLSOCKET</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="ioctl_exp.html"> Example</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+ioctl - control device
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="lwip/sockets.h">lwip/sockets.h</A>&gt;</B>
+
+<P>
+<B>int ioctlsocket(int </B><I>d</I><B>, int </B><I>request</I><B>, ...)</B>
+
+[The &quot;third&quot; argument is traditionally <B>char *</B><I>argp</I>, and will be so
+named for this discussion.]
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+The
+<B>ioctlsocket</B>
+
+function manipulates the underlying device parameters of special files.
+ The argument
+<I>d</I>
+
+must be an open socket.
+
+An ioctl
+<I>request</I>
+
+has encoded in it whether the argument is an
+<I>in</I>
+
+parameter or
+<I>out</I>
+
+parameter, and the size of the argument
+<I>argp</I>
+
+in bytes.  Macros and defines used in specifying an ioctl
+<I>request</I>
+
+are located in the file
+<I>&lt;<A HREF="lwip/sockets.h">lwip/sockets.h</A>&gt;</I>.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+On success, zero is returned.  On error, -1 is returned, and error value is
+obtained by caling the function GetSocketError().  In multithreaded environments
+last error number is held seperately for each thread.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B> <I>d</I> is not a valid descriptor.
+<DT><B>EINVAL</B> <DD> <I>Request</I> or <I>argp</I> is not valid.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="recv.html">recv</A></B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

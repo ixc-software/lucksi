@@ -1,0 +1,29 @@
+CS_Print "Extern script loaded ..."
+
+
+ObjCreate NObjTestType macroObj1 true
+.ObjCreate NObjTestType macroObj11 true
+.ObjCreate NObjTestType macroObj111
+CS_Set
+
+CS_Exec "TestMacroPrint.isc" "print1 = 1; print2 = 2; set1 = macroObj1; set2 = macroObj11" 
+CS_Exec "TestMacroPrint.isc" "print2 = 2; print1 = 1; set1 = macroObj1; set2 = macroObj11"
+CS_Exec "TestMacroPrint.isc" "print1 = 1st param; print2 = 2nd param; set1 = macroObj1; set2 = macroObj11"
+
+CS_Exec "TestMacroPrint.isc" "print1 = 1.1; print2 = 2.2; set1 = macroObj1.macroObj11; set2 =  macroObj111"
+
+CS_Exec "TestMacroPrint.isc" "print1 = 1; print2 = 2; set2 = macroObj11" // forget 'set1' parameter
+
+macroObj1.ObjDelete 
+
+
+// error:
+//
+// main.isc: 
+//	CS_Exec "file.isc" "par1 = Log.TraceToCout true"
+// file.isc:
+// 	Log.TraceToCout false 
+// 	%par1%
+// will be: 
+// 	Log.TraceToCout false 
+// 	"Log.TraceToCout true"		// error

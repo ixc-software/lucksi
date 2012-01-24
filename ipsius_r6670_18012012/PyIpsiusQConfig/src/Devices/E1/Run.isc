@@ -1,0 +1,57 @@
+
+CS_Set
+
+// Create gateway
+
+// gateway name = BoardName
+
+ObjCreate NObjDss1ToSip {BoardName} true // str
+.LogLevel = {TraceLevel} // int
+.CallingAddrNoDigit = {GwCallingAddrNoDigit} // enum
+.PilotNumber = "{GwPilotNumber}" // int
+
+.Sip.LogLevel = {SipCallTraceLevel} // int
+.Sip.ContactToFrom = true
+.Sip.ExternalIp = "{SipExternalIP}" // ip
+.Sip.LocalHost = "{SipLocalHost}" // host or ip or port
+
+.Sip.Proxy.ProxyHost = "{SipProxyHost}" // host or ip
+.Sip.Proxy.RegistrationInd = {SipProxyRegistrationInd} // bool
+.Sip.Proxy.UserName = "{SipProxyUserName}" // str
+.Sip.Proxy.Password = "{SipProxyPassword}" // str
+
+// Create Dss1Trunk 
+
+{BoardName}.CS_Set
+.AddDss1({IsdnHwType}, Trunk1, "{BoardName}", {IsdnSide}) // enum, str, enum
+.Trunk1.CS_Set
+.LogLevel = {TraceLevel} // int
+.RestartReq = true
+.RestartReq = {IsdnRestartReq} // bool
+.SendAlertingTone = {IsdnSendAlertingTone} // bool
+
+.i0.Global.DevTraceInd = True
+.i0.Global.DevTraceHost = "127.0.0.1:65001" 
+.i0.Global.DevWatchdogEnabled = {WatchdogEnable} // bool
+.i0.Global.DevResetOnFatalError = {ResetOnFatalError} // bool
+
+.i0.Liu.SyncMaster = {LiuSyncMaster} // bool
+.i0.Liu.CRC4 = true
+
+// .i0.OutBlockingCh = "{IsdnOutBlockingCh}" // str
+// .i0.InBlockingCh = "{IsdnInBlockingCh}" // str
+
+.i0.Board.StartRtpPort = {StartRtpPort} // port 
+.i0.Board.UseAlaw = {UseALow} // bool
+.i0.Sbp.TimeoutCheckInterval = 0
+
+.L1.TraceType = State
+.L2TraceInd = {IsdnL2Trace} // bool
+
+{BoardName}.CS_Set
+
+// включаем шлюз
+
+{BoardName}.Enabled = true 
+
+ObjList f -1

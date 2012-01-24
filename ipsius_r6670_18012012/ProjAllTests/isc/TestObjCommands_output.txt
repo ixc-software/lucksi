@@ -1,0 +1,809 @@
+:PRINT "Stage: Init ------------------------------------- "
+
+> CS_Set
+:OK
+
+> .ObjDeleteChildren
+Method/property 'ObjDeleteChildren' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 9 (command # 3)
+:ERROR DRI::CommandDriPrepareError
+
+> Objxxx
+Method/property 'Objxxx' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 11 (command # 4)
+:ERROR DRI::CommandDriPrepareError
+
+:PRINT "Stage: ObjCreate test --------------------------- "
+
+:PRINT "SubStage: Create single objects and object trees - "
+
+> CS_Set
+:OK
+
+> ObjCreate
+Exception "Can't invoke for ObjCreate"; DRI::InvokeException in thread DomainClass:TestDomain/main (516) @ ..\Src\DRI\MetaInvoke.cpp:159 in void __thiscall DRI::MetaInvoke::Invoke(void) @ ROOT.ObjCreate
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 19 (command # 8)
+:ERROR DRI::CommandDriRuntimeError
+
+> ObjCreate ocObj1
+Exception "Type ocObj1 not found in factory @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (516) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.ObjCreate
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 20 (command # 9)
+:ERROR DRI::CommandDriRuntimeError
+
+> ObjCreate NObjTestType 123ocObj3
+Exception "123ocObj3"; Domain::ObjectNameError in thread DomainClass:TestDomain/main (516) @ s:\proj\ipsius\src\domain\ObjectName.h:80 in void __thiscall Domain::ObjectName::Init(const class QString &) @ ROOT.ObjCreate
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 21 (command # 10)
+:ERROR DRI::CommandDriRuntimeError
+
+> ObjCreate NObjTestType ocObj1
+:OK
+
+> ObjCreate NObjTestType ocObj1
+Exception "Dublicate child ocObj1 @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (516) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.ObjCreate
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 24 (command # 12)
+:ERROR DRI::CommandDriRuntimeError
+
+> ObjCreate NObjTestType
+:OK
+
+> ObjCreate NObjTestTypeInner
+Exception "Type NObjTestTypeInner is non-creatable @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (516) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.ObjCreate
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 27 (command # 14)
+:ERROR DRI::CommandDriRuntimeError
+
+> ObjCreate NObjTestType ocObj2
+:OK
+
+> ocObj3
+Method/property 'ocObj3' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 30 (command # 15)
+:ERROR DRI::CommandDriPrepareError
+
+> ObjCreate NObjTestType "ocObj2, ocObj3"
+Exception "ocObj2, ocObj3"; Domain::ObjectNameError in thread DomainClass:TestDomain/main (516) @ s:\proj\ipsius\src\domain\ObjectName.h:80 in void __thiscall Domain::ObjectName::Init(const class QString &) @ ROOT.ObjCreate
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 33 (command # 16)
+:ERROR DRI::CommandDriRuntimeError
+
+> ObjCreate NObjTestType ocObj3 true
+:OK
+
+> .ObjCreate NObjTestType ocObj31
+:OK
+
+> .ObjCreate NObjTestType ocObj32 true
+:OK
+
+> .ObjCreate NObjTestType ".ocObj321"
+Exception ".ocObj321"; Domain::ObjectNameError in thread DomainClass:TestDomain/main (516) @ s:\proj\ipsius\src\domain\ObjectName.h:80 in void __thiscall Domain::ObjectName::Init(const class QString &) @ ocObj3.ocObj32.ObjCreate
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 39 (command # 20)
+:ERROR DRI::CommandDriRuntimeError
+
+> .ObjCreate NObjTestType ocObj321
+:OK
+
+> ObjCreate                NObjTestType ocObj4
+:OK
+
+> ocObj4.ObjCreate         NObjTestType ocObj41
+:OK
+
+> ocObj4.ocObj41.ObjCreate NObjTestType ocObj411
+:OK
+
+> ocObj4.ocObj42.ObjCreate NObjTestType ocObj421
+Object 'ocObj4.ocObj42' not found!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 47 (command # 25)
+:ERROR DRI::CommandDriPrepareError
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    ocObj1 : NObjTestType
+    NObjTestType1 : NObjTestType
+    ocObj2 : NObjTestType
+    ocObj3 : NObjTestType
+        ocObj31 : NObjTestType
+        ocObj32 : NObjTestType
+            ocObj321 : NObjTestType
+    ocObj4 : NObjTestType
+        ocObj41 : NObjTestType
+            ocObj411 : NObjTestType
+:OK
+
+:PRINT "Stage: Find from ROOT test"
+
+> CS_Set
+:OK
+
+> .CS_Set
+:OK
+
+> .ocObj4.Number
+7
+:OK
+
+> ._unknown_object_.Number
+Object '_unknown_object_' not found!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 57 (command # 31)
+:ERROR DRI::CommandDriPrepareError
+
+> .ocObj41.Number
+Object 'ocObj41' not found!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 58 (command # 32)
+:ERROR DRI::CommandDriPrepareError
+
+:PRINT "Stage: Modify object test. ObjView & ObjList test "
+
+:PRINT "SubStage: Call methods test --------------------- "
+
+> CS_Set
+:OK
+
+> CS_Set ocObj3.ocObj32.ocObj321
+:OK
+
+> .AddChild
+:OK
+
+> .AddChild()
+:OK
+
+> .AddChild ()
+:OK
+
+> .AddChild(1)
+Exception "DriMethodExtraParams"; DRI::DriMethodExtraParams in thread DomainClass:TestDomain/main (516) @ ..\Src\DRI\MetaInvoke.cpp:192 in void __thiscall DRI::MetaInvoke::AddParam(const class QString &) @ ocObj3.ocObj32.ocObj321.AddChild
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 74 (command # 40)
+:ERROR DRI::CommandDriRuntimeError
+
+> .Child0.Number
+0
+:OK
+
+> .Child0.Inc
+:OK
+
+> .Child0.Number
+1
+:OK
+
+> .Child0.Dec
+:OK
+
+> .Child0.Number
+0
+:OK
+
+> .RemoveChild 0
+OK!
+:OK
+
+> .RemoveChild(1)
+OK!
+:OK
+
+> .RemoveChild 2
+OK!
+:OK
+
+> .RemoveChild(7)
+Child not found!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 88 (command # 49)
+:ERROR DRI::CommandDriRuntimeAsyncError
+
+:PRINT "SubStage: Read/write properties test ------------ "
+
+> CS_Set ocObj4
+:OK
+
+> Number
+Method/property 'Number' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 97 (command # 52)
+:ERROR DRI::CommandDriPrepareError
+
+> .Number
+7
+:OK
+
+> .NonExistsProp
+Method/property 'NonExistsProp' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 99 (command # 54)
+:ERROR DRI::CommandDriPrepareError
+
+> .Number 105
+:OK
+
+> .ObjView
+LogLevel = 0
+Number = 105
+:OK
+
+> .Number "110"
+:OK
+
+> .ObjView
+LogLevel = 0
+Number = 110
+:OK
+
+> .Number = 115
+:OK
+
+> .ObjView
+LogLevel = 0
+Number = 115
+:OK
+
+> .Number = "120"
+:OK
+
+> .ObjView
+LogLevel = 0
+Number = 120
+:OK
+
+> .Number (125)
+Bad property access 'Number'
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 113 (command # 63)
+:ERROR DRI::CommandDriPrepareError
+
+> .ObjView
+LogLevel = 0
+Number = 120
+:OK
+
+> .Number "text"
+:OK
+
+> .ObjView
+LogLevel = 0
+Number = 120
+:OK
+
+> .Number = -1
+Exception "BadNumber"; DriTests::NObjTestType::BadNumber in thread DomainClass:TestDomain/main (516) @ s:\proj\ipsius\projalltests\generatedfiles\release\..\..\..\Src\DriTests\NamedObjectTestType.h:183 in void __thiscall DriTests::NObjTestType::Number(int) @ ocObj4.Number = -1
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 119 (command # 67)
+:ERROR DRI::CommandDriWriteProperty
+
+> .ocObj41.Number 130
+:OK
+
+> .ocObj41.ObjView
+LogLevel = 0
+Number = 130
+:OK
+
+> .ocObj41.AddChild
+:OK
+
+> .CS_Set "ocObj41.Child0"
+:OK
+
+> .ObjView
+LogLevel = 0
+Number = 0
+IsUserUpdated = false #
+SqrtNumber = 0 #
+NumberAsString = "0" #
+NumState = Even #
+Binary = [] #
+:OK
+
+> .IsUserUpdated true
+Exception "PropertyReadOnly"; `anonymousnamespace'::PropertyReadOnly in thread DomainClass:TestDomain/main (516) @ ..\Src\DRI\DriPropertyFactory.cpp:319 in void __thiscall DRI::DriPropertyFactory::Set(const class QString &,class Domain::NamedObject *,const class QString &) const @ ocObj4.ocObj41.Child0.IsUserUpdated = true
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 129 (command # 73)
+:ERROR DRI::CommandDriWriteProperty
+
+:PRINT "SubStage: ObjView test -------------------------- "
+
+> .ObjView
+LogLevel = 0
+Number = 0
+IsUserUpdated = false #
+SqrtNumber = 0 #
+NumberAsString = "0" #
+NumState = Even #
+Binary = [] #
+:OK
+
+> .ObjView true
+LogLevel : int = 0
+Number : int = 0
+IsUserUpdated : bool = false #
+SqrtNumber : double = 0 #
+NumberAsString : QString = "0" #
+NumState : NumberState = Even #
+Binary : Binaries = [] #
+:OK
+
+> .ObjView false Number
+Number = 0
+:OK
+
+> .ObjView true Binary
+Binary : Binaries = [] #
+:OK
+
+> .ObjView true Invalid_Field
+Exception "Property not found! @ ocObj4.ocObj41.Child0"; DRI::ExecuteException in thread DomainClass:TestDomain/main (516) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ocObj4.ocObj41.Child0.ObjView
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 139 (command # 79)
+:ERROR DRI::CommandDriRuntimeError
+
+> .ObjView true Number true
+Exception "DriMethodExtraParams"; DRI::DriMethodExtraParams in thread DomainClass:TestDomain/main (516) @ ..\Src\DRI\MetaInvoke.cpp:192 in void __thiscall DRI::MetaInvoke::AddParam(const class QString &) @ ocObj4.ocObj41.Child0.ObjView
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 140 (command # 80)
+:ERROR DRI::CommandDriRuntimeError
+
+> .ObjView = false
+LogLevel = 0
+Number = 0
+IsUserUpdated = false #
+SqrtNumber = 0 #
+NumberAsString = "0" #
+NumState = Even #
+Binary = [] #
+:OK
+
+> ocObj4.ocObj41.RemoveChild(0)
+OK!
+:OK
+
+:PRINT "SubStage: ObjList test -------------------------- "
+
+> .ObjList
+ocObj41 : NObjTestType
+    ocObj411 : NObjTestType
+:OK
+
+> .ObjList true 99
+ocObj41 : NObjTestType
+    LogLevel = 0
+    Number = 130
+    ocObj411 : NObjTestType
+        LogLevel = 0
+        Number = 9
+:OK
+
+> .ObjList false -1
+ocObj41 : NObjTestType
+    ocObj411 : NObjTestType
+:OK
+
+:PRINT "SubStage: NObjPropertyTest read/write test ------ "
+
+> ObjCreate NObjPropertyTest propTest true
+:OK
+
+> MetaTypeInfo NObjPropertyTest
+class NObjPropertyTest : NamedObject #
+    ColorEnum { clBlack, clWhite, clRed, clBlue, clGreen }
+    Binary { Bit0, Bit1, Bit2, Bit3, Bit4, Bit5 }
+    Binaries [ Bit0, Bit1, Bit2, Bit3, Bit4, Bit5 ]
+    Str : QString
+    Color : ColorEnum
+    Bin : Binaries
+    Time : QTime
+    Date : QDate
+    DT : QDateTime
+:OK
+
+> .Str "new string"
+:OK
+
+> .Str
+"new string"
+:OK
+
+> .Str newString
+:OK
+
+> .Str
+"newString"
+:OK
+
+> .Str new string
+Bad property access 'Str'
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 168 (command # 94)
+:ERROR DRI::CommandDriPrepareError
+
+> .Str
+"newString"
+:OK
+
+> .Color clBlue
+:OK
+
+> .Color
+clBlue
+:OK
+
+> .Color _invalid_color_
+Exception "For property Color ColorEnum { clBlack, clWhite, clRed, clBlue, clGreen } can't found _invalid_color_"; `anonymousnamespace'::BadEnum in thread DomainClass:TestDomain/main (516) @ ..\Src\DRI\DriPropertyFactory.cpp:50 in class QVariant __thiscall `anonymous-namespace'::EnumHandle::Set(const class QMetaProperty &,const class QString &) const @ propTest.Color = _invalid_color_
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 174 (command # 98)
+:ERROR DRI::CommandDriWriteProperty
+
+> .Color
+clBlue
+:OK
+
+> .Bin
+[]
+:OK
+
+> .Time "01:05:06"
+:OK
+
+> .Time
+01:05:06
+:OK
+
+> .Time 02:39:56
+:OK
+
+> .Time
+02:39:56
+:OK
+
+> .Time _invalid_time_
+Exception "Invalid time or invalid time format(have to be 'hh:mm:ss')"; `anonymousnamespace'::BadTime in thread DomainClass:TestDomain/main (516) @ ..\Src\DRI\DriPropertyFactory.cpp:123 in class QVariant __cdecl `anonymous-namespace'::CheckAndConvert<class QTime,class `anonymous-namespace'::BadTime>(const class QString &,const class QString &,const class QString) @ propTest.Time = _invalid_time_
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 186 (command # 105)
+:ERROR DRI::CommandDriWriteProperty
+
+> .Time
+02:39:56
+:OK
+
+> .Time 25:61:78
+Exception "Invalid time or invalid time format(have to be 'hh:mm:ss')"; `anonymousnamespace'::BadTime in thread DomainClass:TestDomain/main (516) @ ..\Src\DRI\DriPropertyFactory.cpp:123 in class QVariant __cdecl `anonymous-namespace'::CheckAndConvert<class QTime,class `anonymous-namespace'::BadTime>(const class QString &,const class QString &,const class QString) @ propTest.Time = 25:61:78
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 189 (command # 107)
+:ERROR DRI::CommandDriWriteProperty
+
+> .Time
+02:39:56
+:OK
+
+> .Time 1:1:1
+Exception "Invalid time or invalid time format(have to be 'hh:mm:ss')"; `anonymousnamespace'::BadTime in thread DomainClass:TestDomain/main (516) @ ..\Src\DRI\DriPropertyFactory.cpp:123 in class QVariant __cdecl `anonymous-namespace'::CheckAndConvert<class QTime,class `anonymous-namespace'::BadTime>(const class QString &,const class QString &,const class QString) @ propTest.Time = 1:1:1
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 192 (command # 109)
+:ERROR DRI::CommandDriWriteProperty
+
+> .Time
+02:39:56
+:OK
+
+> .Date "01.12.2009"
+:OK
+
+> .Date
+01.12.2009
+:OK
+
+> .Date "1.2.2009"
+Exception "Invalid date or invalid date format(have to be 'dd.MM.yyyy')"; `anonymousnamespace'::BadDate in thread DomainClass:TestDomain/main (516) @ ..\Src\DRI\DriPropertyFactory.cpp:123 in class QVariant __cdecl `anonymous-namespace'::CheckAndConvert<class QDate,class `anonymous-namespace'::BadDate>(const class QString &,const class QString &,const class QString) @ propTest.Date = 1.2.2009
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 198 (command # 113)
+:ERROR DRI::CommandDriWriteProperty
+
+> .Date
+01.12.2009
+:OK
+
+> .Date _inalid_date_
+Exception "Invalid date or invalid date format(have to be 'dd.MM.yyyy')"; `anonymousnamespace'::BadDate in thread DomainClass:TestDomain/main (516) @ ..\Src\DRI\DriPropertyFactory.cpp:123 in class QVariant __cdecl `anonymous-namespace'::CheckAndConvert<class QDate,class `anonymous-namespace'::BadDate>(const class QString &,const class QString &,const class QString) @ propTest.Date = _inalid_date_
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 201 (command # 115)
+:ERROR DRI::CommandDriWriteProperty
+
+> .Date
+01.12.2009
+:OK
+
+> .DT "13.05.2009 05:37:45"
+:OK
+
+> .DT
+13.05.2009 05:37:45
+:OK
+
+> .DT "13.5.2009 05:37:45"
+:OK
+
+> .DT
+13.05.2009 05:37:45
+:OK
+
+> .DT _invalid_dt_
+Exception "Invalid datetime or invalid datetime format(have to be 'dd.MM.yyyy hh:mm:ss')"; `anonymousnamespace'::BadDateTime in thread DomainClass:TestDomain/main (516) @ ..\Src\DRI\DriPropertyFactory.cpp:123 in class QVariant __cdecl `anonymous-namespace'::CheckAndConvert<class QDateTime,class `anonymous-namespace'::BadDateTime>(const class QString &,const class QString &,const class QString) @ propTest.DT = _invalid_dt_
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 210 (command # 121)
+:ERROR DRI::CommandDriWriteProperty
+
+> .DT
+13.05.2009 05:37:45
+:OK
+
+> .ObjDelete
+:OK
+
+:PRINT "Stage: ObjDelete and ObjDeleteChildren test ----- "
+
+> CS_Set ocObj2
+:OK
+
+> .AddChild
+:OK
+
+> .AddChild
+:OK
+
+> .AddChild
+:OK
+
+> .AddChild
+:OK
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    ocObj1 : NObjTestType
+    NObjTestType1 : NObjTestType
+    ocObj2 : NObjTestType
+        Child0 : NObjTestTypeInner #
+        Child1 : NObjTestTypeInner #
+        Child2 : NObjTestTypeInner #
+        Child3 : NObjTestTypeInner #
+    ocObj3 : NObjTestType
+        ocObj31 : NObjTestType
+        ocObj32 : NObjTestType
+            ocObj321 : NObjTestType
+    ocObj4 : NObjTestType
+        ocObj41 : NObjTestType
+            ocObj411 : NObjTestType
+:OK
+
+> ocObj2.Child0.ObjDelete
+Exception "Object ocObj2.Child0 is non-creatable @ ocObj2.Child0"; DRI::ExecuteException in thread DomainClass:TestDomain/main (516) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ocObj2.Child0.ObjDelete
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 226 (command # 131)
+:ERROR DRI::CommandDriRuntimeError
+
+> ocObj2.Child7.ObjDelete
+Object 'ocObj2.Child7' not found!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 227 (command # 132)
+:ERROR DRI::CommandDriPrepareError
+
+> ocObj2.ObjDeleteChildren
+Method/property 'ObjDeleteChildren' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 228 (command # 133)
+:ERROR DRI::CommandDriPrepareError
+
+> ocObj2.ObjDelete
+:OK
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    ocObj1 : NObjTestType
+    NObjTestType1 : NObjTestType
+    ocObj3 : NObjTestType
+        ocObj31 : NObjTestType
+        ocObj32 : NObjTestType
+            ocObj321 : NObjTestType
+    ocObj4 : NObjTestType
+        ocObj41 : NObjTestType
+            ocObj411 : NObjTestType
+:OK
+
+> ObjCreate NObjTestType ocObjMixt true
+:OK
+
+> .ObjCreate NObjTestType ocObjMixt1
+:OK
+
+> .AddChild
+:OK
+
+> .ObjDeleteAllChildren
+Method/property 'ObjDeleteAllChildren' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 237 (command # 139)
+:ERROR DRI::CommandDriPrepareError
+
+> .ocObjMixt1.ObjDelete
+:OK
+
+> CS_Set ocObj3.ocObj32
+:OK
+
+> .ocObj321.ObjDelete
+:OK
+
+> .ObjDelete
+:OK
+
+> .ocObj31.ObjDelete
+:OK
+
+> .ocObj31.ObjDelete
+Object 'ocObj3.ocObj31' not found!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 247 (command # 145)
+:ERROR DRI::CommandDriPrepareError
+
+> .ObjCreate NObjTestType ".ocObj33"
+Exception ".ocObj33"; Domain::ObjectNameError in thread DomainClass:TestDomain/main (516) @ s:\proj\ipsius\src\domain\ObjectName.h:80 in void __thiscall Domain::ObjectName::Init(const class QString &) @ ocObj3.ObjCreate
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 249 (command # 146)
+:ERROR DRI::CommandDriRuntimeError
+
+> .ObjCreate NObjTestType ocObj33
+:OK
+
+> ocObj3.ocObj33.ObjDelete
+:OK
+
+> ocObj4.ocObj41.ObjDelete
+:OK
+
+> ocObj4.ObjCreate NObjTestType ocObj42
+:OK
+
+> CS_Set ocObj4
+:OK
+
+> .ObjDeleteChildren
+Method/property 'ObjDeleteChildren' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 257 (command # 152)
+:ERROR DRI::CommandDriPrepareError
+
+> CS_Set
+:OK
+
+> .ObjDelete
+Exception "Object  is non-creatable @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (516) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.ObjDelete
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 261 (command # 154)
+:ERROR DRI::CommandDriRuntimeError
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    ocObj1 : NObjTestType
+    NObjTestType1 : NObjTestType
+    ocObj3 : NObjTestType
+    ocObj4 : NObjTestType
+        ocObj42 : NObjTestType
+    ocObjMixt : NObjTestType
+        Child0 : NObjTestTypeInner #
+:OK
+
+> .ObjDeleteChildren
+Method/property 'ObjDeleteChildren' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 265 (command # 156)
+:ERROR DRI::CommandDriPrepareError
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    ocObj1 : NObjTestType
+    NObjTestType1 : NObjTestType
+    ocObj3 : NObjTestType
+    ocObj4 : NObjTestType
+        ocObj42 : NObjTestType
+    ocObjMixt : NObjTestType
+        Child0 : NObjTestTypeInner #
+:OK
+
+:PRINT "Stage: Async methods test ----------------------- "
+
+> ObjCreate NObjTestType ocObjDel
+:OK
+
+> ocObjDel.AddChild
+:OK
+
+> ocObjDel.AddChild
+:OK
+
+> ocObjDel.AddChild
+:OK
+
+> ocObjDel.AddChild
+:OK
+
+> ocObjDel.ObjList
+ocObjDel : NObjTestType
+    Child0 : NObjTestTypeInner #
+    Child1 : NObjTestTypeInner #
+    Child2 : NObjTestTypeInner #
+    Child3 : NObjTestTypeInner #
+:OK
+
+> ocObjDel.RemoveChild(5)
+Child not found!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestObjCommands.isc, line 281 (command # 165)
+:ERROR DRI::CommandDriRuntimeAsyncError
+
+> ocObjDel.RemoveChild(0)
+OK!
+:OK
+
+> ocObjDel.RemoveChild(3)
+OK!
+:OK
+
+> ocObjDel.ObjList
+ocObjDel : NObjTestType
+    Child1 : NObjTestTypeInner #
+    Child2 : NObjTestTypeInner #
+:OK
+
+:PRINT "Stage: Delete all created objects --------------- "
+
+> ObjList
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    ocObj1 : NObjTestType
+    NObjTestType1 : NObjTestType
+    ocObj3 : NObjTestType
+    ocObj4 : NObjTestType
+    ocObjMixt : NObjTestType
+    ocObjDel : NObjTestType
+:OK
+
+> ocObj1.ObjDelete
+:OK
+
+> NObjTestType1.ObjDelete
+:OK
+
+> ocObj3.ObjDelete
+:OK
+
+> ocObj4.ObjDelete
+:OK
+
+> ocObjMixt.ObjDelete
+:OK
+
+> ocObjDel.ObjDelete
+:OK
+
+
+Commands in total 177, with errors 40, service 354, scripted 0

@@ -1,0 +1,102 @@
+
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of Listen</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>LISTEN</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="accept_exp.html"> Example</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+listen - listen for connections on a socket
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="lwip/sockets.h">lwip/sockets.h</A>&gt;</B>
+
+<P>
+<B>int listen(int </B><I>s</I><B>, int </B><I>backlog</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+To accept connections, a socket is first created with
+<B><A HREF="socket.html">socket</A></B>,
+
+a willingness to accept incoming connections and a queue limit for incoming
+connections are specified with
+<B>listen</B>,
+
+and then the connections are
+accepted with
+<B><A HREF="accept.html">accept</A></B>.
+
+The <B>listen</B> call applies only to sockets of type <B>SOCK_STREAM</B>
+
+The <I>backlog</I> parameter defines the maximum length the queue of pending 
+connections may grow to.  If a connection request arrives with the queue full
+the client may receive an error with an indication of
+<B>ECONNREFUSED</B>,
+
+or, if the underlying protocol supports retransmission, the request may be
+ignored so that retries may succeed.
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+On success, zero is returned.  On error, -1 is returned, and the specific error
+number can be obtained by calling the function <a href="GetSocketError.html">GetSocketError</a>. In a multi-threaded environment the last error number is held
+seperately for each thread.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+The argument
+<I>s</I>
+
+is not a valid descriptor.
+<DT><B>ENOTSOCK</B> 
+
+<DD>
+The argument
+<I>s</I>
+
+is not a socket.<font color="red"> Not Supported </font>
+<DT><B>EOPNOTSUPP</B>
+<DD>
+The socket is not of a type that supports the operation
+<B>listen</B>.<font color="red"> Not Supported </font>
+
+</DL>
+<p>
+<A NAME="lbAI">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="accept.html">accept</A></B>,
+<B><A HREF="connect.html">connect</A></B>,
+<B><A HREF="socket.html">socket</A></B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAI">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

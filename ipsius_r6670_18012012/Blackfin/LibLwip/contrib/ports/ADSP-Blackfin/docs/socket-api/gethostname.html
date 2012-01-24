@@ -1,0 +1,76 @@
+
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of Gethostname</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>GETHOSTNAME</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="gethostname_exp.html"> Example</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+gethostname, sethostname - get/set host name
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="lwip/sockets.h">lwip/sockets.h</A>&gt;</B>
+
+<P>
+<B>int gethostname(char *</B><I>name</I><B>, size_t </B><I>len</I><B>);</B>
+
+<BR>
+
+<B>int sethostname(const char *</B><I>name</I><B>, size_t </B><I>len</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+These functions are used to access or to change the host name of the
+current processor. Note: This function is NOT supported by LwIP yet.
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+On success, zero is returned.  On error, -1 is returned, and error value is
+obtained by calling the function GetSocketError().  In multithreaded environments
+last error number is held seperately for each thread.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+<I>len</I> is invalid.
+
+<DT><B>EFAULT</B>
+
+<DD>
+<I>name</I>
+
+is an invalid address.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="getpeername.html">getpeername</A></B>,
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAJ">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

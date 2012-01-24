@@ -1,0 +1,9 @@
+
+CS_Print "Macro printing ... "
+CS_Print "Params: 1st = [ %print1% ] and 2nd = [ %print2% ]; 1.2 = %print1%.%print2%; 2.2 = %print2%.%print2%" 
+
+CS_Set %set1%
+CS_Set "%set1%.%set2%"
+
+// %run1%
+

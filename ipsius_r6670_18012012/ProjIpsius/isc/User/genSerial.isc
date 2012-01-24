@@ -1,0 +1,5 @@
+
+ObjCreate NObjMachineId "Pcid" true
+.GenSerial ipsius-odessa
+DomainExit
+

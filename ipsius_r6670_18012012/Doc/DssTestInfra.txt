@@ -1,0 +1,188 @@
+
+
+// базовый абстрактный класс, взаимодействиющий с DSS вызовом и выполняющий определенный сценарий
+class DssUserCall :
+   public IDssCallEvents
+{
+   // FSM 
+   // ...
+
+public:
+   
+   DssUserCall(IDssSubsEvents &owner) {}
+};
+
+// абстрактный классы
+// полная реализация FSM машины для входящего вызова
+class IncomingDssUserCall : DssUserCall 
+{
+};
+
+// полная реализация FSM машины для исходящего вызова
+class OutcomingDssUserCall : DssUserCall 
+{
+};
+
+
+// --------------------------------------------------
+
+// события класса DssSubscenario
+class IDssSubsEvents
+{
+public:
+   void SubsCompleted() = 0;
+   void SubsError(SubsErrorType) = 0;
+};
+
+// --------------------------------------------------
+
+/*
+    Базовый класс для всех подсценариев
+    Содержит два объекта с вызовами
+*/
+class DssSubscenario
+{
+   shared_ptr<DssUserCall> m_userLeft;
+   shared_ptr<DssUserCall> m_userRight;
+
+public:
+
+   DssSubscenario(IDssSubsEvents &owner, DssStack &left, DssStack &right, log);
+   
+   void Run();   
+   
+   bool InCall();  // левая и правая сторона находятся  в состоянии разговора 
+   
+};
+
+// --------------------------------------------------
+
+
+// список активных подсценариев
+class SubscenariesList
+{
+	std::vector<DssSubscenario*> m_list;
+
+public:
+   
+   void Add(DssSubscenario *pItem) {}
+   bool AllCompleted();
+};
+
+
+// --------------------------------------------------
+
+// содержит map соотвествий исходящего номера -> DssUserCall
+class IncomingsCallRouter
+{
+public:
+    // ...
+};
+
+// --------------------------------------------------
+
+// генератор уникальных телефонных номеров
+class UniqueNumberGenerator
+{
+};
+
+// --------------------------------------------------
+
+/*
+     Базовый абстрактный класс
+     Содержит DSS стек
+     Содержит подсценарии
+     Содержит роутер входящих вызовов
+     Генератор уникальных номеров
+     
+*/
+class DssScenario : 
+    public ICallBackDSS,
+    public IDssSubsEvents
+{
+   MsgThread m_thread;
+   DssStack m_stackNT; 
+   DssStack m_stackTE;  
+   SubscenariesList m_subs;
+   IncomingsCallRouter m_router;
+   UniqueNumberGenerator m_generator;
+   
+   void RegisterSubscenaries() = 0;
+   
+protected:
+
+   void AddSubscenario(DssSubscenario *pItem) {}
+   
+   
+public:
+
+   DssScenario() {}
+   
+   bool Run(log) 
+   {
+       RegisterSubscenaries();
+       
+       while(!m_subs.AllCompleted()) 
+       {
+           if (m_break) break;
+           MsgThread::Sleep(100);
+       }
+   }
+
+};
+
+
+// --------------------------------------------------
+// --------------------------------------------------
+
+class RealIncomingCall : public IncomingDssUserCall 
+{
+public:
+   RealIncomingCall(int dropAfterConnectMs = -1) {}
+}
+
+class RealOutComingCall : public OutcomingDssUserCall 
+{
+public:
+   RealOutComingCall(int dropAfterConnectMs = -1) {}
+}
+
+
+// simple call from left to right
+class SimpleCall : public DssSubscenario
+{
+   // по идее эти поля в базовым классе - ?
+   shared_ptr<DssUserCall> m_userLeft;
+   shared_ptr<DssUserCall> m_userRight;
+   
+   // или так ?
+   shared_ptr<RealOutComingCall> m_userLeft;
+   shared_ptr<RealIncomingCall> m_userRight;
+   
+   
+public:
+
+   SimpleCall(IDssSubsEvents &owner, DssStack &leftDss, DssStack &rightDss, log, bool dropFromLeft)
+   {
+      m_userLeft = new RealOutComingCall(*this, log, leftDss, dropFromLeft ? 1000 : -1);
+      m_userRight = new RealIncomingCall(*this, log, leftDss, (!dropFromLeft) ? 1000 : -1);      
+   }
+   
+}
+
+class DssScenario4Call : public DssScenario
+{
+
+   void RegisterSubscenaries()
+   {
+      AddSubscenario( new SimpleCall(*this, m_stackNT, m_stackTE, log, true));
+      AddSubscenario( new SimpleCall(*this, m_stackNT, m_stackTE, log, false));
+      
+      AddSubscenario( new SimpleCall(*this, m_stackTE, m_stackNT, log, true));
+      AddSubscenario( new SimpleCall(*this, m_stackTE, m_stackNT, log, false));      
+   }
+
+public:
+
+
+};

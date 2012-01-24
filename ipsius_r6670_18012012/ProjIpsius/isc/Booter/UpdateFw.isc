@@ -1,0 +1,13 @@
+ObjCreate NObjCommonBfTaskProfile commonProfile true  
+    .BoardAddress = %BoardAddress%
+    .BoardPwd %BoardPwd%
+    .TraceClient false
+    .TraceServer false
+    .ObtainCbpPort
+
+ObjCreate NObjBfTaskUpdateFw taskUpdate true
+    .Init(commonProfile)    
+    .SetFirmware %Firmware% 
+    .CheckAfter = false
+    .Run
+

@@ -1,0 +1,14 @@
+<RCC>
+<qresource>
+    <file>Images/app.ico</file>
+    <file>Images/copy.png</file>
+    <file>Images/cut.png</file>
+    <file>Images/exit.png</file>
+    <file>Images/new.png</file>
+    <file>Images/open.png</file>
+    <file>Images/paste.png</file>
+    <file>Images/pause.png</file>
+    <file>Images/resume.png</file>
+    <file>Images/save.png</file>
+</qresource>
+</RCC>

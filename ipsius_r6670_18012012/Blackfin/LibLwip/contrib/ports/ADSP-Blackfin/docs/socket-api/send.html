@@ -1,0 +1,134 @@
+
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of SEND</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>SEND</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="tcp-cli-serv.html"> Example</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+send, sendto, sendmsg - send a message from a socket
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+
+<B>#include &lt;<A HREF="lwip/socket.h">lwip/socket.h</A>&gt;</B>
+
+<P>
+<B>int send(int </B><I>s</I><B>, const void *</B><I>msg</I><B>, int </B><I>len</I><B>,</B>
+
+<B>unsigned int </B><I>flags</I><B>);</B>
+
+<P>
+<B>int sendto(int </B><I>s</I><B>, const void *</B><I>msg</I><B>, int </B><I>len</I><B>,</B>
+
+<B>unsigned int </B><I>flags</I><B>, const struct sockaddr *</B><I>to</I><B>, int </B><I>tolen</I><B>);</B>
+
+<P>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Send</B>, and <B>sendto</B>, are used to transmit a message to another 
+socket.  <B>Send</B> may be used only when the socket is in a <I>connected</I>
+state, while <B>sendto</B> may be used at any time.
+
+The address of the target is given by <I>to</I> with <I>tolen</I> specifying 
+its size.  The length of the message is given by <I>len</I>.
+
+If the message is too long to pass atomically through the underlying protocol,
+the error <B>EMSGSIZE</B> is returned, and the message is not transmitted.
+
+No indication of failure to deliver is implicit in a
+<B>send</B>.
+
+Locally detected errors are indicated by a return value of -1.
+
+If no messages space is available at the socket to hold the message to be
+transmitted, then <B>send</B> normally blocks, unless the socket has been 
+placed in non-blocking I/O mode.
+
+The <I>flags</I> parameter may include one or more of the following:
+
+<DL COMPACT><DT><DD>
+<PRE>
+#define MSG_OOB        0x1  /* process out-of-band data */
+#define MSG_DONTROUTE  0x4  /* bypass routing, use direct interface */
+</PRE>
+
+</DL>
+
+
+The flag <B>MSG_OOB</B> is used to send <I>out-of-band</I> data on sockets
+that support this notion (e.g.  <B>SOCK_STREAM</B>); the underlying protocol 
+must also support <I>out-of-band</I> data.
+
+<B>MSG_DONTROUTE</B> is usually used only by diagnostic or routing programs.
+See <B><A HREF="recv.html">recv</A></B> for a description of the
+<I>msghdr</I> structure.
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUES</H2>
+
+The call returns the number of characters sent, or -1 if an error occurred.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+<DD> Invalid Arguments
+
+<DT><B>ENOTSOCK</B>
+<DD> The argument <I>s</I> is not a socket. 
+<font color="red"> Not Supported </font>
+
+<DT><B>EFAULT</B>
+<DD> An invalid user space address was specified for a parameter. <font color="red"> Not Supported</font>
+
+<DT><B>EMSGSIZE</B>
+<DD> The socket requires that message be sent atomically, and the size
+of the message to be sent made this impossible. <font color="red">Not Supported </font>
+
+<DT><B>EWOULDBLOCK</B> <font color="red"> Not Supported </font>
+<DD> The socket is marked non-blocking and the requested operation
+would block.
+
+<DT><B>ENOBUFS</B>
+<DD> The system was unable to allocate an internal buffer.
+The operation may succeed when buffers become available.
+
+<DT><B>ENOBUFS</B>
+<DD> The output queue for a network interface was full.
+This generally indicates that the interface has stopped sending,
+but may be caused by transient congestion.
+</DL>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="recv.html">recv</A></B>,
+<B><A HREF="setsockopt.html">getsockopt</A></B>,
+<B><A HREF="socket.html">socket</A></B>,
+<B><A HREF="write.html">write</A></B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUES</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

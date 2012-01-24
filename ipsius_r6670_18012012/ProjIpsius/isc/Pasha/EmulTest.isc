@@ -1,0 +1,43 @@
+CS_Set
+.LogLevel = 3
+
+ObjCreate NObjSipUserAgent sip true
+//	.ResipLogMode = Detail
+	.AddTransport(5064)
+	
+	.AddAccessPoint("outDss1", "sip:outDss1@192.168.0.160", "1")
+	.outDss1.DefaultRegistrationRetryTimeSec = 30
+	.outDss1.SetAsDefaultReceiver
+	
+	.AddAccessPoint("inDss1", "sip:inDss1@192.168.0.160", "1")
+	.inDss1.DefaultRegistrationRetryTimeSec = 30
+	.Enabled = t	
+
+
+ObjCreate NObjHwFinder HwFinder true 
+.OnlyLocalIP = false
+.AllowUpdate = false
+.BoardFilter.Include "75, 76"
+.FirmwarePath = "~IPSIUS_RELEASE~/FWU/DevIpTdm/"    // путь к прошивкам 
+.Enabled = true
+
+.Alias(75, "bf75")
+.Alias(76, "bf76")
+
+
+ObjCreate NObjEmulRunner Emul true
+    .CreateEmulPair("Pair", 75, 76)
+	.Pair.Board_0.UseBooter = false
+    .Pair.Board_0.BoardSettings.SetDefaultParams(1, 75, "91:92:93:94:93:F0")
+    .Pair.Board_0.BoardSettings.SetNetwork(false, "127.0.0.1", "127.0.0.1", "255.255.255.0")    
+    .Pair.Board_1.BoardSettings.SetDefaultParams(1, 76, "91:92:93:94:93:F1")
+    .Pair.Board_1.BoardSettings.SetNetwork(false, "127.0.0.1", "127.0.0.1", "255.255.255.0")    
+	.Pair.Board_1.UseBooter = false
+    .StartAllEmul   
+    
+
+CS_Exec "Blackfin.isc" "GatewayName = User; SipPoint = sip.outDss1; BoardName = bf75; Side =TE; StartRtpPort = 9500"
+CS_Exec "Blackfin.isc" "GatewayName = Net;  SipPoint = sip.inDss1;  BoardName = bf76; Side =NT; StartRtpPort = 7500"
+
+User.WaitWhileNoactive(120000) 
+Net.WaitWhileNoactive(120000)

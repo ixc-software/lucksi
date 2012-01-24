@@ -1,0 +1,60 @@
+
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of gethostaddr</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>GETHOSTADDR <font color="red"></font> </H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+gethostaddr - gets the host address string in dot decimal notation.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="lwip/inet.h">lwip/inet.h</A>&gt;</B>
+
+<P>
+<B>int gethostaddr(int </B><I>nfce_no</I><B>, char* </B><I>host_addr</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<I>gethostaddr</I> could be used to get the IP address string in dot decimal notation.
+The parameter
+<I>nfce_no</I> identifies the interface number.<I>host_addr</I> is a buffer pointer to hold the address. It must be atleast 16 bytes long.Default network interface number is 0. Applications can use this function to retrieve the host ip address once it obtains from DHCP server.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+The call returns -1 if it fails. Returns 1 upon success and <I>host_addr</I> contains the IP address string in dot decimal notation.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<p>
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="connect.html">connect</A></B>,
+<B><A HREF="socket.html">socket</A></B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

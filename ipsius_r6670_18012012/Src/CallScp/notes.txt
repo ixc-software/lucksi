@@ -1,0 +1,28 @@
+
+* методы можно было бы сделать через Q_INVOKABLE и вз€ть часть кода из DRI 
+
+* класс Call -> переименовать в Instance, а СrunТ переименовать в СcallТ; помен€ть namespace - ?
+рефакторить уже вместе с ѕашей? подумать, что общее (команды, отв€занные от типа Instance?); всюду className фактически есть objName 
+
+
+
+impl -- select generic 'engine' part 
+
+---
+
+вызов end -- warning если есть другие активные CmdStream (like stackless threads)
+
+итак, есть:
+class xxx:
+[event] xxx:  // в классе
+create [class name]
+run [class name | self] [event]  // можно использовать как функции, блокирующий режим, max число команд в очереди (рекурси€) - ?
+
+class startup:
+	pult:
+		do_one
+	trainer:
+		do_two
+
+при запуске, можно указать параметры дл€ emit, e.g. Уstartup pultФ
+

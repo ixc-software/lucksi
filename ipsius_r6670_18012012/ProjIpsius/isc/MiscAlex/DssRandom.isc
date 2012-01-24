@@ -1,0 +1,13 @@
+
+TestStackTrace()
+
+ObjCreate NObjIsdnTetRunner isdnGroupe true
+      
+   .BeginWrongL3PacketTest
+   .Profile.DurationSec = 0
+   .Profile.RndPackPercent = 25
+   .Profile.VerboseTimeSec = 5
+   .Profile.RndPatternGenProf.Seed = 7
+   .Run
+   
+   

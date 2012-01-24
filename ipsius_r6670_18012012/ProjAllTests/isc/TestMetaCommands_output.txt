@@ -1,0 +1,1493 @@
+:PRINT "Stage: Init ------------------------------------- "
+
+> CS_Set
+:OK
+
+> .ObjDeleteChildren
+Method/property 'ObjDeleteChildren' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 7 (command # 3)
+:ERROR DRI::CommandDriPrepareError
+
+> CS_Set
+:OK
+
+> Metaxxx
+Method/property 'Metaxxx' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 11 (command # 5)
+:ERROR DRI::CommandDriPrepareError
+
+> ObjCreate NObjTestType mcObj true
+:OK
+
+> .AddChild
+:OK
+
+> .CS_Set Child0
+:OK
+
+:PRINT "Stage:  MetaMethods, MetaFields, MetaEnums test - "
+
+> MetaMethods
+CS_Set([QString path])
+CS_SetBack()
+CS_Begin([bool continueOnError])
+CS_End()
+CS_Discard()
+CS_Timeout(int intervalMs)
+CS_Exec(QString fileName[, QString macroReplaceList])
+CS_Print([QString text])
+CS_Exit()
+CS_Info()
+ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+ObjDelete()
+ObjList([bool listProperties, int recurseLevel])
+ObjView([bool withTypes, QString propertyName])
+MetaMethods([QString typeName, QString methodName])
+MetaFields([QString typeName, QString propertyName])
+MetaEnums([QString typeName, QString enumName])
+MetaTypeInfo([QString typeName, bool withInherited])
+MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+TestStackTrace()
+TestAssertion()
+TestException()
+TestAsyncException()
+TestAV()
+TestMsgOverload()
+TestAsyncCmd([bool canAborted, int timeOut])
+TestQtWarningMsg()
+Sleep(int timeOut)
+SetMsgProfiling(int depth)
+PrintMsgProfiling()
+SetMaxMessageTime(int intervalMs)
+TestMsgWatchdog()
+StartNetMonitor(int intervalMs)
+StopNetMonitor()
+SessionsList()
+HaltOnQtWarning(bool val)
+RunTestScript(QString scpName[, QString refOutput])
+DomainExit()
+ListThreads()
+:OK
+
+> MetaMethods invalid_type
+Exception "Type invalid_type not found in factory @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (2816) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.MetaMethods
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 22 (command # 11)
+:ERROR DRI::CommandDriRuntimeError
+
+> MetaMethods NObjString
+CS_Set([QString path])
+CS_SetBack()
+CS_Begin([bool continueOnError])
+CS_End()
+CS_Discard()
+CS_Timeout(int intervalMs)
+CS_Exec(QString fileName[, QString macroReplaceList])
+CS_Print([QString text])
+CS_Exit()
+CS_Info()
+ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+ObjDelete()
+ObjList([bool listProperties, int recurseLevel])
+ObjView([bool withTypes, QString propertyName])
+MetaMethods([QString typeName, QString methodName])
+MetaFields([QString typeName, QString propertyName])
+MetaEnums([QString typeName, QString enumName])
+MetaTypeInfo([QString typeName, bool withInherited])
+MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+:OK
+
+> MetaMethods NObjString invalid_method
+Exception "Method not found! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (2816) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.MetaMethods
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 24 (command # 13)
+:ERROR DRI::CommandDriRuntimeError
+
+> mcObj.Child0.MetaMethods
+CS_Set([QString path])
+CS_SetBack()
+CS_Begin([bool continueOnError])
+CS_End()
+CS_Discard()
+CS_Timeout(int intervalMs)
+CS_Exec(QString fileName[, QString macroReplaceList])
+CS_Print([QString text])
+CS_Exit()
+CS_Info()
+ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+ObjDelete()
+ObjList([bool listProperties, int recurseLevel])
+ObjView([bool withTypes, QString propertyName])
+MetaMethods([QString typeName, QString methodName])
+MetaFields([QString typeName, QString propertyName])
+MetaEnums([QString typeName, QString enumName])
+MetaTypeInfo([QString typeName, bool withInherited])
+MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+Inc()
+Dec()
+:OK
+
+> .MetaMethods
+CS_Set([QString path])
+CS_SetBack()
+CS_Begin([bool continueOnError])
+CS_End()
+CS_Discard()
+CS_Timeout(int intervalMs)
+CS_Exec(QString fileName[, QString macroReplaceList])
+CS_Print([QString text])
+CS_Exit()
+CS_Info()
+ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+ObjDelete()
+ObjList([bool listProperties, int recurseLevel])
+ObjView([bool withTypes, QString propertyName])
+MetaMethods([QString typeName, QString methodName])
+MetaFields([QString typeName, QString propertyName])
+MetaEnums([QString typeName, QString enumName])
+MetaTypeInfo([QString typeName, bool withInherited])
+MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+Inc()
+Dec()
+:OK
+
+> .MetaMethods NObjString
+CS_Set([QString path])
+CS_SetBack()
+CS_Begin([bool continueOnError])
+CS_End()
+CS_Discard()
+CS_Timeout(int intervalMs)
+CS_Exec(QString fileName[, QString macroReplaceList])
+CS_Print([QString text])
+CS_Exit()
+CS_Info()
+ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+ObjDelete()
+ObjList([bool listProperties, int recurseLevel])
+ObjView([bool withTypes, QString propertyName])
+MetaMethods([QString typeName, QString methodName])
+MetaFields([QString typeName, QString propertyName])
+MetaEnums([QString typeName, QString enumName])
+MetaTypeInfo([QString typeName, bool withInherited])
+MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+:OK
+
+> .MetaMethods = NObjString
+CS_Set([QString path])
+CS_SetBack()
+CS_Begin([bool continueOnError])
+CS_End()
+CS_Discard()
+CS_Timeout(int intervalMs)
+CS_Exec(QString fileName[, QString macroReplaceList])
+CS_Print([QString text])
+CS_Exit()
+CS_Info()
+ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+ObjDelete()
+ObjList([bool listProperties, int recurseLevel])
+ObjView([bool withTypes, QString propertyName])
+MetaMethods([QString typeName, QString methodName])
+MetaFields([QString typeName, QString propertyName])
+MetaEnums([QString typeName, QString enumName])
+MetaTypeInfo([QString typeName, bool withInherited])
+MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+:OK
+
+> MetaMethods NObjTestTypeInner Inc
+Inc()
+:OK
+
+> MetaMethods NObjTestTypeInner "Inc"
+Inc()
+:OK
+
+> MetaMethods NObjTestTypeInner "Inc()"
+Exception "Method not found! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (2816) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.MetaMethods
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 33 (command # 20)
+:ERROR DRI::CommandDriRuntimeError
+
+> MetaMethods NObjTestTypeInner CS_Exec
+CS_Exec(QString fileName[, QString macroReplaceList])
+:OK
+
+> MetaEnums
+LogTag { ErrorTag, WarningTag, InfoTag }
+:OK
+
+> MetaEnums invalid_type
+Exception "Type invalid_type not found in factory @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (2816) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.MetaEnums
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 40 (command # 23)
+:ERROR DRI::CommandDriRuntimeError
+
+> mcObj.Child0.MetaEnums
+LogTag { ErrorTag, WarningTag, InfoTag }
+NumberState { Even, Odd }
+Binary { Bit0, Bit1, Bit2, Bit3 }
+Binaries [ Bit0, Bit1, Bit2, Bit3 ]
+:OK
+
+> .MetaEnums
+LogTag { ErrorTag, WarningTag, InfoTag }
+NumberState { Even, Odd }
+Binary { Bit0, Bit1, Bit2, Bit3 }
+Binaries [ Bit0, Bit1, Bit2, Bit3 ]
+:OK
+
+> .MetaEnums NumberState
+Exception "Type NumberState not found in factory @ mcObj.Child0"; DRI::ExecuteException in thread DomainClass:TestDomain/main (2816) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ mcObj.Child0.MetaEnums
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 44 (command # 26)
+:ERROR DRI::CommandDriRuntimeError
+
+> .MetaEnums NObjTestTypeInner NumberState
+NumberState { Even, Odd }
+:OK
+
+> MetaEnums NObjTestTypeInner "Binaries"
+Binaries [ Bit0, Bit1, Bit2, Bit3 ]
+:OK
+
+> MetaEnums NObjTestTypeInner invalid_name
+Exception "Enum not found! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (2816) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.MetaEnums
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 47 (command # 29)
+:ERROR DRI::CommandDriRuntimeError
+
+> MetaEnums = NObjTestTypeInner
+LogTag { ErrorTag, WarningTag, InfoTag }
+NumberState { Even, Odd }
+Binary { Bit0, Bit1, Bit2, Bit3 }
+Binaries [ Bit0, Bit1, Bit2, Bit3 ]
+:OK
+
+> MetaFields
+LogLevel : int
+BuildInfo : QString #
+Started : QString #
+HeapTrace : bool
+HeapInfo : QString #
+Sessions : QString #
+NetMonitorStatus : QString #
+ExitOnLastSessionDrop : bool
+TraceSessions : bool
+:OK
+
+> MetaFields invalid_type
+Exception "Type invalid_type not found in factory @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (2816) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.MetaFields
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 53 (command # 32)
+:ERROR DRI::CommandDriRuntimeError
+
+> mcObj.Child0.MetaFields
+LogLevel : int
+Number : int
+IsUserUpdated : bool #
+SqrtNumber : double #
+NumberAsString : QString #
+NumState : NumberState #
+Binary : Binaries #
+:OK
+
+> .MetaFields
+LogLevel : int
+Number : int
+IsUserUpdated : bool #
+SqrtNumber : double #
+NumberAsString : QString #
+NumState : NumberState #
+Binary : Binaries #
+:OK
+
+> .MetaFields IsUserUpdated
+Exception "Type IsUserUpdated not found in factory @ mcObj.Child0"; DRI::ExecuteException in thread DomainClass:TestDomain/main (2816) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ mcObj.Child0.MetaFields
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 56 (command # 35)
+:ERROR DRI::CommandDriRuntimeError
+
+> .MetaFields NObjTestTypeInner IsUserUpdated
+IsUserUpdated : bool #
+:OK
+
+> MetaFields NObjTestTypeInner "NumberAsString"
+NumberAsString : QString #
+:OK
+
+> MetaFields NObjTestTypeInner invalid_name
+Exception "Property not found! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (2816) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.MetaFields
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 59 (command # 38)
+:ERROR DRI::CommandDriRuntimeError
+
+> MetaFields = NObjString
+LogLevel : int
+Val : QString
+:OK
+
+:PRINT "Stage:  MetaTypes and MetaTypeInfo test ---------"
+
+> CS_Set mcObj
+:OK
+
+> MetaTypes
+class NObjTestTypeInner # : NamedObject #
+class NObjTestType : NamedObject #
+class NObjString : NamedObject #
+class NObjPropertyTest : NamedObject #
+class NObjFlushTest : NamedObject #
+class NObjDomainAutorun # : NamedObject #
+class NObjLogManager # : NamedObject #
+class NObjLogSettings # : NamedObject #
+class NObjRoot # : NamedObject #
+class NObjSecProfile # : NamedObject #
+class NObjSecSpecial # : NamedObject #
+class NObjSecProfiles # : NObjProfilesBase # : NamedObject #
+class NObjSecUsers # : NamedObject #
+class NObjSecRoot # : NamedObject #
+class NObjSecTestBase : NamedObject #
+class NObjSecTestA : NObjSecTestBase : NamedObject #
+class NObjSecTestB : NObjSecTestBase : NamedObject #
+class NObjSecUser # : NamedObject #
+class NObjTelnetServerSessionDRI # : NamedObject #
+class NObjTelnetServerDRI # : NamedObject #
+class NObjThreadMonitor # : NamedObject #
+class NObjProfilesBase # : NamedObject #
+class NObjReg # : NamedObject #
+:OK
+
+> .MetaTypes
+class NObjTestTypeInner # : NamedObject #
+class NObjTestType : NamedObject #
+class NObjString : NamedObject #
+class NObjPropertyTest : NamedObject #
+class NObjFlushTest : NamedObject #
+class NObjDomainAutorun # : NamedObject #
+class NObjLogManager # : NamedObject #
+class NObjLogSettings # : NamedObject #
+class NObjRoot # : NamedObject #
+class NObjSecProfile # : NamedObject #
+class NObjSecSpecial # : NamedObject #
+class NObjSecProfiles # : NObjProfilesBase # : NamedObject #
+class NObjSecUsers # : NamedObject #
+class NObjSecRoot # : NamedObject #
+class NObjSecTestBase : NamedObject #
+class NObjSecTestA : NObjSecTestBase : NamedObject #
+class NObjSecTestB : NObjSecTestBase : NamedObject #
+class NObjSecUser # : NamedObject #
+class NObjTelnetServerSessionDRI # : NamedObject #
+class NObjTelnetServerDRI # : NamedObject #
+class NObjThreadMonitor # : NamedObject #
+class NObjProfilesBase # : NamedObject #
+class NObjReg # : NamedObject #
+:OK
+
+> MetaTypes true
+class NObjTestTypeInner # : NamedObject #
+    NumberState { Even, Odd }
+    Binary { Bit0, Bit1, Bit2, Bit3 }
+    Binaries [ Bit0, Bit1, Bit2, Bit3 ]
+    Number : int
+    IsUserUpdated : bool #
+    SqrtNumber : double #
+    NumberAsString : QString #
+    NumState : NumberState #
+    Binary : Binaries #
+    Inc()
+    Dec()
+class NObjTestType : NamedObject #
+    Number : int
+    AddChild()
+    RemoveChild(int childIndex)
+    ParamsFn(int first[, QString second, int last])
+    InfiniteAsyncCmd()
+class NObjString : NamedObject #
+    Val : QString
+class NObjPropertyTest : NamedObject #
+    ColorEnum { clBlack, clWhite, clRed, clBlue, clGreen }
+    Binary { Bit0, Bit1, Bit2, Bit3, Bit4, Bit5 }
+    Binaries [ Bit0, Bit1, Bit2, Bit3, Bit4, Bit5 ]
+    Str : QString
+    Color : ColorEnum
+    Bin : Binaries
+    Time : QTime
+    Date : QDate
+    DT : QDateTime
+class NObjFlushTest : NamedObject #
+    FlushTimeoutMs : int
+    AddTimeoutMs : int
+    Run(int runTimeMs)
+    RunWithFakeAbort(int runTimeMs)
+    RunWithError()
+    RunInfinite()
+    RunWithAsyncException()
+    RunSafeWithAsyncException()
+    RunWithSyncException()
+class NObjDomainAutorun # : NamedObject #
+    TraceToCout : bool
+class NObjLogManager # : NamedObject #
+    TraceToCout : bool
+    TraceToFile : bool
+    FileName : QString
+    DirectSaveToFile : bool
+    TraceToUdp : bool
+    DstUdpTrace : QString
+    Timestamp : bool
+    CountToSync : int
+    TimeoutToSync : int
+    MaxRecords : int
+    CleanTo : int
+    PathSeparator : QString
+    Stat : QString #
+    Clear()
+    Log(QString s)
+    DumpSessionsToFile([QString fileName])
+class NObjLogSettings # : NamedObject #
+    Timestamp : bool
+    CountToSync : int
+    TimeoutToSync : int
+    MaxRecords : int
+    CleanTo : int
+    PathSeparator : QString
+class NObjRoot # : NamedObject #
+    BuildInfo : QString #
+    Started : QString #
+    HeapTrace : bool
+    HeapInfo : QString #
+    Sessions : QString #
+    NetMonitorStatus : QString #
+    ExitOnLastSessionDrop : bool
+    TraceSessions : bool
+    TestStackTrace()
+    TestAssertion()
+    TestException()
+    TestAsyncException()
+    TestAV()
+    TestMsgOverload()
+    TestAsyncCmd([bool canAborted, int timeOut])
+    TestQtWarningMsg()
+    Sleep(int timeOut)
+    SetMsgProfiling(int depth)
+    PrintMsgProfiling()
+    SetMaxMessageTime(int intervalMs)
+    TestMsgWatchdog()
+    StartNetMonitor(int intervalMs)
+    StopNetMonitor()
+    SessionsList()
+    HaltOnQtWarning(bool val)
+    RunTestScript(QString scpName[, QString refOutput])
+    DomainExit()
+    ListThreads()
+class NObjSecProfile # : NamedObject #
+    List([bool withSysItems])
+    AddRec(QString path, bool recursive, NObjProfilesBase::Mode mode[, QString allowList, QString denyList])
+    DeleteRec(int index)
+    Delete()
+class NObjSecSpecial # : NamedObject #
+class NObjSecProfiles # : NObjProfilesBase # : NamedObject #
+    Add(QString name, Mode rootMode[, QString allowList, QString denyList, bool blockSecurity])
+class NObjSecUsers # : NamedObject #
+    Add(QString login, QString password, QString profile[, int loginLimit, QString desc])
+class NObjSecRoot # : NamedObject #
+    SwitchSecProfile(QString profileName)
+class NObjSecTestBase : NamedObject #
+    Value : int
+    Inc()
+    Dec()
+class NObjSecTestA : NObjSecTestBase : NamedObject #
+class NObjSecTestB : NObjSecTestBase : NamedObject #
+class NObjSecUser # : NamedObject #
+    Info : QString #
+    Delete()
+    SetLoginLimit(int value)
+    SetPassword(QString value)
+class NObjTelnetServerSessionDRI # : NamedObject #
+    Info : QString #
+    Close()
+    GetStats()
+class NObjTelnetServerDRI # : NamedObject #
+    CloseAllSessions()
+class NObjThreadMonitor # : NamedObject #
+    MaxMsgQueueSize : int #
+    MaxTimerLagCount : int #
+    MaxTimerLag : int #
+    MsgGrowCount : int #
+    MsgGrowLimit : int #
+    Statistic : QString #
+    SetMaxMsgQueueSize(int msgCount)
+    ResetMaxMsgQueueSize()
+    SetMaxTimerLag(int timerLagCount, int maxTimerLag)
+    ResetMaxTimerLag()
+    SetMsgGrowDetection(int msgGrowCount, int msgGrowLimit)
+    ResetMsgGrowDetection()
+    Reset()
+class NObjProfilesBase # : NamedObject #
+    Mode { acDeny, acReadOnly, acFull }
+class NObjReg # : NamedObject #
+    Dir : QString
+    RegCalls : bool
+    RegEvents : bool
+    RegTelnet : bool
+    RunSelfTest()
+:OK
+
+> MetaTypes true true
+class NObjTestTypeInner # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    NumberState { Even, Odd }
+    Binary { Bit0, Bit1, Bit2, Bit3 }
+    Binaries [ Bit0, Bit1, Bit2, Bit3 ]
+    LogLevel : int
+    Number : int
+    IsUserUpdated : bool #
+    SqrtNumber : double #
+    NumberAsString : QString #
+    NumState : NumberState #
+    Binary : Binaries #
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Inc()
+    Dec()
+class NObjTestType : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Number : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    AddChild()
+    RemoveChild(int childIndex)
+    ParamsFn(int first[, QString second, int last])
+    InfiniteAsyncCmd()
+class NObjString : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Val : QString
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+class NObjPropertyTest : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    ColorEnum { clBlack, clWhite, clRed, clBlue, clGreen }
+    Binary { Bit0, Bit1, Bit2, Bit3, Bit4, Bit5 }
+    Binaries [ Bit0, Bit1, Bit2, Bit3, Bit4, Bit5 ]
+    LogLevel : int
+    Str : QString
+    Color : ColorEnum
+    Bin : Binaries
+    Time : QTime
+    Date : QDate
+    DT : QDateTime
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+class NObjFlushTest : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    FlushTimeoutMs : int
+    AddTimeoutMs : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Run(int runTimeMs)
+    RunWithFakeAbort(int runTimeMs)
+    RunWithError()
+    RunInfinite()
+    RunWithAsyncException()
+    RunSafeWithAsyncException()
+    RunWithSyncException()
+class NObjDomainAutorun # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    TraceToCout : bool
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+class NObjLogManager # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    TraceToCout : bool
+    TraceToFile : bool
+    FileName : QString
+    DirectSaveToFile : bool
+    TraceToUdp : bool
+    DstUdpTrace : QString
+    Timestamp : bool
+    CountToSync : int
+    TimeoutToSync : int
+    MaxRecords : int
+    CleanTo : int
+    PathSeparator : QString
+    Stat : QString #
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Clear()
+    Log(QString s)
+    DumpSessionsToFile([QString fileName])
+class NObjLogSettings # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Timestamp : bool
+    CountToSync : int
+    TimeoutToSync : int
+    MaxRecords : int
+    CleanTo : int
+    PathSeparator : QString
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+class NObjRoot # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    BuildInfo : QString #
+    Started : QString #
+    HeapTrace : bool
+    HeapInfo : QString #
+    Sessions : QString #
+    NetMonitorStatus : QString #
+    ExitOnLastSessionDrop : bool
+    TraceSessions : bool
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    TestStackTrace()
+    TestAssertion()
+    TestException()
+    TestAsyncException()
+    TestAV()
+    TestMsgOverload()
+    TestAsyncCmd([bool canAborted, int timeOut])
+    TestQtWarningMsg()
+    Sleep(int timeOut)
+    SetMsgProfiling(int depth)
+    PrintMsgProfiling()
+    SetMaxMessageTime(int intervalMs)
+    TestMsgWatchdog()
+    StartNetMonitor(int intervalMs)
+    StopNetMonitor()
+    SessionsList()
+    HaltOnQtWarning(bool val)
+    RunTestScript(QString scpName[, QString refOutput])
+    DomainExit()
+    ListThreads()
+class NObjSecProfile # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    List([bool withSysItems])
+    AddRec(QString path, bool recursive, NObjProfilesBase::Mode mode[, QString allowList, QString denyList])
+    DeleteRec(int index)
+    Delete()
+class NObjSecSpecial # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+class NObjSecProfiles # : NObjProfilesBase # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    Mode { acDeny, acReadOnly, acFull }
+    LogLevel : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Add(QString name, Mode rootMode[, QString allowList, QString denyList, bool blockSecurity])
+class NObjSecUsers # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Add(QString login, QString password, QString profile[, int loginLimit, QString desc])
+class NObjSecRoot # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    SwitchSecProfile(QString profileName)
+class NObjSecTestBase : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Value : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Inc()
+    Dec()
+class NObjSecTestA : NObjSecTestBase : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Value : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Inc()
+    Dec()
+class NObjSecTestB : NObjSecTestBase : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Value : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Inc()
+    Dec()
+class NObjSecUser # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Info : QString #
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Delete()
+    SetLoginLimit(int value)
+    SetPassword(QString value)
+class NObjTelnetServerSessionDRI # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Info : QString #
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Close()
+    GetStats()
+class NObjTelnetServerDRI # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    CloseAllSessions()
+class NObjThreadMonitor # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    MaxMsgQueueSize : int #
+    MaxTimerLagCount : int #
+    MaxTimerLag : int #
+    MsgGrowCount : int #
+    MsgGrowLimit : int #
+    Statistic : QString #
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    SetMaxMsgQueueSize(int msgCount)
+    ResetMaxMsgQueueSize()
+    SetMaxTimerLag(int timerLagCount, int maxTimerLag)
+    ResetMaxTimerLag()
+    SetMsgGrowDetection(int msgGrowCount, int msgGrowLimit)
+    ResetMsgGrowDetection()
+    Reset()
+class NObjProfilesBase # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    Mode { acDeny, acReadOnly, acFull }
+    LogLevel : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+class NObjReg # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Dir : QString
+    RegCalls : bool
+    RegEvents : bool
+    RegTelnet : bool
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    RunSelfTest()
+:OK
+
+> MetaTypes true true true
+class NObjTestType : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Number : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    AddChild()
+    RemoveChild(int childIndex)
+    ParamsFn(int first[, QString second, int last])
+    InfiniteAsyncCmd()
+class NObjString : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Val : QString
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+class NObjPropertyTest : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    ColorEnum { clBlack, clWhite, clRed, clBlue, clGreen }
+    Binary { Bit0, Bit1, Bit2, Bit3, Bit4, Bit5 }
+    Binaries [ Bit0, Bit1, Bit2, Bit3, Bit4, Bit5 ]
+    LogLevel : int
+    Str : QString
+    Color : ColorEnum
+    Bin : Binaries
+    Time : QTime
+    Date : QDate
+    DT : QDateTime
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+class NObjFlushTest : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    FlushTimeoutMs : int
+    AddTimeoutMs : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Run(int runTimeMs)
+    RunWithFakeAbort(int runTimeMs)
+    RunWithError()
+    RunInfinite()
+    RunWithAsyncException()
+    RunSafeWithAsyncException()
+    RunWithSyncException()
+class NObjSecTestBase : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Value : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Inc()
+    Dec()
+class NObjSecTestA : NObjSecTestBase : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Value : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Inc()
+    Dec()
+class NObjSecTestB : NObjSecTestBase : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Value : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Inc()
+    Dec()
+:OK
+
+> MetaTypes true true true "extra param"
+Exception "DriMethodExtraParams"; DRI::DriMethodExtraParams in thread DomainClass:TestDomain/main (2816) @ ..\Src\DRI\MetaInvoke.cpp:192 in void __thiscall DRI::MetaInvoke::AddParam(const class QString &) @ ROOT.MetaTypes
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 74 (command # 47)
+:ERROR DRI::CommandDriRuntimeError
+
+> MetaTypes 1
+Exception "Bad bool: 1"; DRI::DriArgException in thread DomainClass:TestDomain/main (2816) @ ..\Src\DRI\DriArgFactory.cpp:90 in class DRI::IQGenericArgument *__thiscall `anonymous-namespace'::ArgBool::FromString(const class QString &) const @ ROOT.MetaTypes
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 75 (command # 48)
+:ERROR DRI::CommandDriRuntimeError
+
+> MetaTypeInfo
+class NObjRoot # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    BuildInfo : QString #
+    Started : QString #
+    HeapTrace : bool
+    HeapInfo : QString #
+    Sessions : QString #
+    NetMonitorStatus : QString #
+    ExitOnLastSessionDrop : bool
+    TraceSessions : bool
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    TestStackTrace()
+    TestAssertion()
+    TestException()
+    TestAsyncException()
+    TestAV()
+    TestMsgOverload()
+    TestAsyncCmd([bool canAborted, int timeOut])
+    TestQtWarningMsg()
+    Sleep(int timeOut)
+    SetMsgProfiling(int depth)
+    PrintMsgProfiling()
+    SetMaxMessageTime(int intervalMs)
+    TestMsgWatchdog()
+    StartNetMonitor(int intervalMs)
+    StopNetMonitor()
+    SessionsList()
+    HaltOnQtWarning(bool val)
+    RunTestScript(QString scpName[, QString refOutput])
+    DomainExit()
+    ListThreads()
+:OK
+
+> .MetaTypeInfo
+class NObjTestType : NamedObject #
+    Number : int
+    AddChild()
+    RemoveChild(int childIndex)
+    ParamsFn(int first[, QString second, int last])
+    InfiniteAsyncCmd()
+:OK
+
+> .MetaTypeInfo invalid_type
+Exception "Type invalid_type not found in factory @ mcObj"; DRI::ExecuteException in thread DomainClass:TestDomain/main (2816) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ mcObj.MetaTypeInfo
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 80 (command # 51)
+:ERROR DRI::CommandDriRuntimeError
+
+> .MetaTypeInfo NObjTestType
+class NObjTestType : NamedObject #
+    Number : int
+    AddChild()
+    RemoveChild(int childIndex)
+    ParamsFn(int first[, QString second, int last])
+    InfiniteAsyncCmd()
+:OK
+
+> .MetaTypeInfo NObjTestType true
+class NObjTestType : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    Number : int
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    AddChild()
+    RemoveChild(int childIndex)
+    ParamsFn(int first[, QString second, int last])
+    InfiniteAsyncCmd()
+:OK
+
+> .MetaTypeInfo NObjTestType true	text
+Exception "Bad bool: true	text"; DRI::DriArgException in thread DomainClass:TestDomain/main (2816) @ ..\Src\DRI\DriArgFactory.cpp:90 in class DRI::IQGenericArgument *__thiscall `anonymous-namespace'::ArgBool::FromString(const class QString &) const @ mcObj.MetaTypeInfo
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestMetaCommands.isc, line 83 (command # 54)
+:ERROR DRI::CommandDriRuntimeError
+
+:PRINT "Stage: Delete all created objects --------------- "
+
+> ObjList
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    mcObj : NObjTestType
+:OK
+
+> mcObj.ObjDelete
+:OK
+
+
+Commands in total 57, with errors 15, service 114, scripted 0

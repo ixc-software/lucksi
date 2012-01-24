@@ -1,0 +1,38 @@
+Headers:
+
+/usr/src/boost_1_36_0/boost/
+
+static_assert.hpp
+#ifndef BOOST_STATIC_ASSERT_HPP
+
+shared_ptr.hpp
+#ifndef BOOST_SHARED_PTR_HPP_INCLUDED
+
+scoped_ptr.hpp
+#ifndef BOOST_SCOPED_PTR_HPP_INCLUDED
+
+noncopyable.hpp
+#ifndef BOOST_NONCOPYABLE_HPP_INCLUDED
+
+lexical_cast.hpp
+#ifndef BOOST_LEXICAL_CAST_INCLUDED
+
+type_traits.hpp
+#ifndef BOOST_TYPE_TRAITS_HPP
+#include "boost/type_traits/is_base_of.hpp"
+#include "boost/type_traits/is_same.hpp"
+
+
+/usr/src/boost_1_36_0/boost/type_traits
+
+is_base_of.hpp
+#ifndef BOOST_TT_IS_BASE_OF_HPP_INCLUDED
+
+is_same.hpp
+#ifndef BOOST_TT_IS_SAME_HPP_INCLUDED
+
+
+Sourses:
+
+/usr/src/boost_1_36_0/libs/
+^ tests

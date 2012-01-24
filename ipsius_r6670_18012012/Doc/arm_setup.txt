@@ -1,0 +1,107 @@
+1.	Format the Nand Flash.
+	Подробнее в документе Wince user Manual_v1.0.pdf
+1.1. Insert the SD card to USB reader under WinXP, and format the SD card to FAT32 format.
+1.2. Burn SDboot
+	- run tols\SDboot\IROM_Fusing_Tool.exe
+	- Click “ Browse ” , add the location \tools\SDboot\SDboot.nb0
+	- SD/MMC Drive select SD card under WinXP.
+	- Click “ START ”
+After burning the image successfully, there will be a pop-up windows “ Fusing
+image done ” , Click “ Ok ” to finish creating the SD card.
+
+1.3. Set SD boot mode . . . .
+На плате нужно установить перемычки для запуска с SD карты.
+Set the digital switch SW1 to boot from SD mode ( Set SW1 1-8 bit to 01111100)
+Подробнjt описание swtch в документе 'Wince user Manual_v1.0.pdf' пункт 6.3 
+или 'Linux user Manual_v0.19.pdf' пункт 3.4.5	
+
+1.4. Start SDboot
+	- insert the SD boot card to SD socket
+	- Connect COM0 of the board with PC by serial cable 
+	- Run CDROM\tools\DNW.exe Setup com port number and baud rate to 115200
+	- Start the Development board, press “Space key” in three second to enter into SDBOOT command line
+	- Select the option “A” to format the Nand Flash
+	
+2.	Прошивка u-boot и образа Linux описана в документе 'Linux user Manual_v0.19.pdf' пункты 3.3 - 3.5
+
+3.	Загрузку root fs можно выполнять с SD карты. Для этого на SD карточке нужно создать один загрузочный раздел и 
+отформатировать в fs ext2. Программа 'EASEUS Partystem\urbetter-rootfs-qt-2.2.0.tgz' на SD карту и 
+вставить карточку в слот на плате. После перезапуска в командной строке u-boot необходимо выполнить следующие
+команды:ition Master' позволяет делать это из под Win.
+Затем необходимо распаковать файл 'CDROM\linux2.6.28\files
+	-	setenv bootargs "root=/dev/mmcblk0p1 rootfstype=ext2 console=ttySAC0,115200"
+	-	saveenv
+	
+===========================================================
+сборка u-boot с поддержкой сети.
+1. download source tree from gitorious.org/u-boot/commits/master
+2. unpack tar
+3. make mini6410_config
+4. make
+
+настройки сети можно установить в файле ./include/configs/mini6410.h
+	
+===========================================================
+Порядок установки:
+
+1 Пдготовка установочной SDcard
+
+	Форматирование GParted: 
+	1 основной раздел fat32
+	2 основной раздел ext2
+	3 в оставшейся части создать, отформатировать и удалить раздел
+	  запомнить свободные сектора
+
+	С помощю moviNAND_Fusing_Tool.exe залить образы:
+	SDboot (as bootloader), u-boot-nand(as kernel), kernel(as rootfs),
+	убедится что всё в неразмеченной области
+
+	В раздел ext2 копируем то что будет временной rootfs, а в fat32 архив с постоянной rootfs.
+
+2 Загрузка с установочной SDcard (Set SW1 1-8 bit to 01111100).
+	Из консоли/скрипта
+	- остановить SDboot
+	- выполнить след команды:
+
+***SD-boot. Prompt "SMDK6410 # ".***
+
+nand erase
+movi read kernel c0008000;nand write c0008000 0 100000 // write u-boot
+crc32 c0008000 100000 // response:CRC32 for c0008000 ... c0107fff ==> ead78f4e
+
+nand read c0008000 0 100000;crc32 c0008000 100000// compare crc
+
+movi read rootfs c0008000;nand write c0008000 100000 300000 // write kernel
+nand read c0008000 100000 300000;crc32 c0008000 300000 // compare crc
+
+// запуск ядра
+setenv bootargs "root=/dev/mmcblk0p2 rootfstype=ext2 console=ttySAC0,115200";sa
+bootm c0008000
+
+***Linux с временной rootfs. Prompt "[root@urbetter /]# ".***
+
+// копировани rootfs(пример)
+mount -t yaffs2 /dev/mtdblock2 /mnt
+cd /mnt tar xzf /sdcard/urbetter-rootfs-qt-2.2.0.tgz
+umount /dev/mtdblock2
+
+//установка MAC
+...
+
+shutdown // ?
+
+3 Загрузка с NAND (Set SW1 1-8 bit to 01100100).
+	Из консоли/скрипта
+	- остановить SDboot
+	- выполнить след команды:
+
+setenv bootargs "root=/dev/mtdblock2 rootfstype=yaffs2 ro console=ttySAC0,115200"; sa
+restart
+
+---------------------------
+
+todo: настройка временной и постоянной rootfs (исключить запуск ненужных приложений, запись логов итп)
+
+
+
+

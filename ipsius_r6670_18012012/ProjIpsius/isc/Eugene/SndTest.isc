@@ -1,0 +1,11 @@
+ObjCreate NObjSoundTest st t
+    .SoundType = QtSound
+    //.SetMixer(int hsMicLevel, int hsSpeakerLevel, int hfMicLevel, int hfSpeakerLevel)
+    
+    .PlayFromMic(false, 20000, "")
+    
+    .SetMixer(0, 0, 0, 100) // right
+    .Play(10000, "")
+    
+    .SetMixer(0, 100, 0, 0) // left
+    .Play(10000, "")

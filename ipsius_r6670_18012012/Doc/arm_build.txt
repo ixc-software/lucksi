@@ -1,0 +1,68 @@
+	Установка компилятора для arm.
+Цитата из документа KIT6410 Ubuntu User manualV0.18.pdf пункт Install Cross-compile.
+	1.1 Open Linux-ubuntu_v0.18\cross_compile\ folder, and copy 
+Arm-none-lunux-gnueabi-arm-2008q3-72-for-linux.tar.bz2 to linux PC working folder. 
+	1.2 Install arm-none-linux-gnueabi-arm-2008q3-72-for-linux.tar.bz2 to 
+/usr/local/arm/ and execute the command: 
+tar jxvf arm-none-linux-gnueabi-arm-2008q3-72-for-linux.tar.bz2 –C / 	
+	
+	Сборка boost для arm.
+1. Запускаем ./bootstrap.sh
+2. В файле /tools/build/v2/user-config.jam комментируем строку:
+    project : default-build <toolset>gcc ;
+  и затем вставляем:  
+    using gcc : arm : /usr/local/arm/arm-none-linux-gnueabi/bin/arm-none-linux-gnueabi-g++  ;
+  путь к arm-none-linux-gnueabi-g++ может быть другим.
+ 3. Запускаем ./bjam
+
+	Сборка Qt для arm.
+1. Копируем папку QTDIR/mkspecs/qws/linux-arm-g++ в QTDIR/mkspecs/qws/linux-arm-gnueabi-g++
+2. Редактируем файл QTDIR/mkspecs/qws/linux-arm-gnueabi-g++/qmake.conf
+	Заменяем включения arm-linux на arm-none-linux-gnueabi.
+3. В файле ./mkspecs/qws/linux-arm-gnueabi-g++ добавляем строчки:
+
+	QMAKE_INCDIR = /usr/local/arm/arm-none-linux-gnueabi/arm-none-linux-gnueabi/libc/usr/include
+	QMAKE_LIBDIR = /usr/local/arm/arm-none-linux-gnueabi/arm-none-linux-gnueabi/libc/usr/lib
+	
+- путь к компилятору '/usr/local/arm/arm-none-linux-gnueabi' может быть другим
+	
+4. Из директории QTDIR запускаем скрипт конфигурации. 
+	./configure -prefix /opt/arm/qt-arm-4.7.3 -embedded arm -xplatform qws/linux-arm-gnueabi-g++ -opensource -little-endian -no-largefile -optimized-qmake
+
+or short varianr
+	./configure -prefix /opt/arm/qt-arm-4.7.3 -embedded arm -xplatform qws/linux-arm-gnueabi-g++ -opensource \
+	-little-endian -no-largefile -optimized-qmake \
+	-no-webkit --no-javascript-jit -no-openssl \
+	-nomake examples -nomake demos
+
+	в параметре -prefix можно указать другой путь для инсталяции.
+
+5. make.
+6. make install.	
+7. выполняем update moc. 
+
+	Сборка дополнительных библиотек.
+1. Выполняем checkout https://svn.resiprocate.org/rep/resiprocate/main, в каталог MISK_DIR/resip/main
+2. Системная переменная MISC_DIR должна указывать на каталог Misc
+3. В QtCreator добавляем проекты:
+	MISC_DIR/unzip.pro
+	MISC_DIR/resip/projects/ares.pro
+	MISC_DIR/resip/projects/dum.pro
+	MISC_DIR/resip/projects/resiprocate.pro
+	MISC_DIR/resip/projects/rutil.pro
+	MISC_DIR/QextSerialPort/qextserialport.pro
+4. Для каждого проекта в закладке Build Settings в пункте Edit build configuration добавляем Qt для Arm
+	и снимаем флаг Shadow build.
+5. Запускаем Rebuild All.
+	
+	Сборка Ipsius.
+1. Редактируем файл ./LinuxBuild/Platform/linux-arm-gnueabi-gcc++.pri
+2. В QtCreator открываем ProjIpsius.pro
+3. В закладке Build Settings в пункте Edit build configuration добавляем Qt для Arm и снимаем флаг Shadow build.
+4. Запускаем Rebuild All.	
+	
+	
+	Build repro
+1. Build berkley db
+ 
+ 

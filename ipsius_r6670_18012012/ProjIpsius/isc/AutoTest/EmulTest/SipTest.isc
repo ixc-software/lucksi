@@ -1,0 +1,37 @@
+CS_Print "Create Sip Test"
+
+CS_Set                              // make root object current in session (do nothing)
+
+ObjCreate NObjSipTest "SipTest" true        // create object
+.FirstNumber = %FirstNumber% 
+.Contact = "%OutName%"
+//.SipIn.LogLevel = 3
+.SipIn.LocalHost = "%InHost%"
+.SipIn.Proxy.ProxyHost = "%ProxyHost%"
+.SipOut.Proxy.UserName = "InTest"
+.SipOut.LogLevel = 3
+.SipOut.LocalHost = "%OutHost%"
+.SipOut.Proxy.UserName = "%OutName%"
+.SipOut.Proxy.ProxyHost = "%ProxyHost%"
+
+.AddCancelTest("Cancel", 2);
+.Cancel.CallCount = 2
+
+.AddRejectTest("Reject", 2);
+.Reject.CallCount = 2
+
+.AddAnswerTest("Answer", 1);
+.Answer.CallCount = 1
+.Answer.TestPeriod = 1000
+.Answer.TestTimeout = 60000
+.Answer.Call.WaitAnswer = 5000
+.Answer.Call.TalkDuration = 20000
+.Answer.Call.CalledMastReleaseCall = false
+.Answer.Generator.Enabled = true
+.Answer.Generator.Freq = 425
+.Answer.Generator.Power = -15
+.Answer.Generator.AnalisSample = 50
+.Answer.Generator.UseAlaw = true
+//.Answer.Start true
+//.Cancel.Start true
+//.Reject.Start true

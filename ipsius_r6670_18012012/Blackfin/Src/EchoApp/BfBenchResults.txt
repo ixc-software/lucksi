@@ -1,0 +1,73 @@
+	
+	Loading: "D:\proj\Ipsius\Blackfin\BfFlashDriverTest\Release\BfFlashDriverTest.dxe"...
+	Load complete.
+	Freq: 600 MHz
+	Table size 512, step 27/46661; CRC 1e36e32a; 0 279 559 839 1119 1398 1677 1956  (...) -2235 -1956 -1677 -1398 -1119 -839 -559 -279 
+	197c0b59
+	
+	Table size 512, step 77/41418; CRC 1e36e32a; 0 279 559 839 1119 1398 1677 1956  (...) -2235 -1956 -1677 -1398 -1119 -839 -559 -279 
+	cef9b4a0
+	
+	
+	Echo test results
+	Taps 128; echo delay 32; echo amp 25%
+	Samples/sec 184757; channels 23
+	Avg quality 679.3; Result CRC 24b2cfe3; input CRC 5825857b
+	Partial: { 108.4 52.4 44.3 36.9 36.4 36.5 36.3 36.5 36.5 36.4 36.3 36.6 36.4 36.5 36.3 36.6 }
+	
+	Echo test results
+	Taps 128; echo delay 64; echo amp 25%
+	Samples/sec 183066; channels 22
+	Avg quality 740.5; Result CRC 11aabcad; input CRC bed3ac25
+	Partial: { 128.3 62.4 50.2 44.4 39.1 37.9 37.7 37.9 37.9 37.8 37.7 38.0 37.8 37.9 37.7 38.0 }
+	
+	Echo test results
+	Taps 64; echo delay 64; echo amp 25%
+	Samples/sec 243902; channels 30
+	Avg quality 1003.8; Result CRC da8ba85e; input CRC bed3ac25
+	Partial: { 142.8 81.7 71.6 67.4 64.4 62.4 60.5 56.2 52.9 51.2 50.5 50.4 48.5 47.7 47.6 47.9 }
+	
+	Echo test results
+	Taps 32; echo delay 64; echo amp 25%
+	Samples/sec 273972; channels 34
+	Avg quality 1891.4; Result CRC 83e4e59; input CRC bed3ac25
+	Partial: { 194.8 139.5 122.7 115.1 111.7 109.4 108.7 108.4 109.2 108.9 109.8 111.1 111.8 111.1 109.7 109.5 }
+	
+	Done!
+	A-low expand   math  block ; Out CRC 0xe11f5272; Ksmpl/sec 12572; time (ms) 417
+	A-low expand   math  single; Out CRC 0xe11f5272; Ksmpl/sec 9118; time (ms) 575
+	A-low expand   table block ; Out CRC 0xe11f5272; Ksmpl/sec 60262; time (ms) 87
+	A-low expand   table single; Out CRC 0xe11f5272; Ksmpl/sec 16539; time (ms) 317
+	
+	A-low compress math  block ; Out CRC 0x15f32e4b; Ksmpl/sec 4535; time (ms) 1156
+	A-low compress math  single; Out CRC 0x15f32e4b; Ksmpl/sec 4083; time (ms) 1284
+	A-low compress table block ; Out CRC 0x15f32e4b; Ksmpl/sec 63167; time (ms) 83
+	A-low compress table single; Out CRC 0x15f32e4b; Ksmpl/sec 16082; time (ms) 326
+	
+	U-low expand   math  block ; Out CRC 0x218c3b71; Ksmpl/sec 15330; time (ms) 342
+	U-low expand   math  single; Out CRC 0x218c3b71; Ksmpl/sec 10485; time (ms) 500
+	U-low expand   table block ; Out CRC 0x218c3b71; Ksmpl/sec 63937; time (ms) 82
+	U-low expand   table single; Out CRC 0x218c3b71; Ksmpl/sec 16539; time (ms) 317
+	
+	U-low compress math  block ; Out CRC 0xfec07019; Ksmpl/sec 4217; time (ms) 1243
+	U-low compress math  single; Out CRC 0xfec07019; Ksmpl/sec 4161; time (ms) 1260
+	U-low compress table block ; Out CRC 0xfec07019; Ksmpl/sec 45197; time (ms) 116
+	U-low compress table single; Out CRC 0xfec07019; Ksmpl/sec 15065; time (ms) 348
+	
+	A-low expand   math  -> A-low compress math ; block ; Out CRC 0x10e63f30; Ksmpl/sec 2601; time (ms) 2015
+	A-low expand   math  -> A-low compress math ; single; Out CRC 0x10e63f30; Ksmpl/sec 2699; time (ms) 1942
+	A-low expand   table -> A-low compress table; block ; Out CRC 0x10e63f30; Ksmpl/sec 9727; time (ms) 539
+	A-low expand   table -> A-low compress table; single; Out CRC 0x10e63f30; Ksmpl/sec 4611; time (ms) 1137
+	Done!
+	
+	---
+	
+	Freq: 600 MHz
+	A-low expand   math  -> A-low compress math ; block ; Out CRC 0x10e63f30; Ksmpl/sec 2601; time (ms) 2015
+	A-low expand   math  -> A-low compress math ; single; Out CRC 0x10e63f30; Ksmpl/sec 2699; time (ms) 1942
+	A-low expand   table -> A-low compress table; block ; Out CRC 0x10e63f30; Ksmpl/sec 9181; time (ms) 571
+	A-low expand   table -> A-low compress table; single; Out CRC 0x10e63f30; Ksmpl/sec 4523; time (ms) 1159
+	Done!
+	
+	
+	

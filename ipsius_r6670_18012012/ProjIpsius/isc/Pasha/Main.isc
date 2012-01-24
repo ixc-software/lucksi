@@ -1,0 +1,8 @@
+CS_Set
+
+CS_Exec "PultTest.isc"
+//CS_Exec "pult.isc"
+
+TestStackTrace
+
+

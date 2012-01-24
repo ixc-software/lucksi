@@ -1,0 +1,82 @@
+:PRINT "Stage: Using command line special params test --- "
+
+> Log.TraceToUdp false
+:OK
+
+> Log.DstUdpTrace "127.10.20.85:56001"
+:OK
+
+> Log.DstUdpTrace
+"127.10.20.85:56001"
+:OK
+
+> Log.TraceToUdp true
+:OK
+
+> ObjCreate NObjTestType spObj1 true
+:OK
+
+> .ObjCreate NObjTestType spObj11
+:OK
+
+> .ObjCreate NObjTestType spObj_0
+:OK
+
+> .ObjCreate NObjTestType _0spObj
+:OK
+
+> .spObj11.ObjCreate NObjTestType "spObj112"
+:OK
+
+> .ObjList true -1
+spObj1 : NObjTestType
+    LogLevel = 0
+    Number = 0
+    spObj11 : NObjTestType
+        LogLevel = 0
+        Number = 1
+        spObj112 : NObjTestType
+            LogLevel = 0
+            Number = 4
+    spObj_0 : NObjTestType
+        LogLevel = 0
+        Number = 2
+    _0spObj : NObjTestType
+        LogLevel = 0
+        Number = 3
+:OK
+
+> .spObj11.Number
+1
+:OK
+
+> .Number = 1024
+:OK
+
+> .Number
+1024
+:OK
+
+> .Number = 0xAF
+:OK
+
+> .Number = AF
+:OK
+
+:PRINT "Stage: Delete all created objects --------------- "
+
+> ObjList
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    spObj1 : NObjTestType
+:OK
+
+> spObj1.ObjDelete
+:OK
+
+
+Commands in total 19, with errors 0, service 38, scripted 0

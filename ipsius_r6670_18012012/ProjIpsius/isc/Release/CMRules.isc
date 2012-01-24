@@ -1,0 +1,19 @@
+CS_Exec "Header.isc"
+
+ObjCreate  NObjResipLog "ResipLog"
+ResipLog.Type = None
+
+ObjCreate NObjCallMeeting ipsius true       
+
+// load table of country codes. Columns: "code",  "country"
+.LoadCountriesTable "../CallMeetingData/countries.txt" 
+
+// load table of customers. Columns: "customer",  "number".
+.LoadCustomersTable "../CallMeetingData/customers.txt" 
+
+// if you want to know current table of rules, then call. 
+//.SaveRulesTable "./path_to_target/file.txt"
+.SaveRulesTable "../CallMeetingData/_rules.txt"
+
+TestStackTrace
+CS_Stop

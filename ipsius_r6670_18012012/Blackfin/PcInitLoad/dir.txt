@@ -1,0 +1,16 @@
+Структура папки FlashLoad
+
+¦   bf537loader.ini          // настройка загрузчика
+¦   bf537loader.ldr          // результат сборки проекта BfLoader
+¦   BfFlashLoader.exe        // собранный c помощью AutoIt3 из source\BfFlashLoader.au3
+¦   
++---source                   // сырец скрипта 
+¦       avrLoader.au3
+¦       BfFlashLoader.au3
+¦       LdrViewer.au3
+¦       macros.au3
+¦       
+L---UsedExe
+        avr_loader.exe        // AVR loader (наш проект, есть в репозитории)
+        LdrViewer.exe         // LdrView 1.2, брать отсюда http://www.dolomitics.com/downloads/ldrviewer.html
+        

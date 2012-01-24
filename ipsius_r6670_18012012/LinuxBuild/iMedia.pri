@@ -1,0 +1,3 @@
+SOURCES += \
+    iMedia/iCodec.cpp		\
+

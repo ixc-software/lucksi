@@ -1,0 +1,11 @@
+Для SSH логин/пароль -- svnlogin/cv67gh_d0
+Адрес хоста -- 89.209.81.83
+
+После логина svn доступен по адресу svn://127.0.0.1/ipsius
+Для svn логин/пароль -- VVS/xrfgh65fd
+
+Пример:
+
+svn log svn://127.0.0.1/ipsius --username VVS --password xrfgh65fd
+
+выводит в консоль лог для репозитория

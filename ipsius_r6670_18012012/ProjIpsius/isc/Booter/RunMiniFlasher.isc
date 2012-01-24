@@ -1,0 +1,10 @@
+
+ObjCreate NObjMiniFlasher flasher true
+.ComPort = 1
+.BaudRate = 115200
+.ConnectRepeatInterval = 500
+.ConnectTimeout = 10000
+
+// .UartBenchmark 2000  // run write test 
+.UartBoot %loader%
+.LoadImg %main%

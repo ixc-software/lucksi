@@ -1,0 +1,30 @@
+// GatewayName  - имя шлюза
+// LocalHost - IP + порт SIP шлюза (передается в скрипт в качестве параметра)
+// ProxyHost
+// BoardName
+// Side
+// StartRtpPort
+CS_Set
+
+HeapTrace = true
+
+ObjCreate NObjDss1ToSip %GatewayName% true       // создание шлюза (имя шлюза передается в скрипт в качестве параметра)
+.TraceInd = true
+.CallingAddrNoDigit = UsePilotNumber
+.PilotNumber = 2222
+//.Sip.ExternalIp = 83.85.98.198            // реальный IP адрес роутера (опционально, только для прохождения NAT)
+.Sip.TraceInd = true
+.Sip.LocalHost = "%LocalHost%"              // IP + порт SIP шлюза (передается в скрипт в качестве параметра)
+.Sip.Proxy.ProxyHost = "%ProxyHost%"		    // IP + порт удаленного SIP прокси, с которым будет взаимодействовать шлюз
+//.Sip.WaitAnswerTimeout = 5000
+.Sip.Proxy.RegistrationInd = false           // включить(true)/выключить(false) регистрацию шлюза на Sip прокси
+.Sip.Proxy.UserName = pasha                  // имя шлюза как Sip пользователя, используется при регистрации на Sip прокси
+                                             // по умолчанию используется имя шлюза 
+.Sip.Proxy.Password = pasha                  // пароль для регистрации на Sip прокси
+
+.CallingAddrNoDigit = UsePilotNumber
+.PilotNumber = 2222
+
+CS_Exec "Test/Dss1Trunk.isc" "TrunkName = Trunk; BoardName = %BoardName%; HwType = E1; Side = %Side%; UseAlaw = true; LiuSyncMaster = false; StartRtpPort = %StartRtpPort%"
+%GatewayName%.Enabled = true  
+

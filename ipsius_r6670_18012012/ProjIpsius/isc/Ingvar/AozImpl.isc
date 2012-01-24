@@ -1,0 +1,61 @@
+// BoardName   - имя платы, которая будет использована в интерфейсе Dss1Trunk
+// FirstNumber  - с этого номера начинается нумерация абонентов платы
+// HiTdmChPart  - верхняя (true) нижняя (false) половина каналов используется для звука
+// UseAlow      - // A/U закон для RTP потока
+// TraceInd     - on/off trace
+// DevTraceInd  - on/off device trace
+
+#define DTMF Internal
+//#define MinNSize 2
+//#define MaxNSize 4
+
+// Добавление устройства
+.AddBoard(%BoardName%, %HiTdmChPart%)     
+.%BoardName%.CS_Set
+.Global.DevTraceInd = %DevTraceInd%
+//.Global.DevWatchdogEnabled = false
+//.TraceInd = %TraceInd%
+//.Board.StartRtpPort = %RtpPort%
+.Board.EchoTape = 64
+.Board.UseInternalEcho = true
+.Board.AllowLocalCalls = true
+//.BoardSettings.UseAlaw = %UseAlow%
+.SetupUserInfo(%FirstNumber%, true)
+.SetupUserInfo(%SecondNumber%, false)
+.SbpSettings.TimeoutCheckInterval = 0
+
+.ch0.SetDtmfMode(%DTMF%)
+
+.ch1.SetDtmfMode(%DTMF%)
+
+.ch2.SetDtmfMode(%DTMF%)
+
+.ch3.SetDtmfMode(%DTMF%)
+
+.ch4.SetDtmfMode(%DTMF%)
+
+.ch5.SetDtmfMode(%DTMF%)
+
+.ch6.SetDtmfMode(%DTMF%)
+
+.ch7.SetDtmfMode(%DTMF%)
+
+.ch8.SetDtmfMode(%DTMF%)
+
+.ch9.SetDtmfMode(%DTMF%)
+
+.ch10.SetDtmfMode(%DTMF%)
+
+.ch11.SetDtmfMode(%DTMF%)
+
+.ch12.SetDtmfMode(%DTMF%)
+
+.ch13.SetDtmfMode(%DTMF%)
+
+.ch14.SetDtmfMode(%DTMF%)
+
+.ch15.SetDtmfMode(%DTMF%)
+
+#undef DTMF
+
+CS_SetBack

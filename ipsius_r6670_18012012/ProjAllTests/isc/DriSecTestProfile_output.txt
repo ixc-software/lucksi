@@ -1,0 +1,82 @@
+> Security.Profiles.Add "user" acFull
+:OK
+
+> Security.Profiles.user.AddRec ""         t acFull
+Exception "Dublicate record!"; DriSec::SecException in thread 00000F50 @ s:\proj\ipsius\src\drisec\NObjSecProfile.h:384 in void __thiscall DriSec::NObjSecProfile::Add(const class DriSec::ProfileRecord &,bool) @ Security.Profiles.user.AddRec
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTestProfile.isc, line 4 (command # 2)
+:ERROR DRI::CommandDriRuntimeError
+
+> Security.Profiles.user.AddRec "Security" t acFull
+Exception "Dublicate record!"; DriSec::SecException in thread 00000F50 @ s:\proj\ipsius\src\drisec\NObjSecProfile.h:384 in void __thiscall DriSec::NObjSecProfile::Add(const class DriSec::ProfileRecord &,bool) @ Security.Profiles.user.AddRec
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTestProfile.isc, line 5 (command # 3)
+:ERROR DRI::CommandDriRuntimeError
+
+> Security.Profiles.user.AddRec "Security.Profiles.user" t acFull
+:OK
+
+> Security.Profiles.user.AddRec "to.delete" t acFull
+:OK
+
+> Security.Profiles.user.DeleteRec 10
+Exception "Bad index!"; DriSec::SecException in thread 00000F50 @ s:\proj\ipsius\projdomain\generatedfiles\debug\..\..\..\Src\DriSec\NObjSecProfile.h:476 in void __thiscall DriSec::NObjSecProfile::DeleteRec(int) @ Security.Profiles.user.DeleteRec
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTestProfile.isc, line 9 (command # 6)
+:ERROR DRI::CommandDriRuntimeError
+
+> Security.Profiles.user.DeleteRec 0
+Exception "Bad index!"; DriSec::SecException in thread 00000F50 @ s:\proj\ipsius\projdomain\generatedfiles\debug\..\..\..\Src\DriSec\NObjSecProfile.h:476 in void __thiscall DriSec::NObjSecProfile::DeleteRec(int) @ Security.Profiles.user.DeleteRec
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTestProfile.isc, line 10 (command # 7)
+:ERROR DRI::CommandDriRuntimeError
+
+> Security.Profiles.user.DeleteRec 3
+:OK
+
+> Security.Profiles.Add "to_delete" acFull
+:OK
+
+> Security.Users.Add "user2" "" "to_delete" 1 "just user"
+:OK
+
+> Security.Profiles.to_delete.Delete
+Exception "Can't delete profile to_delete, it used by users user2 @ Security"; DRI::ExecuteException in thread 00000F50 @ ..\Src\Domain\NamedObject.cpp:500 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ Security.Profiles.to_delete.Delete
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTestProfile.isc, line 15 (command # 11)
+:ERROR DRI::CommandDriRuntimeError
+
+> Security.Users.user2.Delete
+:OK
+
+> Security.Profiles.to_delete.Delete
+:OK
+
+> Security.Profiles.ObjList
+Profiles : NObjSecProfiles #
+    root : NObjSecProfile #
+    user : NObjSecProfile #
+:OK
+
+> Security.Profiles.user.List
+#0 - [root]+ acFull
+#1 - Security+ acDeny
+#2 - Security.Profiles.user+ acFull
+:OK
+
+> Security.SwitchSecProfile "user"
+:OK
+
+> Security.SwitchSecProfile "user"
+Security action Execute for 'SwitchSecProfile' by rec #1 // DENY by mode acDeny
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTestProfile.isc, line 27 (command # 17)
+:ERROR DRI::CommandDriPrepareError
+
+> Security.Profiles.user.AddRec "xxx" t acFull
+Exception "Can't modify in-use profile! @ Security.Profiles.user"; DRI::ExecuteException in thread 00000F50 @ ..\Src\Domain\NamedObject.cpp:500 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ Security.Profiles.user.AddRec
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTestProfile.isc, line 29 (command # 18)
+:ERROR DRI::CommandDriRuntimeError
+
+> Security.Profiles.user.List
+#0 - [root]+ acFull
+#1 - Security+ acDeny
+#2 - Security.Profiles.user+ acFull
+:OK
+
+
+Commands in total 19, with errors 7, service 38, scripted 0

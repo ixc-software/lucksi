@@ -1,0 +1,58 @@
+//CS_Exec "Header.isc"
+ObjCreate  NObjResipLog "ResipLog"
+
+ObjCreate NObjSipUserAgent sip true
+	.LogLevel = 3
+	.ResipLogMode = Short
+	.AddTransport(5064)
+	.AddAccessPoint("kubuntu", "sip:pasha_ipsius@192.168.0.160", "1") // nane, uri, password
+	.kubuntu.DefaultRegistrationRetryTimeSec = 30
+	.kubuntu.SetAsDefaultReceiver
+	.Enabled = true
+
+ObjCreate NObjCallMeeting meeting true       
+.LogLevel = 3
+.SipPoint = sip.kubuntu
+.UseCustomerRules = f
+.UseRedirect = t
+.WaitConnectionTimeout = 300000	// timer will be started when call began, afrer timer expired inactive
+                                // call will be rejected
+
+.TryingTimeout = 3000-7000      // after timer expired 'Ringing' will be sended
+.AlertingTimeout = 5000-15000   // after timer expired call is ready for connection, 
+                                // if other ready call exist connection will be executed
+.ConnectToOtherFilterTimeout = 10000								
+.MaxTalkDurationMin = 180     // max talk duration	
+.ConnectImmediately = true      // if ready call exists, new incoming call is connected immediately
+
+.CheckRuleTimeoutMin = 1
+.StateStoreUpdateTimeoutMin = 5
+
+// you have to define ip filter, calls from other ip will be rejected
+.AddCallingIpFilter("127.0.0.1")
+.AddCallingIpFilter("192.168.0.158")
+.AddCallingIpFilter("192.168.0.160")
+
+.StartTest 5080
+CS_Exit
+
+
+// load table of country codes. Columns: "code",  "country"
+.LoadCountriesTable "../CallMeetingData/countries.txt" 
+// if you want to know current table, then call .
+//.SaveCountriesTable "../CallMeetingData/counties1.txt" 
+
+// load table of customers. Columns: "customer",  "number".
+.LoadCustomersTable "../CallMeetingData/customers.txt"
+// if you want to know current table of customers, then call .
+//.SaveCustomersTable "../CallMeetingData/customers1.txt"
+
+// load table of rules. 
+.LoadRulesTable "../CallMeetingData/rules.txt"
+// if you want to know current table of rules, then call .
+//.SaveRulesTable "../CallMeetingData/rules1.txt"
+//.ClearRulesTable
+
+
+.StartTest 5080
+TestStackTrace

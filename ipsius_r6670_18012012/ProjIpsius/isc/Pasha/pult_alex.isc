@@ -1,0 +1,136 @@
+// CS_Exec "HwFinder.isc"
+
+//CS_Exec "Aoz.isc"
+// CS_Exec "EmulForPult.isc"
+
+Reg.RegEvents = t
+Reg.RegCalls = t
+
+//ObjCreate  NObjAudioPlayer audio t
+//.Play("D:\Work\audio\pcm_4100_8bit_mono.raw");
+//CS_Exit
+
+
+
+ObjCreate  NObjResipLog ResipLog
+ResipLog.LogLevel = 0
+ResipLog.SetTraceType(All, Bogus)
+
+HaltOnQtWarning(f)
+TraceSessions = f 
+
+// TestAsyncException()
+//TestException()
+// CS_Exit 
+
+// ----------------------------------------------------------
+
+ObjCreate NObjSipUserAgent sip true
+//	.ResipLogMode = Detail
+	.SetupTransport(Udp, 5064, "192.168.0.158")
+	.LogLevel = 0	
+	.AddAccessPoint("pult", "sip:5051@192.168.0.245", "5051")
+	.pult.EnableRegistration = t
+//	.AddAccessPoint("kubuntuExt", "sip:pasha_ipsius@89.209.81.83", "1")
+//	.kubuntuExt.EnableRegistration = f
+//	.kubuntuExt.ExternalIp = "89.209.81.83"	
+	
+//	.pult.DefaultRegistrationRetryTimeSec = 30
+//	.pult.SetAsDefaultReceiver
+	.Enabled = t	
+
+
+ObjCreate NObjPult pult true
+
+	.LogLevel = 3
+	
+
+	.SoundMode = LocalMode
+	.Sound.Type = QtSimpleType 
+	
+	// --------------------------------------------------
+
+    .KeyboardType = KbEmul
+	.KbDriver.EmbedDisp = true
+	
+	.KbDriver.Timing.PressedMs     = 20
+	.KbDriver.Timing.StartRepeatMs = 800
+	.KbDriver.Timing.RepeatMs      = 600
+					
+	.ViewSettings.Embeded = t // t/f
+	.ViewSettings.Width = 400
+	.ViewSettings.Height = 240 
+	.ViewSettings.SetThemeName "~IPSIUS_RELEASE~/ArmSdFatFs/PultGfx/Theme0/"
+	
+	.ViewSettings.UseNull f  
+			
+	// --------------------------------------------------
+	
+    .PhBook.SetPhotoPath "~IPSIUS_RELEASE~/ArmSdFatFs/PultGfx/ph/"
+    .PhBook.Clear
+    
+    .PhBook.Create("Чапманн", "шпионка", "ph chapman.jpg")
+    .PhBook.AddNumber("110")
+    .PhBook.AddNumber("120")    
+    .PhBook.AddDirectKey(0, 0, true)
+    .PhBook.AddDirectKey(1, 1, true)
+    
+    .PhBook.Create("Dead-Moroz", "GNU leader", "ph stallman.jpg")
+    .PhBook.AddNumber("5020")
+    .PhBook.AddDirectKey(2, 0, false)
+    
+    .PhBook.Create("Шура", "б-тъ", "ph sasha.jpg")
+    .PhBook.AddNumber("5999")
+    .PhBook.AddDirectKey(3, 0, t)
+        
+	.PhBook.List
+	
+	
+	.NumDialer.Clear 
+	.NumDialer.Set 3000 0 "*"
+	.NumDialer.AddDirection "5"  4
+	.NumDialer.AddDirection "51" 3
+		
+	// --------------------------------------------------
+	
+	.SipPoint = sip.pult
+
+	// --------------------------------------------------
+	
+	.CS_Set Settings
+	
+	.HandsfreeMicLevel 50
+	.HandsetMicLevel   50
+	.RingingLevel      100
+	
+    .StatusDebugMode t  
+    .EchoSetup "ace.ini"
+    
+	.TraceKbdDriver f
+	.TraceStates    t
+	.TraceCallMng   f 
+    .SetRingtoneGen 425 -15 0 0 300 400
+
+	.CS_SetBack
+    
+	// --------------------------------------------------
+	
+	//.SetLocale "ru" 
+	// .SetLocale "uk"
+		
+	TestAsyncCmd t 1000
+		
+	.Enabled = true
+		
+	.Body.RuntimeInfo 
+	
+
+pult.Body.script.Run("pult", "D:\Work\ipsius\ProjIpsius\isc\Pasha\pult.scp", t)
+
+CS_Exit	
+
+
+
+	
+
+	

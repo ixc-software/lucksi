@@ -1,0 +1,5 @@
+
+ObjCreate NObjDss1ToSip {BoardName} true // str
+{BoardName}.AddDss1(E1, Trunk1, {BoardName}, TE)
+
+CS_Set {BoardName}

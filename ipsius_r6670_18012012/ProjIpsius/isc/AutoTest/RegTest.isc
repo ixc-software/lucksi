@@ -1,0 +1,11 @@
+Reg.RegEvents = t
+Reg.RegCalls = t
+
+LogLevel = 3
+
+CS_Exec "../Header.isc"
+
+
+CS_Exec "EmulTest/EmulTest.isc"
+
+DomainExit

@@ -1,0 +1,8 @@
+CS_Set                              // make root object current in session (do nothing)
+
+ObjCreate  NObjMiniFlasher "Flash" true
+.ComPort = 1
+.UartBoot("D:\work\C#.rar")
+.LoadImg("D:\work\C#.rar")
+
+

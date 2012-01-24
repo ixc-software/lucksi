@@ -1,0 +1,113 @@
+
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of CONNECT </TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>CONNECT</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="connect_exp.html"> Example</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+connect - initiate a connection on a socket
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="lwip/sockets.h">lwip/sockets.h</A>&gt;</B>
+
+<P>
+<B>int connect(int </B><I>sockfd</I><B>, struct sockaddr *</B><I>serv_addr</I><B>, int</B>
+
+<B> addrlen );</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+The parameter <I>sockfd</I> is a socket.  If it is of type <B>SOCK_DGRAM</B>,
+this call specifies the peer with which the socket is to be associated;
+this address is that to which datagrams are to be sent, and the only
+address from which datagrams are to be received.  If the socket is of type
+<B>SOCK_STREAM ,</B> this call attempts to make a connection to another socket.  The other socket is specified by <B>serv_addr</B>, which is an address in the
+communications space of the socket.  Each communications space interprets the
+<B>serv_addr</B>, parameter in its own way.  Generally, stream sockets may 
+successfully <B>connect</B> only once; datagram sockets may use <B>connect</B>
+multiple times to change their association.  Datagram sockets may dissolve
+the association by connecting to an invalid address, such as a null
+address.
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+The call returns -1 on error and the specific error number can be obtained by
+calling the function <a href="GetSocketError.html">GetSocketError</a>. In 
+multi-threaded environments the last error number is held seperately for 
+each thread.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+The following are general socket errors only.  There may be other
+domain-specific error codes.  <DL COMPACT>
+
+<DT><B>EINVAL</B>
+<DD> Invalid Argument.
+
+<DT><B>ENOMEM</B>
+<DD> Insufficent memory to complete this call.
+
+<DT><B>ENOTSOCK</B>
+<DD> The descriptor is not associated with a socket.
+
+<DT><B>EISCONN</B>
+<DD> The socket is already connected. <font color="red"> Not Supported</font>
+
+<DT><B>ECONNREFUSED</B>
+<DD> Connection refused at server.<font color="red"> Not Supported</font>
+
+
+<DT><B>ETIMEDOUT</B>
+<DD> Timeout while attempting connection.
+
+<DT><B>ENETUNREACH</B>
+<DD> Network is unreachable.<font color="red"> Not Supported</font>
+
+
+<DT><B>EADDRINUSE</B>
+<DD> Address is already in use.<font color="red"> Not Supported</font>
+
+
+<DT><B>EINPROGRESS</B>
+<DD> The socket is non-blocking and the connection cannot be completed
+immediately. <font color="red"> Not Supported</font>
+
+
+<DT><B>EALREADY</B>
+<DD> The socket is non-blocking and a previous connection attempt has not yet
+been completed.<font color="red"> Not Supported</font>
+
+</DL>
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+<B><A HREF="accept.html">accept</A></B>, 
+<B><A HREF="connect.html">connect</A></B>,
+<B><A HREF="listen.html">listen</A></B> , 
+<B><A HREF="socket.html">socket</A></B>,
+<B><A HREF="getsockname.html">getsockname</A></B>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

@@ -1,0 +1,37 @@
+// test some NObjSecProfile manipulations 
+
+Security.Profiles.Add "user" acFull
+Security.Profiles.user.AddRec ""         t acFull               // fail, clone
+Security.Profiles.user.AddRec "Security" t acFull               // fail, clone
+Security.Profiles.user.AddRec "Security.Profiles.user" t acFull // hack 
+Security.Profiles.user.AddRec "to.delete" t acFull              // record for delete test
+
+Security.Profiles.user.DeleteRec 10    // fail, bad index
+Security.Profiles.user.DeleteRec 0     // fail, protected
+Security.Profiles.user.DeleteRec 3     // ok
+
+Security.Profiles.Add "to_delete" acFull
+Security.Users.Add "user2" "" "to_delete" 1 "just user"
+Security.Profiles.to_delete.Delete            // fail, ref by user2
+Security.Users.user2.Delete
+Security.Profiles.to_delete.Delete            // ok
+
+
+Security.Profiles.ObjList
+Security.Profiles.user.List 
+
+Security.SwitchSecProfile "user"
+
+// --- as user ---
+
+Security.SwitchSecProfile "user"   // fail, security
+
+Security.Profiles.user.AddRec "xxx" t acFull // can't modify self
+Security.Profiles.user.List                  // ok, can list self (rec #2)
+
+
+
+
+
+
+

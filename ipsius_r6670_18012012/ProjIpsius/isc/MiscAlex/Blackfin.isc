@@ -1,0 +1,52 @@
+CS_Set
+
+ObjCreate  NObjResipLog "ResipLog"
+
+ObjCreate NObjHwFinder HwFinder true
+.TraceEnabled = true								
+.BoardFilter.Include "14, 19"						
+//.BoardFilter.Exclude "17"                         
+//.FirmwarePath = "~IPSIUS_RELEASE~\FWU\DevIpTdm\"    
+.FirmwarePath = "C:\temp\"
+//.OnlyDirectDev = true
+//.RollbackMode = true
+.Enabled = true										
+
+//.AddDirectBoard("192.168.0.113")
+
+
+.Alias(14, "Board1")								
+.Alias(19, "Board2")
+//.Alias(7, "Board3")								
+
+
+#define GatewayName ipsius // имя шлюза 
+
+ObjCreate NObjDss1ToSip %GatewayName% true  // создание шлюза
+.TraceInd = true
+.CallingAddrNoDigit = UsePilotNumber
+.PilotNumber = "2222"							
+
+.Sip.TraceInd = true
+.Sip.ContactToFrom = true 
+
+//.Sip.ExternalIp = "192.168.0.113"			
+.Sip.LocalHost = "5062"
+.Sip.Proxy.ProxyHost = "192.168.0.240:5060"
+
+.Sip.Proxy.RegistrationInd = true
+.Sip.Proxy.UserName = alex                 
+.Sip.Proxy.Password = alex
+
+
+// создание Dss1Trunk 
+CS_Exec "Dss1Trunk.isc" "GatewayName = %GatewayName%; TrunkName = Trunk1; BoardName = Board1; HwType = E1; Side = TE; UseAlaw = true; LiuSyncMaster = false"
+CS_Exec "Dss1Trunk.isc" "GatewayName = %GatewayName%; TrunkName = Trunk2; BoardName = Board2; HwType = E1; Side = TE; UseAlaw = true; LiuSyncMaster = false"
+//CS_Exec "Dss1Trunk.isc" "GatewayName = %GatewayName%; TrunkName = Trunk3; BoardName = Board3; HwType = E1; Side = TE; UseAlaw = true; LiuSyncMaster = false"
+
+%GatewayName%.Enabled = true  // включаем шлюз
+
+
+
+
+

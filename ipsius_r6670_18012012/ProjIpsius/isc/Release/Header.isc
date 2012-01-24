@@ -1,0 +1,6 @@
+//CS_Set
+.SetMsgProfiling 64
+.SetMaxMessageTime 60000
+.HeapTrace = true
+//Log.Timestamp = true
+

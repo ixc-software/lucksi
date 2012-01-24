@@ -1,0 +1,20 @@
+#define StartPos 0
+#define PosCount 13
+#define Dur 5000
+#define T1 500
+#define T2 300
+
+
+ObjCreate NObjPultKbEmulProbe kb true
+	.Active = true
+	
+	CS_Print "Kb LedMode tests. Leds from pos %StartPos%, in count %PosCount% must change color."
+	
+	.SetLedAndWait(%Dur%, lcRed, lcOff, %T1%, %T2%, %StartPos%, %PosCount%)
+	.SetLedAndWait(%Dur%, lcGreen, lcOff, %T1%, %T2%, %StartPos%, %PosCount%)
+	.SetLedAndWait(%Dur%, lcYellow, lcOff, %T1%, %T2%, %StartPos%, %PosCount%)
+	.SetLedAndWait(%Dur%, lcRed, lcGreen, %T1%, %T2%, %StartPos%, %PosCount%)
+	.SetLedAndWait(%Dur%, lcYellow, lcGreen, %T1%, %T2%, %StartPos%, %PosCount%)
+	.SetLedAndWait(%Dur%, lcRed, lcYellow, %T1%, %T2%, %StartPos%, %PosCount%)
+	
+	.Active = false

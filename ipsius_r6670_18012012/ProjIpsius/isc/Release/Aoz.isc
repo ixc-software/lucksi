@@ -1,0 +1,47 @@
+CS_Set
+ObjCreate  NObjResipLog "ResipLog"
+// ResipLog.LogLevel = 3
+// ResipLog.SetTraceType(All, Debug)
+
+ObjCreate NObjSipUserAgent sip true
+	.LogLevel = 0						 // включение/отключение трассировки
+	.AddTransport(5064)
+	.AddAccessPoint("aoz", "sip:9999@192.168.0.240", "9999") // nane, uri, password
+	.aoz.SetAsDefaultReceiver
+	.Enabled = true
+
+ObjCreate NObjHwFinder HwFinder true				// создаем HwFinder
+.AllowUpdate = true
+.LogLevel = 3										// включение/отключение трассировки
+.BoardFilter.Include "1003"							// указываем номера плат, которые будут обслуживаться 
+//.BoardFilter.Exclude "17"                         // указываем номера плат, которые не будут обслуживаться 
+.FirmwarePath = "~IPSIUS_RELEASE~/FWU/DevIpTdm/"    // путь к прошивкам 
+.Enabled = true										// запускаем HwFinder
+.Alias(1003, "A1")									// создание алиаса для платы
+
+CS_Set
+#define GatewayName Aoz // имя шлюза
+
+ObjCreate NObjAoz %GatewayName% true		// создание шлюза (имя шлюза передается в скрипт в качестве параметра)
+.LogLevel = 3   							// включение/отключение трассировки
+
+.SipPoint = sip.aoz
+
+.ToSip.UseSourceNameInContact = t
+.ToSip.UseSourceNameInFrom = f
+.ToSip.UseSourceNameAsDisplay = t
+
+CS_Exec "AozImpl.isc" "BoardName = A1; FirstNumber = 7100; UseAlaw = true; HiTdmChPart = false; DevTraceInd = true"
+
+%GatewayName%.Enabled = true
+
+
+
+
+
+
+
+
+
+
+

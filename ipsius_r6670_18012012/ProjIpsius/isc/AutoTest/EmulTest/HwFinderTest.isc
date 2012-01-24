@@ -1,0 +1,115 @@
+//#define FirmarwPath ...
+
+#define MaxFirmwareVer "28" // такая версия не требует обновления
+#define MaxIncompletableFirmwareVer "30" 
+#define VerLessMax "2" // такая версия требует обновления
+		
+#define FirmarwPath "../Tmp/FakeFwu"
+ObjCreate NObjFwuMaker fwuMaker true
+	.LdrPath = "../Tmp/FakeLdr"	
+	.DummyLdrSize = 100
+	.FwuPath = %FirmarwPath%
+	//MakeFwu(fwuName, revision, boardTypeRange, boardNumRange)	
+	.MakeFwu("NotForUpdate.fwu", %MaxIncompletableFirmwareVer%, "1", "0-899") // несовместимый номер
+	.MakeFwu("IncompleteVerMainE1.fwu", %MaxIncompletableFirmwareVer%, "2", "900 - 999") // несовместимый тип
+
+
+ObjCreate NObjHwFinder
+	HwFinder.TraceUpdateProgress = true
+	HwFinder.FirmwarePath = %FirmarwPath%
+	HwFinder.OnlyLocalIP = true
+	//HwFinder.AllowUpdate = false
+	
+	// прошивка для обновления, должна быть подхвачена автоматически, хотя
+	.MakeFwu("ForUpdateMainE1.fwu", %MaxFirmwareVer%, "1", "900 - 999") 
+
+fwuMaker.ObjDelete 
+	
+ObjCreate NObjHwFinderTester tester		
+
+#define DiscoveryTimeout "15000" 
+#define WaitLoginMsec "1000"    
+	
+ObjCreate NObjEmulRunner emulRunner true
+.InitRtpRange(0, 1000)
+	
+	// stage #1: Discovery board with actual firmware  E1App -> Allocate
+    #define Num 900
+    #define Name Board_%Num%    
+    // настройка эмулятора
+	.CreateEmul(%Name%, %Num%)		
+	.%Name%.SoftRev = %MaxFirmwareVer%
+	.%Name%.BoardSettings.WaitLoginMsec = %WaitLoginMsec%
+	// настройка тестера
+	tester.AddTaskWaitAlloc(%Name%, %Num%, %MaxFirmwareVer%, %DiscoveryTimeout%)
+	#undef Num
+	#undef Name
+	
+	
+	// stage #2 Discovery board with E1App -> reset app. -> Update fw -> Reboot -> Allocate    
+    #define Num 901
+    #define Name Board_%Num%    
+    // настройка эмулятора
+	.CreateEmul(%Name%, %Num%)		
+	.%Name%.SoftRev = %VerLessMax%
+	.%Name%.BoardSettings.WaitLoginMsec = %WaitLoginMsec%
+	// настройка тестера
+	tester.AddTaskWaitAlloc(%Name%, %Num%, %MaxFirmwareVer%, 30000)	
+	#undef Num
+	#undef Name
+
+	
+	// stage #3 Discovery board with booter -> start app. -> Allocate    
+    #define Num 902
+    #define Name Board_%Num%        
+    // настройка эмулятора
+	.CreateEmul(%Name%, %Num%)	
+	.%Name%.SoftRev = %MaxFirmwareVer%		
+	.%Name%.UseBooter = true
+	.%Name%.BoardSettings.WaitLoginMsec = %WaitLoginMsec%
+	// настройка тестера
+	tester.AddTaskWaitAlloc(%Name%, %Num%, %MaxFirmwareVer%, %DiscoveryTimeout%)    						
+	#undef Num
+	#undef Name
+	
+	
+	// stage #4 Discovery board with booter -> Update fw -> Reboot -> start app. -> Allocate    
+    #define Num 903
+    #define Name Board_%Num%        
+    // настройка эмулятора
+	.CreateEmul(%Name%, %Num%)	
+	.%Name%.SoftRev = %VerLessMax%		
+	.%Name%.UseBooter = true
+	.%Name%.BoardSettings.WaitLoginMsec = %WaitLoginMsec%
+	// настройка тестера
+	tester.AddTaskWaitAlloc(%Name%, %Num%, %MaxFirmwareVer%, 30000)    						
+	#undef Num
+	#undef Name
+	
+	
+	
+	// Старт эмуляции
+	emulRunner.StartAllEmul					
+	
+	// Активация HwFinder 
+    HwFinder.BoardFilter.Include "900 - 903"    
+    HwFinder.Enabled = true       
+    
+    // Запуск задач тестера    
+    tester.StartAllTask  
+    
+    // todo: вызвать из тестера и сверить с ожиданием
+    // tester.VerifyList
+    HwFinder.ListAliases     
+    HwFinder.ListBoards    
+    HwFinder.ListBoards false
+    
+    // Проверка того что при просмоте объектов ничего не падает
+    HwFinder.ObjList true -1
+        
+    tester.ObjDelete 
+    emulRunner.StopAllEmul 
+    HwFinder.Enabled = false        
+    
+    HwFinder.ObjDelete     
+    

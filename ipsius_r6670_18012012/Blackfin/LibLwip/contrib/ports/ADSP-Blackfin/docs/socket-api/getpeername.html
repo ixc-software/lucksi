@@ -1,0 +1,121 @@
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of getpeername</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>GETPEERNAME</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="getpeername_exp.html"> Example</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+getpeername - get name of connected peer
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>int getpeername(int </B><I>s</I><B>, struct sockaddr *</B><I>name</I><B>, int *</B><I>namelen</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>getpeername</B>
+
+returns the name of the peer connected to socket
+<I>s</I>.
+
+The
+<I>namelen</I>
+
+parameter should be initialized to indicate the amount of space pointed to
+by
+<I>name</I>.
+
+On return it contains the actual size of the name returned (in bytes).  The
+name is truncated if the buffer provided is too small.
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+On success, zero is returned.  On error, -1 is returned, and error value is
+obtained by caling the function GetSocketError().  In multithreaded environments
+last error number is held seperately for each thread.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+The argument
+<I>s</I>
+
+is not a valid descriptor.
+<DT><B>ENOTSOCK</B>
+
+<DD>
+The argument
+<I>s</I>
+
+is a file, not a socket.
+<DT><B>ENOBUFS</B>
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+The argument
+<I>s</I>
+
+is not a valid descriptor.
+<DT><B>ENOTSOCK</B>
+
+<DD>
+The argument
+<I>s</I>
+
+is a file, not a socket.
+<DT><B>ENOTCONN</B>
+
+<DD>
+The socket is not connected.
+<DT><B>ENOBUFS</B>
+
+<DD>
+Insufficient resources were available in the system
+to perform the operation.
+<DT><B>EFAULT</B>
+
+<DD>
+The 
+<I>name</I>
+
+parameter points to memory not in a valid part of the
+process address space.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="accept.html">accept</A></B>,
+<B><A HREF="bind.html">bind</A></B>,
+<B><A HREF="getsockname.html">getsockname</A></B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

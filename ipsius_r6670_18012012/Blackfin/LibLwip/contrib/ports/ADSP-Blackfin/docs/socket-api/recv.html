@@ -1,0 +1,154 @@
+
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of BIND</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>RECV</H1>
+<BR><A HREF="#index">Index</A> &nbsp; &nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="tcp-cli-serv.html"> Example</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+recv, recvfrom, - receive a message from a socket
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="lwip/sockets.h">lwip/socket.h</A>&gt;</B>
+
+<P>
+<B>int recv(int </B><I>s</I><B>, void *</B><I>buf</I><B>, int </B><I>len</I><B>, unsigned int </B><I>flags</I><B>);</B>
+
+<P>
+<B>int recvfrom(int </B><I>s</I><B>, void *</B><I>buf</I><B>, int </B><I>len</I><B>, unsigned int </B><I>flags</I>
+
+<B>struct sockaddr *</B><I>from</I><B>, int *</B><I>fromlen</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+The <B>recvfrom</B> and <B>recvmsg</B> are used to receive messages from a 
+socket, and may be used to receive data on a socket whether or not it is 
+connection-oriented.If <I>from</I> is non-nil, and the socket is not 
+connection-oriented, the source address of the message is filled in.
+<I>Fromlen</I> is a value-result parameter, initialized to the size of the 
+buffer associated with <I>from</I>, and modified on return to indicate the 
+actual size of the address stored there.  The <B>recv</B> call is normally 
+used only on a <I>connected</I> socket (see <B><A HREF="connect.html">connect</A></B>)
+and is identical to <B>recvfrom</B> with a nil <I>from</I> parameter.  
+
+All two routines return the length of the message on successful
+completion.  If a message is too long to fit in the supplied buffer, excess
+bytes may be discarded depending on the type of socket the message is
+received from (see <B><A HREF="socket.html">socket</A></B>).
+
+
+If no messages are available at the socket, the receive call waits for a
+message to arrive, unless the socket is nonblocking,
+in which case the value -1 is returned and the last socket error was  
+set to <B>EWOULDBLOCK</B>.
+
+The receive calls normally return any data available, up to the requested
+amount, rather than waiting for receipt of the full amount requested; this
+behavior is affected by the socket-level options
+<B>SO_RCVLOWAT</B> and <B>SO_RCVTIMEO</B> described in
+<B><A HREF="getsockopt.html">getsockopt</A></B>.
+
+
+The <I>flags</I> argument to a recv call is formed by <I>or</I>'ing one or more of the values:
+
+<DL COMPACT>
+<DT><DT>MSG_OOB<DD>
+<DD> process out-of-band data
+
+<DT>MSG_PEEK
+<DD> peek at incoming message
+
+<DT>MSG_WAITALL
+<DD>wait for full request or error
+
+The <B>MSG_OOB</B> flag requests receipt of out-of-band data that would not be 
+received in the normal data stream.  Some protocols place expedited data at 
+the head of the normal data queue, and thus this flag cannot be used with such
+protocols.
+
+The <B>MSG_PEEK</B> flag causes the receive operation to return data from the
+beginning of the receive queue without removing that data from the queue. 
+Thus, a subsequent receive call will return the same data.  
+
+The <B>MSG_WAITALL</B> flag requests that the operation block until the full 
+request is satisfied.  However, the call may still return less data than 
+requested if a signal is caught, an error or disconnect occurs, or the next 
+data to be received is of a different type than that returned.
+
+</DL>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUES</H2>
+
+These calls return the number of bytes received, or -1
+if an error occurred.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+The argument <I>s</I> is an invalid. 
+
+<DT><B>ENOTCONN</B>
+<DD> The socket is associated with a connection-oriented protocol
+and has not been connected (see <B><A HREF="connect.html">connect</A></B>
+
+and
+<B><A HREF="accept.html">accept</A></B>).
+
+
+<DT><B>ENOTSOCK</B>
+<DD> The argument <I>s</I> does not refer to a socket.<font color="red"> Not Supported </font>
+
+
+<DT><B>EWOULDBLOCK</B>
+<DD> The socket is marked non-blocking, and the receive operation would block, 
+or a receive timeout had been set, and the timeout expired before data were 
+received.
+
+<DT><B>EINTR</B>
+<DD> The receive was interrupted by delivery of a signal before
+any data were available.<font color="red"> Not Supported </font>
+
+
+<DT><B>EFAULT</B>
+<DD> The receive buffer pointer(s) point outside the process's address space.<font color="red"> Not Supported </font>
+
+</DL>
+
+<p>
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="read.html">read</A></B>, 
+<B><A HREF="select.html">select</A></B>,
+<B><A HREF="getsockopt.html">getsockopt</A></B>,
+<B><A HREF="socket.html">socket</A></B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUES</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

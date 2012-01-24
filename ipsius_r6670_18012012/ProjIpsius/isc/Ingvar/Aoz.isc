@@ -1,0 +1,41 @@
+CS_Set
+ObjCreate  NObjResipLog "ResipLog"
+
+ObjCreate NObjHwFinder HwFinder true				// создаем HwFinder
+.AllowUpdate = true
+.LogLevel = 3										// включение/отключение трассировки
+.BoardFilter.Include "1006"							// указываем номера плат, которые будут обслуживаться 
+//.BoardFilter.Exclude "17"                         // указываем номера плат, которые не будут обслуживаться 
+.FirmwarePath = "~IPSIUS_RELEASE~/FWU/DevIpTdm/"  
+//.RollbackMode = true
+.Enabled = true										// запускаем HwFinder
+.Alias(1006, "A1")									// создание алиаса для платы
+
+CS_Set
+#define GatewayName Aoz // имя шлюза
+
+ObjCreate NObjAoz %GatewayName% true		// создание шлюза (имя шлюза передается в скрипт в качестве параметра)
+.LogLevel = 3   							// включение/отключение трассировки
+.Sip.ContactToFrom = true
+//.Sip.ExternalIp = 83.85.98.198          	// реальный IP адрес роутера (опционально, только для прохождения NAT)
+.Sip.LocalHost = 5068						// IP + порт SIP шлюза
+.Sip.Proxy.ProxyHost = "192.168.0.240:5060"
+.Sip.Proxy.RegistrationInd = true         	// включить(true)/выключить(false) регистрацию шлюза на Sip прокси
+.Sip.Proxy.UserName = pasha                 // имя шлюза как Sip пользователя, используется при регистрации на Sip прокси
+                                            // по умолчанию используется имя шлюза 
+.Sip.Proxy.Password = pasha              // пароль для регистрации на Sip прокси
+
+CS_Exec "AozImpl.isc" "BoardName = A1; FirstNumber = 7100; SecondNumber = 7200; UseAlaw = true; HiTdmChPart = false; DevTraceInd = true"
+
+%GatewayName%.Enabled = true
+
+
+
+
+
+
+
+
+
+
+

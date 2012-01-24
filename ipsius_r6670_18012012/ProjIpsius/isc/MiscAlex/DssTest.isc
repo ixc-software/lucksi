@@ -1,0 +1,48 @@
+#define DoNotRun false
+
+ObjCreate NObjIsdnTetRunner isdnGroupe true
+
+    //.BeginLapdTest //%DoNotRun%
+    //.Profile.MaxDurationMsec = 350000
+    //.Run
+    
+    .BeginCheckConnectionDisconnectionRoutine
+    .Run
+
+    .BeginCheckBchannelsBusy
+    .Profile.TraceTest = false
+    .Run
+    
+    .BeginCheckReloadDrv
+    .Run
+    
+    .BeginCheckReloadLapd
+    .Run
+    
+    .BeginCheckReloadUser
+    .Run
+    
+    .BeginSimulLiveTest
+    .Run
+    
+    .BeginDeactivationTest
+    .Run
+    
+    .BeginReactivationL3Test
+    .Run
+    
+    .BeginCheckBchannelsBusy
+    .Profile.TraceTest = false
+    .Run
+
+    .BeginWrongL3PacketTest
+    .Profile.DurationSec = 30
+    .Profile.RndPackPercent = 50
+    .Profile.VerboseTimeSec = 10
+    .Profile.RndPatternGenProf.Seed = 128
+    .Run
+
+
+        
+    
+    

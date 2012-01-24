@@ -1,0 +1,35 @@
+// TrunkName   - имя Dss1Trunk
+// BoardName   - имя платы, которая будет использована в интерфейсе Dss1Trunk
+// HwType      - Harware type. E1 или T1.
+// Side        - NT или TE
+// UseAlaw     - тип кодека
+// LiuSyncMaster - синхронизация
+// StartRtpPort
+
+.AddDss1(%HwType%, %TrunkName%, %BoardName%, %Side%)
+.%TrunkName%.CS_Set
+.TraceInd = true
+.RestartReq = false
+//.SendAlertingTone = false
+.i0.Global.DevTraceInd = true                     // true для включения -логирования событий на устройстве
+//.i0.Global.DevTraceHost = "192.168.0.158:56001" // приемник лога (хост и порт, на который настроена программа UDPLogViewer)
+//.i0.Global.DevWatchdogEnabled = false
+//.i0.Global.DevResetOnFatalError = false
+.i0.Liu.SyncMaster = %LiuSyncMaster%
+.i0.Liu.CRC4 = true
+//.i0.OutBlockingCh = "17..31"
+//.i0.InBlockingCh = "1..15, 17..31"
+
+// диапазон портов, используемых устройством для RTP
+// эти порты могут понадобиться для настройки прохождения трафика через NAT на роутере
+.i0.Board.StartRtpPort = 8000                       
+.i0.Board.UseAlaw = %UseAlaw%  // A/U закон для RTP потока
+.i0.Cmp.TraceInd = true
+.i0.Sbp.TimeoutCheckInterval = 0//1000
+//.i0.Board.EchoTape = 0
+//.i0.Board.UseInternalEcho = false
+.i0.Board.StartRtpPort = %StartRtpPort%
+.L1.TraceType = State
+.L2TraceInd = false
+.L3.Trace.Enabled = false
+CS_SetBack

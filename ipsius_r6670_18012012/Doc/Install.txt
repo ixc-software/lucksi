@@ -1,0 +1,203 @@
+
+*** 1. Структура проекта ***
+
+\Doc -- всевозможная документация по проекту (исключая UML)
+
+\Src -- исходные коды проекта (сторона PC)
+
+    \BfBootCli              -- клиентская (сторона PC) часть загрузчика для Blackfin
+    \BfBootCore             -- общая часть (ядро) загрузчика для Blackfin
+    \BfBootDri              -- DRI обертка для управления загрузчиком на PC
+    \BfBootSrv              -- серверная (сторона железа) часть загрузчика для Blackfin
+    \CfgDefault             -- конфигурация по умолчанию для проектов 
+    \Domain                 -- реализация доменной архитектуры
+    \DomainTests            -- тесты для Domain
+    \DRI                    -- Domain Remote Interface (интерфейс управления доменом)
+    \DriTests               -- тесты для DRI
+    \Dss1ToSip              -- стык DSS1-SIP, включая DRI обертку
+    \Dss1ToSipTests         -- тесты для Dss1ToSip
+    \Echo                   -- алгоритм эхоподавления
+    \iAoz                   -- поддержка платы AOZ, включая DRI обертку
+    \iCmp                   -- Channel Managment Protocol (протокол управления PC <-> Device)
+    \iCore                  -- подсистема обмена сообщениями
+    \iCoreTests             -- тесты для iCore
+    \iLog                   -- подсистема логирования
+    \iMedia                 -- код, связанный с оцифрованным звуком -- генераторы, кодеки и т.д.
+    \iNet                   -- Qt сокеты, обернутые для работы с iCore
+    \iNetTests              -- тесты iNet
+    \iRtp                   -- реализация RTP протокола
+    \iRtpTests              -- тесты для iRtp
+    \ISDN                   -- реализация ISDN
+    \IsdnTest               -- тесты для ISDN
+    \iUart                  -- обертка для работы с последовательным портом
+    \MiniFlasher            -- работа с Bf флешером, управление через DRI
+    \ObjLink                -- Object Link, связь между объектами в рамках доменной архитектуры
+    \Platform               -- платформозависимые функции (POSIX/Win32)
+    \PlatformTests          -- тесты для Platform
+    \SafeBiProto            -- Safe Binary Protocol, типобезопасный протокол для обмена данными
+    \SafeBiProtoExt         -- функции высокого уровня для SafeBiProto
+    \Sip                    -- работа с SIP, обертка для библиотеки resip
+    \SipTests               -- тесты для Sip
+    \Telnet                 -- реализация клиента и сервера для Telnet протокола
+    \TelnetTests            -- тесты для Telnet
+    \TestBfBoot             -- тесты загрузчика для Blackfin (BfBoot)
+    \TestFw                 -- framework for unit testing
+    \Utils                  -- всякая всячина разной степени полезности
+    \UtilsTests             -- тесты для Utils
+
+\Blackfin  -- код, связанный с Blackfin
+    
+    \BfBoot                 -- загрузчик для Blackfin
+    \BfHwTest               -- тестирование аппаратной части
+    \BfInitCode             -- init code для создания LDR
+    \BFLoader               -- мини загрузчик по UART, он же MiniFlasher
+    \BfMainE1               -- главное приложение
+    \LibLwip                -- LwIP библиотека для Blackfin (содержит изменения исходной версии от Analog Device)
+    \PyBfTools              -- вспомогательные скрипты для VisualDSP++
+    
+    \Src
+        \BfBootSrv              -- серверная (сторона железа) часть загрузчика для Blackfin
+        \BfDev                  -- всевозможные драйвера для Blackfin
+        \Bftdm                  -- драйвер TDM
+        \boost                  -- код, портированный из boost под Bf
+        \DevIpTdm               -- драйвера, связанные с нашим железом
+        \DrvAoz                 -- драйвер AOZ платы
+        \Ds2155                 -- драйвер LIU микросхемы Ds2155
+        \Ds28cn01               -- драйвер для микросхемы DS28CN01, криптозащита
+        \E1App                  -- основной код приложения (BfMainE1)
+        \ExtFlash               -- драйвера для flash микросхем
+        \iVDK                   -- вспомогательные классы для VDK
+        \Lw                     -- обертка для LwIP
+        \MiniFlasher            -- реализация флешера для Bf
+        \Platform               -- платформозависимые функции (Blackfin + VDK)
+        \PlatformTests          -- тесты для Platform
+        \QtCore                 -- порт из Qt
+        \QtNetwork              -- порт из Qt
+        \std                    -- порт из STL
+        \TdmMng                 -- подсистема обслуживания TDM (включая передачу звука по RTP)
+        \zlib                   -- библиотека zlib
+
+Все директории проектов имеют формат имени \ProjXXX (для C++) или \PyXXX (для Python), где XXX -- имя проекта.
+
+
+\ProjAllTests		-- запуск тестов системы с помощью библиотеки TUT
+\ProjIpsius         -- основной проект
+\ProjMocExt		    -- MocExt, доработки Qt moc
+\ProjIsdnTests      -- тесты ISDN (планируется интеграция в Ipsius с DRI интерфейсом)
+\PyBootTest         -- полуавтоматические тестирование проекта BfBoot
+\PyIpsiusDeploy     -- создание текущей Win32 сборки для Ipsius
+
+
+В папке проекта находится только та часть исходного кода, который используется только
+в рамках этого проекта (обычно файл main.cpp), весь остальной исходный код храниться
+в папке \Src.
+
+*** 2. Как собрать тесты ***
+
+2.1. Используемые библиотеки
+
+	Boost 1.41              -- http://www.boost.org
+	Qt 4.6.0                -- http://qt.nokia.com
+	resiprocate 1.6         -- http://resiprocate.org (используется в реализации Sip)
+	qextserialport 1.1      -- http://qextserialport.sourceforge.net (частичные изменение под Linux, см. \misc репозиторий)
+	zlib 1.2.3              -- http://www.zlib.net (сборка лежит в \misc репозитории)
+	Crypto++ 5.6.0          -- http://www.cryptopp.com/
+	
+2.2. Linux
+
+  Установить и скомпилировать необходимые библиотеки.
+
+  Установка Qt:
+	Нужно установить пакет libtool, binutils-dev. 
+	Debian based: sudo apt-get build-dep qt4-qmake
+	такде нужно установить пакет libgstreamer0.10-dev // or new version
+	Статическую сборку нужно собирать в отдельной папке, с отключенным модулем sql lite
+	configure -release -static -fast -nomake demos -nomake examples -prefix path -nosql-lite
+	
+  
+  Особенности сборки библиотеки resiprocate.
+  Конфигурацию необходимо осуществлять с флагами -y --disable-ssl --disable-repro. 
+  В случае ошибки компиляции SysLogBuf.cpp нужно включить <cstdio>
+  После сборки основных библиотек необходимо собрать и установить библиотеку srtp из исходных файлов, 
+  находящихся в поддирректории resiprocate:  /contrib/srtp. 
+
+  Особенности сборки библиотеки zlib.
+  Для сборки библиотеки libz.a в зависимости от палатформы запускаем _gccConfigure.sh или _armConfigure.sh.
+  Затем:
+		make
+		make install
+   
+  Сборка библиотек resip, qserialport, unzip может быть выполнена с помощью QtCreator 
+	unzip 				- ./Misc/Unzip.pro
+	qextserialport		- ./Misc/QExtSerialPort/qextserialport.pro
+	resip 				- ./Misc/resip/projects/*.pro
+	
+  После сборки библиотеки unzip из папки ./Misc/zlib-1.2.3//contrib/minizip в папку ./Misc/zlib-1.2.3/zlib 
+  необходимо скопировать следующие *.h файлы: crypt.h, ioapi.h, mztools.h, unzip.h, zip.h.
+  
+  Перед работой с com port необходимо выполнить настройку:
+  1) Узнать типы портов с помощью команды dmesg | grep tty :
+	serial8250: ttyS0 at I/O 0x3f8 (irq = 4) is a 16550A
+	serial8250: ttyS1 at I/O 0x2f8 (irq = 3) is a 16550A
+	00:0a: ttyS0 at I/O 0x3f8 (irq = 4) is a 16550A 
+	00:0b: ttyS1 at I/O 0x2f8 (irq = 3) is a 16550A
+  В данном случае тип порта ttyS0 - 16550A.
+  2) В файле /etc/serial.conf необходимо раскомментировать строчку с нужным номером порта, например, для ttyS0:
+	/dev/ttyS0 uart 16450 port 0x3F8 irq 4
+  и указать правильный тип порта после слова "uart". В результате получим:
+	/dev/ttyS0 uart 16550A port 0x3F8 irq 4
+
+  Для начала сборки проектов необходимо заменить moc.exe из Qt на его расширенную версию.
+  Для этого необходимо запустить /ProjMocExt/UpdateMakefiles.sh, затем /ProjMocExt/MakeRelease.sh, дождаться
+  сборки проекта и запустить /ProjMocExt/UpdateMoc.sh.
+
+  Примечание 1:  
+  Файлам *.sh необходимо установить аттрибут "execute". Для этого необходимо запустить mc, выбрать файл, 
+в меню File -> chmod -> execute -> Set.
+
+  Примечание 2:
+  Файлы UpdateMakefiles.sh необходимо запускать в формате . ./UpdateMakefiles.sh или source ./UpdateMakefiles.sh.
+  
+  Для корректной работы расширенной версии moc необходимы переменные окружения, описанные в файле QtMocAdvVar.sh.
+(Этот файл вызывается на исполнение из файла UpdateMakefiles.sh).
+
+  Для сборки и запуска проекта в директории проекта имеется соотвествующие командные файлы,
+например для сборки релизной версии всех тестов и их запуска необходимо запустить ProjAllTests/MakeRelease.sh,
+дождаться сборки проекта и запустить ProjAllTests/LinuxRelease/ProjAllTests.
+
+2.3. Win32
+
+  Установить и скомпилировать Qt и Boost.
+  Для Qt поставить Trolltech Qt Visual Studio Integration for VS 2005. 
+  В VS необходимо в опциях указать Qt Build параметры (в меню Tools -> Options -> Builds)
+    
+  Убедиться, что выставлены следующие переменные окружения
+  QTDIR           	-- указывает на папку с Qt
+  QT_PLUGIN_PATH    -- %QTDIR%\plugins
+  BOOSTDIR  		-- указывает на папку с Boost
+  RESIPDIR          -- указывает на папку с Resiprocate
+  QSERIALDEVICE     -- указывает на папку с QextSerialPort. 
+  ZLIBDIR           -- указывает на папку с zlib 
+  CRYPTOPPDIR       -- указывает на папку с Crypto++
+  VS80COMNTOOLS		-- путь к директории с файлом vsvars32.bat, который выставляет переменые окружения для VS 2005; должен заканчиваться "\"
+  QMAKESPEC         -- выставить в значение компилятора, например "win32-msvc2005"
+  QMAKEPATH         -- выставить как QTDIR
+  IPSIUS_MISC       -- путь к \misc репозиторию (в сборке не участвует, нужно для работы вспомогательных утилит)
+  QTMOCADVANCED=1   -- если переменная равна 1, то moc работает в расширенном режиме.
+  
+    Все скомпилированные статические библиотеки (*.lib) для Boost должны лежать в директории $(BOOSTDIR)\stage\lib
+  в виде ФАЙЛОВ (а не по поддиректориям)
+  
+    Для начала сборки проектов необходимо заменить moc.exe из Qt на его расширенную версию.
+    Для этого необходимо запустить \ProjMocExt\_buildMocExt.bat, потом \ProjMocExt\_updateMoc.bat.
+    
+    Для корректной работы расширенной версии moc необходимы переменные окружения, описанные в файле _setMoc.bat
+  
+     Все создаваемые проекты должны создаваться как проекты для Qt -- в этом случае в них будет корректно
+ активирована обработка файлов с помощью moc.    
+    В создаваемых проектах должна быть активирова поддержка unicode с помощью глобальных макросов -- _UNICODE и UNICODE.
+    В создаваемых проектах желательно давить предупреждения: 4503;4355.
+            
+    Для сборки и запуска проекта в директории проекта имеется соотвествующий командный файл,
+ например для сборки релизной версии всех тестов и их запуска достаточно запустить 
+ ProjAllTests\_BuildAndRunReleaseTests.bat 

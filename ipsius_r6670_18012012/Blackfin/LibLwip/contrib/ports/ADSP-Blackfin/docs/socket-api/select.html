@@ -1,0 +1,264 @@
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of SELECT</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>SELECT</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="select_exp.html"> Example</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+select, FD_CLR, FD_ISSET, FD_SET, FD_ZERO - synchronous I/O multiplexing
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="sys/time.h">sys/time.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="sys/types.h">sys/types.h</A>&gt;</B>
+
+<BR>
+
+<B>#include &lt;<A HREF="/include/unistd.h">unistd.h</A>&gt;</B>
+
+<P>
+<B>int select(int </B><I>n</I><B>, fd_set *</B><I>readfds</I><B>,
+fd_set *</B><I>writefds</I><B>, fd_set *</B><I>exceptfds</I><B>,
+struct timeval *</B><I>timeout</I><B>);
+<P>
+FD_CLR(int </B><I>fd</I><B>, fd_set *</B><I>set</I><B>);</B>
+
+<BR>
+
+<B>FD_ISSET(int </B><I>fd</I><B>, fd_set *</B><I>set</I><B>);</B>
+
+<BR>
+
+<B>FD_SET(int </B><I>fd</I><B>, fd_set *</B><I>set</I><B>);</B>
+
+<BR>
+
+<B>FD_ZERO(fd_set *</B><I>set</I><B>);</B>
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>select</B>
+
+waits for a number of file descriptors to change status.
+<P>
+
+Three independent sets of descriptors are watched.  Those listed in
+<I>readfds</I>
+
+will be watched to see if characters become
+available for reading, those in
+<I>writefds</I>
+
+will be watched to see if it is ok to immediately write on them, and
+those in
+<I>exceptfds</I>
+
+will be watched for exceptions.  On exit, the sets are modified in place
+to indicate which descriptors actually changed status.
+<P>
+
+Four macros are provided to manipulate the sets.
+<B>FD_ZERO</B>
+
+will clear a set.
+<B>FD_SET</B>
+
+and
+<B>FD_CLR</B>
+
+add or remove a given descriptor from a set.
+<B>FD_ISSET</B>
+
+tests to see if a descriptor is part of the set; this is useful after
+<B>select</B>
+
+returns.
+<P>
+
+<I>n</I>
+
+is the highest-numbered descriptor in any of the three sets, plus 1.
+<P>
+
+<I>timeout</I>
+
+is an upper bound on the amount of time elapsed before
+<B>select</B>
+
+returns.  It may be zero, causing
+<B>select</B>
+
+to return immediately.  If
+<I>timeout</I>
+
+is NULL (no timeout),
+<B>select</B>
+
+can block indefinitely.
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+On success,
+<B>select </B>
+
+returns the number of descriptors contained in the descriptor sets, which
+may be zero if the timeout expires before anything interesting happens.
+On error, -1 is returned, and
+<I>errno</I>
+
+is set appropriately; the sets and
+<I>timeout</I>
+
+become undefined, so do not
+rely on their contents after an error.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B>
+
+<DD>
+An invalid file descriptor was given in one of the sets.
+<DT><B>EINTR </B>
+
+<DD>
+A non blocked signal was caught.
+<DT><B>EINVAL </B>
+
+<DD>
+<I>n</I>
+
+is negative.
+<DT><B>ENOMEM</B>
+
+<DD>
+<B>select</B>
+
+was unable to allocate memory for internal tables.
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H2>NOTES</H2>
+
+Some code calls
+<B>select</B>
+
+with all three sets empty,
+<I>n</I>
+
+zero, and a non-null
+<I>timeout</I>
+
+as a fairly portable way to sleep with subsecond precision.
+<P>
+
+On Linux,
+<I>timeout</I>
+
+is modified to reflect the amount of time not slept; most other
+implementations do not do this.  This causes problems both when Linux
+code which reads
+<I>timeout</I>
+
+is ported to other operating systems, and when code is ported to Linux
+that reuses a struct timeval for multiple
+<B>select</B>s
+
+in a loop without reinitializing it.  Consider
+<I>timeout</I>
+
+to be undefined after
+<B>select</B>
+
+returns.
+<A NAME="lbAH">&nbsp;</A>
+<H2>EXAMPLE</H2>
+
+<PRE>
+#include &lt;<A HREF="file:/usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:/usr/include/sys/time.h">sys/time.h</A>&gt;
+#include &lt;<A HREF="file:/usr/include/sys/types.h">sys/types.h</A>&gt;
+#include &lt;<A HREF="file:/usr/include/unistd.h">unistd.h</A>&gt;
+
+int
+main(void)
+{
+    fd_set rfds;
+    struct timeval tv;
+    int retval;
+
+    /* Watch stdin (fd 0) to see when it has input. */
+    FD_ZERO(&amp;rfds);
+    FD_SET(0, &amp;rfds);
+    /* Wait up to five seconds. */
+    tv.tv_sec = 5;
+    tv.tv_usec = 0;
+
+    retval = select(1, &amp;rfds, NULL, NULL, &amp;tv);
+    /* Don't rely on the value of tv now! */
+
+    if (retval)
+        printf(&quot;Data is available now.\n&quot;);
+        /* FD_ISSET(0, &amp;rfds) will be true. */
+    else
+        printf(&quot;No data within five seconds.\n&quot;);
+
+    exit(0);
+}
+</PRE>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>CONFORMING TO</H2>
+
+4.4BSD (the
+<B>select</B>
+
+function first appeared in 4.2BSD).  Generally portable to/from
+non-BSD systems supporting clones of the BSD socket layer (including
+System V variants).  However, note that the System V variant typically
+sets the timeout variable before exit, but the BSD variant does not.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="accept.html">accept</A></B>,
+
+<B><A HREF="connect.html">connect</A></B>,
+
+<B><A HREF="read.html">read</A></B>,
+
+<B><A HREF="recv.html">recv</A></B>,
+
+<B><A HREF="send.html">send</A></B>,
+
+<B><A HREF="write.html">write</A></B>.
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAG">NOTES</A><DD>
+<DT><A HREF="#lbAH">EXAMPLE</A><DD>
+<DT><A HREF="#lbAI">CONFORMING TO</A><DD>
+<DT><A HREF="#lbAJ">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

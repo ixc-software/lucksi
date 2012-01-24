@@ -1,0 +1,35 @@
+#define Pwd "Pwd" 
+#define FirmwareVer 1000
+#define BooterVersion 16
+
+// Запуск эмулятора
+ObjCreate NObjEmulRunner emulRunner true
+	.InitRtpRange(0, 1000)		
+	
+	#define Num 900
+    #define Name Board_%Num%    
+    // настройка эмулятора
+	.CreateEmul(%Name%, %Num%)		
+	.%Name%.SoftRev = %FirmwareVer%
+	.%Name%.UseBooter = true
+	#undef Num
+	#undef Name
+	
+	#define Num 901
+    #define Name Board_%Num%    
+    // настройка эмулятора
+	.CreateEmul(%Name%, %Num%)		
+	.%Name%.SoftRev = %FirmwareVer%
+	.%Name%.UseBooter = true
+	#undef Num
+	#undef Name
+	
+	.StartAllEmul	
+	
+	
+ObjCreate NObjHwFinder
+	HwFinder.BoardFilter.Include "900-901"
+	
+ObjCreate NObjBooterAutoUpdater updater true
+	.BootIamge = <---
+	.Run(%BooterVersion%, 30000)

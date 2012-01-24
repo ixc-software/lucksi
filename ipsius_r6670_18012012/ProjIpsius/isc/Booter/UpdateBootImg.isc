@@ -1,0 +1,14 @@
+// Настройка общих параметров объектов-заданий
+ObjCreate NObjCommonBfTaskProfile commonProfile true      
+    .BoardAddress %_1%
+    .BoardPwd %_2%
+    .TraceClient false
+    .TraceServer false
+    .ObtainCbpPort  
+    //.CbpPort = 
+
+ObjCreate NObjBfTaskUpdateBooter task true 
+    .Init commonProfile
+    .SetBootImage %_3%
+    .Run
+    

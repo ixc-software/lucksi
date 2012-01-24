@@ -1,0 +1,106 @@
+<HTML>
+	<HEAD>
+		<TITLE> Socket Example </TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+	</HEAD>
+
+	<BODY>
+	<H1> Connect Example - Socket,Bind,Close,Connect </H1> 
+	<BR><A HREF="#tcp">TCP Socket</A>&nbsp;&nbsp;
+	<A HREF="udp-cli-serv.html">UDP Client-Server</A>&nbsp;&nbsp;
+	<A HREF="tcp-cli-serv.html">TCP Client-Server</A>&nbsp;&nbsp;
+
+	<hr>
+	<h2> Description</h2>
+	TCP Socket sample program that creates a sockets binds it to
+	SENDER_PORT_NUM and tries to connect to Server waiting at SERVER_IP_ADDRESS
+	and at port SERVER_PORT_NUM.Calls used in this example are,
+	<a href="bind.html">bind</a> 
+	<a href="close.html">close</a>
+	<a href="connect.html">connect</a>
+	<h2> <a name="tcp"> TCP Connect Example </a></h2> 
+
+<!-- TCP Example --!>
+	<table  border=0 width="100%">
+	<tr> 
+	    <td>
+		<code>
+		#include &lt;lwip/sockets.h&gt;
+		<br><br>
+		#define SENDER_PORT_NUM   6000 <br>
+		#define SENDER_IP_ADDR    "192.136.23.20"<br><br>
+
+		#define SERVER_PORT_NUM   6001 <br>
+		#define SERVER_IP_ADDRESS "192.136.23.21"<br>
+		<br><br>
+		void main(void)<br>
+		{<br>
+		<br>
+			<DL COMPACT><DT><DD>
+			int socket_fd;<br>
+			struct sockaddr_in sa,ra;<br><br>
+			<note>
+			/* Creates an TCP socket (SOCK_STREAM) with Internet Protocol 
+		  	Family (PF_INET).<br>
+			&nbsp;* Protocol family and Address family related. For example PF_INET
+			Protocol Family and AF_INET family are coupled.<br>
+			 */<br>
+			</note>
+			<br>
+			socket_fd = socket(PF_INET, SOCK_STREAM, 0);<br><br>
+			if ( socket_fd &lt; 0 )<br>
+			{<br><br>
+				<dl COMPACT><DT><DD>
+				printf("socket call failed");<br>
+				exit(0);<br>
+				</dl>
+			}<br>
+			<br>
+			memset(&sa, 0, sizeof(struct sockaddr_in));<br>
+			sa.sin_family = AF_INET;<br>
+			sa.sin_addr.s_addr = inet_addr(SENDER_IP_ADDR);<br>
+			sa.sin_port = htons(SENDER_PORT_NUM);<br>
+			<br><br>
+
+			/* Bind the TCP socket to the port SENDER_PORT_NUM and to the 
+			current<br> * machines IP address (Its defined by SENDER_IP_ADDR).
+			<br>* Once bind is successful for UDP sockets application can 
+			operate<br>* on the socket descriptor for sending or receiving 
+			data.<br>
+			 */<br>
+
+			if (bind(socket_fd, (struct sockaddr *)&sa, sizeof(struct sockaddr_in)) == -1)<br>
+			 {<br>
+				
+				printf("Bind to Port Number %d ,IP address %s failed\n",SENDER_PORT_NUM,SENDER_IP_ADDR);<br>
+				close(socket_fd);<br>
+				exit(1);<br>
+				
+			 }<br>
+
+			/* Receiver connects to server ip-address. */<br>
+			<br>
+			memset(&ra, 0, sizeof(struct sockaddr_in));<br>
+			ra.sin_family = AF_INET;<br>
+			ra.sin_addr.s_addr = inet_addr(SERVER_IP_ADDRESS);<br>
+			ra.sin_port = htons(SERVER_PORT_NUM);<br>
+			<br><br>
+
+			if(connect(socket_fd,(struct sockaddr_in*)&ra,sizeof(struct sockaddr_in)) &lt; 0)<br>
+			{<br>
+				<br><DL COMPACT><DT><DD>
+				printf("connect failed \n");<br>
+				close(socket_fd);<br>
+				exit(2);<br>
+				</DL>
+			}<br>
+
+			<br>
+			close(socket_fd);
+		</DL>
+		}
+	</code>
+	</tr> </td>
+	</table>
+	</BODY>
+</HTML>

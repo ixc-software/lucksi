@@ -1,0 +1,103 @@
+/*
+    This is test script
+
+*/
+
+// todo КПВ
+
+class pult:
+	start:        
+		print "pult started..."
+		sendKey ktVolumeDown  
+		treatIncomingCallAs call
+		
+class trainer:
+	start:		
+		print "trainer started..."  
+
+		wait 2000
+		handsfree
+		wait 2000
+//		createCall call 5999
+		createCall call pultIncoming		
+//		createCall call1 call pultIncoming
+//		createCall call2 call pultIncoming		
+//		connectToConversation lp call1
+
+class call:
+
+	i.Trying:
+		print "receive incoming call"	
+		lp_ring self
+
+    i.Ringing:
+        wait 5000
+		handsfree
+		connectToConversation lp self
+
+    i.Talk:
+		print "answer incoming call"
+      
+    i.Free:
+        handsfree
+        run self o.Free
+
+    o.Trying:
+		connectToConversation lp self
+    
+    o.Ringing:
+		print "pult call allerting"
+//        wait 2000
+//		handsfree
+		
+    o.Talk:
+        print "pult call accepted"
+		wait 5000
+//		removeFromConversation self
+//		wait 2000
+//		connectToConversation lp self		
+//		wait 2000		
+		handsfree		
+        releaseCall self		
+		            
+    o.Free:
+		wait 2000
+		end
+
+
+
+/*
+отбой входящего вызова
+
+class call:
+
+	i.Trying:
+		print "receive incoming call"	
+		releaseCall self
+
+    i.Ringing:
+		pass
+
+    i.Talk:
+		pass
+		      
+    i.Free:
+        run self o.Free
+
+    o.Trying:
+		connectToConversation lp self
+    
+    o.Ringing:
+		print "pult call allerting"
+        wait 10000
+		handsfree		
+        releaseCall self		
+		
+    o.Talk:
+		pass
+				            
+    o.Free:
+		wait 2000
+		end
+
+*/

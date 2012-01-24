@@ -1,0 +1,15 @@
+Reg.RegEvents = t
+Reg.RegCalls = t
+
+CS_Exec "DssTest.isc"
+CS_Exec "EmulTest/EmulBfBootTest.isc"
+CS_Exec "EmulTest/HwFinderTest.isc"
+
+CS_Exec "../Header.isc"
+
+
+CS_Exec "EmulTest/EmulTest.isc"
+CS_Exec "EmulTest/DtmfTest.isc"
+CS_Exec "EmulTest/ConfTest.isc"
+
+DomainExit

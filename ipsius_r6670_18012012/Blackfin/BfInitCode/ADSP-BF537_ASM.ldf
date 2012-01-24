@@ -1,0 +1,244 @@
+/*
+** LDF for ADSP-BF537.
+** 
+** There are a number of configuration options that can be specified
+** either by compiler flags, or by linker flags directly. The options are:
+** 
+** _ADI_LIBIO
+**   Use the ADI io library (default and fast)
+** _DINKUM_IO
+**   Use dinkum io library (slower but more compatible). Enabled
+**   by the flag -full-io
+**
+** Memory map.
+** 
+** The known memory spaces are as follows:
+** 
+** 0xFFE00000 - 0xFFFFFFFF  Core MMR registers (2MB)
+** 0xFFC00000 - 0xFFDFFFFF  System MMR registers (2MB)
+** 0xFFB01000 - 0xFFBFFFFF  Reserved
+** 0xFFB00000 - 0xFFB00FFF  Scratch SRAM (4K)
+** 0xFFA14000 - 0xFFAFFFFF  Reserved
+** 0xFFA10000 - 0XFFA13FFF  Code SRAM/CACHE (16K)
+** 0xFFA0C000 - 0xFFA0FFFF  Reserved
+** 0xFFA08000 - 0xFFA0BFFF  Instruction Bank B SRAM (16K)
+** 0xFFA00000 - 0xFFA07FFF  Instruction Bank A SRAM (32K)
+** 0xFF908000 - 0xFF9FFFFF  Reserved
+** 0xFF904000 - 0xFF907FFF  Data Bank B SRAM/CACHE (16k)
+** 0xFF900000 - 0XFF903FFF  Data Bank B SRAM (16k)
+** 0xFF808000 - 0xFF8FFFFF  Reserved
+** 0xFF804000 - 0xFF807FFF  Data Bank A SRAM/CACHE (16k)
+** 0xFF800000 - 0XFF803FFF  Data Bank A SRAM (16k)
+** 0xEF000800 - 0xFF800000  Reserved
+** 0xEF000000 - 0xFF8007FF  Boot ROM (2K)
+** 0x20400000 - 0xEEFFFFFF  Reserved
+** 0x20300000 - 0x203FFFFF  ASYNC MEMORY BANK 3 (1MB)
+** 0x20200000 - 0x202FFFFF  ASYNC MEMORY BANK 2 (1MB)
+** 0x20100000 - 0x201FFFFF  ASYNC MEMORY BANK 1 (1MB)
+** 0x20000000 - 0x200FFFFF  ASYNC MEMORY BANK 0 (1MB)
+** 0x00000000 - 0x1FFFFFFF  SDRAM MEMORY (16MB - 512MB)
+** 
+*/
+
+ARCHITECTURE(ADSP-BF537)
+
+$LIBRARIES = ;
+$OBJECTS = $COMMAND_LINE_OBJECTS;
+
+MEMORY
+{
+#if 0
+  MEM_CORE_MMRS        { START(0xFFE00000) END(0xFFFFFFFF) TYPE(RAM) WIDTH(8) }
+#endif
+  MEM_SYS_MMRS         { START(0xFFC00000) END(0xFFDFFFFF) TYPE(RAM) WIDTH(8) }
+  MEM_L1_SCRATCH       { START(0xFFB00000) END(0xFFB00FFF) TYPE(RAM) WIDTH(8) }
+  MEM_L1_CODE_CACHE    { START(0xFFA10000) END(0xFFA13FFF) TYPE(RAM) WIDTH(8) }
+  MEM_L1_CODE          { START(0xFFA00000) END(0xFFA07FFF) TYPE(RAM) WIDTH(8) }
+
+  MEM_L1_CODE_B {	
+	TYPE(RAM) WIDTH(8)
+	START(0xFFA08000) END(0xFFA0bFFF)  // place boot code at L1 BANK B
+}
+  
+  #ifdef USE_CACHE
+  MEM_L1_DATA_B_CACHE  { START(0xFF904000) END(0xFF907FFF) TYPE(RAM) WIDTH(8) }
+  MEM_L1_DATA_B        { START(0xFF902000) END(0xFF903FFF) TYPE(RAM) WIDTH(8) }
+#else
+  MEM_L1_DATA_B        { START(0xFF902000) END(0xFF907FFF) TYPE(RAM) WIDTH(8) }
+#endif
+  MEM_L1_DATA_B_STACK  { START(0xFF900000) END(0xFF901FFF) TYPE(RAM) WIDTH(8) }
+  MEM_L1_DATA_A_CACHE  { START(0xFF804000) END(0xFF807FFF) TYPE(RAM) WIDTH(8) }
+  MEM_L1_DATA_A        { START(0xFF800000) END(0xFF803FFF) TYPE(RAM) WIDTH(8) }
+#if 0
+  MEM_BOOT_ROM         { START(0xEF000000) END(0xEF0007FF) TYPE(ROM) WIDTH(8) }
+#endif
+  MEM_ASYNC3           { START(0x20300000) END(0x203FFFFF) TYPE(RAM) WIDTH(8) }
+  MEM_ASYNC2           { START(0x20200000) END(0x202FFFFF) TYPE(RAM) WIDTH(8) }
+  MEM_ASYNC1           { START(0x20100000) END(0x201FFFFF) TYPE(RAM) WIDTH(8) }
+  MEM_ASYNC0           { START(0x20000000) END(0x200FFFFF) TYPE(RAM) WIDTH(8) }
+
+  MEM_SDRAM0           { START(0x00004000) END(0x1FFFFFFF) TYPE(RAM) WIDTH(8) }
+  MEM_SDRAM0_HEAP      { START(0x00000004) END(0x00003FFF) TYPE(RAM) WIDTH(8) }
+}
+
+PROCESSOR p0
+{
+    OUTPUT( $COMMAND_LINE_OUTPUT_FILE )
+
+    SECTIONS
+    {
+        program_ram
+        {
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(L1_code) $LIBRARIES(L1_code))
+            INPUT_SECTIONS( $OBJECTS(cplb_code) $LIBRARIES(cplb_code))
+            INPUT_SECTIONS( $OBJECTS(cplb) $LIBRARIES(cplb))
+            INPUT_SECTIONS( $OBJECTS(noncache_code) $LIBRARIES(noncache_code))
+            INPUT_SECTIONS( $OBJECTS(program) $LIBRARIES(program))
+        } >MEM_L1_CODE
+
+        BOOT_KERNEL
+        {
+        	INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(L1_BANK_B) $LIBRARIES(L1_BANK_B))
+            // INPUT_SECTIONS( $OBJECTS(program) $LIBRARIES(program))
+        } >MEM_L1_CODE_B //MEM_L1_UART_SLAVE
+
+        
+        
+#ifndef USE_CACHE
+        l1_code
+        {
+            INPUT_SECTION_ALIGN(4)
+            ___l1_code_cache = 0;
+            INPUT_SECTIONS( $OBJECTS(L1_code) $LIBRARIES(L1_code))
+            INPUT_SECTIONS( $OBJECTS(cplb_code) $LIBRARIES(cplb_code))
+            INPUT_SECTIONS( $OBJECTS(cplb) $LIBRARIES(cplb))
+            INPUT_SECTIONS( $OBJECTS(program) $LIBRARIES(program))
+        } >MEM_L1_CODE_CACHE
+#endif /* USE_CACHE */
+        data_L1_data_a
+        {
+            INPUT_SECTION_ALIGN(4)
+#ifndef USE_CACHE
+            ___l1_data_cache_a = 0;
+#endif
+            INPUT_SECTIONS( $OBJECTS(L1_data_a) $LIBRARIES(L1_data_a))
+            INPUT_SECTIONS( $OBJECTS(cplb_data) $LIBRARIES(cplb_data))
+            INPUT_SECTIONS($OBJECTS(data1) $LIBRARIES(data1))
+            INPUT_SECTIONS($OBJECTS(voldata) $LIBRARIES(voldata))
+        } >MEM_L1_DATA_A
+
+        constdata_L1_data_a
+        {
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS($OBJECTS(constdata) $LIBRARIES(constdata))
+        } >MEM_L1_DATA_A
+
+        bsz_L1_data_a ZERO_INIT
+        {
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(bsz) $LIBRARIES(bsz))
+        } >MEM_L1_DATA_A
+
+        data_L1_data_b
+        {
+            INPUT_SECTION_ALIGN(4)
+#ifndef USE_CACHE
+            ___l1_data_cache_b = 0;
+#endif
+            INPUT_SECTIONS( $OBJECTS(L1_data_b) $LIBRARIES(L1_data_b))
+            INPUT_SECTIONS( $OBJECTS(cplb_data) $LIBRARIES(cplb_data))
+            INPUT_SECTIONS($OBJECTS(data1) $LIBRARIES(data1))
+            INPUT_SECTIONS($OBJECTS(voldata) $LIBRARIES(voldata))
+        } >MEM_L1_DATA_B
+
+        bsz_init
+        {
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(bsz_init) $LIBRARIES(bsz_init))
+        } >MEM_L1_DATA_B
+        .meminit {} >MEM_L1_DATA_B
+
+        constdata_L1_data_b
+        {
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS($OBJECTS(constdata) $LIBRARIES(constdata))
+        } >MEM_L1_DATA_B
+
+        bsz_L1_data_b ZERO_INIT
+        {
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(bsz) $LIBRARIES(bsz))
+        } >MEM_L1_DATA_B
+
+#ifdef USE_CACHE /* { */
+        l1_code
+        {
+            INPUT_SECTION_ALIGN(4)
+            ___l1_code_cache = 1;
+        } >MEM_L1_CODE_CACHE
+
+        l1_data_a_cache
+        {
+            INPUT_SECTION_ALIGN(4)
+             ___l1_data_cache_a = 1;
+        } >MEM_L1_DATA_A_CACHE
+
+        l1_data_b_cache
+        {
+            INPUT_SECTION_ALIGN(4)
+            ___l1_data_cache_b = 1;
+        } >MEM_L1_DATA_B_CACHE
+#endif /* } USE_CACHE */
+
+        stack
+        {
+            ldf_stack_space = .;
+            ldf_stack_end = ldf_stack_space + MEMORY_SIZEOF(MEM_L1_DATA_B_STACK);
+        } >MEM_L1_DATA_B_STACK
+
+#if defined(USE_CACHE) || defined(USE_SDRAM) /* { */
+        heap
+        {
+            // Allocate a heap for the application
+            ldf_heap_space = .;
+            ldf_heap_end = ldf_heap_space + MEMORY_SIZEOF(MEM_SDRAM0_HEAP) - 1;
+            ldf_heap_length = ldf_heap_end - ldf_heap_space;        
+        } >MEM_SDRAM0_HEAP
+#else
+        heap
+        {
+            // Allocate a heap for the application
+            ldf_heap_space = .;
+            ldf_heap_end = ldf_heap_space + MEMORY_SIZEOF(MEM_L1_DATA_A_CACHE) - 1;
+            ldf_heap_length = ldf_heap_end - ldf_heap_space;        
+        } >MEM_L1_DATA_A_CACHE
+#endif /* USE_CACHE } */
+
+        sdram
+        {
+#if defined(USE_CACHE) || defined(USE_SDRAM) /* { */
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(sdram0) $LIBRARIES(sdram0))
+            INPUT_SECTIONS( $OBJECTS(noncache_code) $LIBRARIES(noncache_code))
+            INPUT_SECTIONS( $OBJECTS(program) $LIBRARIES(program))
+            INPUT_SECTIONS( $OBJECTS(cplb) $LIBRARIES(cplb))
+            INPUT_SECTIONS( $OBJECTS(cplb_code) $LIBRARIES(cplb_code))
+            INPUT_SECTIONS($OBJECTS(data1) $LIBRARIES(data1))
+            INPUT_SECTIONS($OBJECTS(voldata) $LIBRARIES(voldata))
+            INPUT_SECTIONS($OBJECTS(constdata) $LIBRARIES(constdata))
+            INPUT_SECTIONS( $OBJECTS(cplb_data) $LIBRARIES(cplb_data))
+#endif /* USE_CACHE } */
+        } >MEM_SDRAM0
+
+#if defined(USE_CACHE) || defined(USE_SDRAM) /* { */
+        bsz_sdram0 ZERO_INIT
+        {
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(bsz) $LIBRARIES(bsz))
+        } >MEM_SDRAM0
+#endif /* USE_CACHE } */
+
+    }
+}

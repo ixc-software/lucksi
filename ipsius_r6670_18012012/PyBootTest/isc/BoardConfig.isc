@@ -1,0 +1,35 @@
+// _1 -> transport
+// _2 -> transport password
+
+// settings:
+// _3 -> useDhcp
+// _4, _5, _6 -> ip, gateway, mask
+// _7 -> password
+// _8 -> wait time (ms)
+// _9 -> verify
+
+//--------------------------------------------------------------------------
+
+CS_Exec "AutoReset.isc" "Addr = %_1%"
+
+// Настройка общих параметров объектов-заданий
+ObjCreate NObjCommonBfTaskProfile commonProfile true        
+    .BoardAddress = %_1%
+    .BoardPwd %_2%
+    .TraceClient = false
+    .TraceServer = false
+    .ObtainCbpPort
+
+//-------------------------------------------------------------------------
+
+
+ObjCreate NObjBfTaskSetParams setUserSettings true
+    
+    .Init commonProfile
+
+    .SetOptNetwork(%_3%, %_4%, %_5%, %_6%);    
+    .SetOptUserPwd(%_7%);
+    .SetOptWaitLoginMsec(%_8%)
+    .CheckAfter = %_9%
+    
+    .Run // старт задачи    

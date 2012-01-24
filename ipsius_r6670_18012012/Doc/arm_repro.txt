@@ -1,0 +1,41 @@
+1. собрать berkley db. 
+Версия сборки которая содержится в resip/contrib/db - 4.2. Но при запуске configure возникает ошибка.
+Сделующие шаги выполнены с версией berkley db 5.2.28
+	- распаковать архив исходников db и зайти в него
+	- скопировать из репозитория файл Misc/resip/armDbConfigure.sh
+	- в файле armDbConfigure.sh указать путь к кросскомпилятору и изменить параметр --prefix 
+	- run armDbConfigure.sh
+	- run make
+	- run make install
+
+	Сборка repro
+
+Перейти в каталог resip	
+
+1. в каталоге ./contrib/ares 
+	- скопировать из репозитория файл Misc/resip/armAresConfigure.sh
+	- исправить параметр --prefix, нужно указать абсолютный путь
+	- run armAresConfigure.sh
+	- run make
+	- скопировать libares.a в каталог ./contrib/ares/ares-build.linux-gnueabi.arm
+	(в родном скрипте эта операция не выполнялась)
+	
+2. в файле ./build/Makefile.pkg указать свою версию Db. 
+	Вместо строк:
+	ifndef DB42_LIBNAME
+	DB42_LIBNAME := db-4.2
+	DB42CXX_LIBNAME := db_cxx-4.2
+	endif
+	
+	нужно указать, например:
+	ifndef DB42_LIBNAME
+	DB42_LIBNAME := db-5.2
+	DB42CXX_LIBNAME := db_cxx-5.2
+	endif
+	
+3.  запустить ./configure
+4.  в начало файла ./repro/makefile добавить строку LDFLAGS += -lrt 
+	(иначе не выполняется линковка)
+5.  run make
+	
+	

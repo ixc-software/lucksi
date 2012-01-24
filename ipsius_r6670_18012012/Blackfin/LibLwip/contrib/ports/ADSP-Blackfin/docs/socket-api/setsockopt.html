@@ -1,0 +1,341 @@
+<html>
+	<head>
+		<title>Manpage of Setsockopt</title>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</head>
+
+
+<body>
+<h1>SETSOCKOPT / GETSOCKOPT</h1>
+<br><a href="#index">Index</a>&nbsp;&nbsp;
+<a href="index.html">Return to Main Contents</a>&nbsp;&nbsp;
+<a href="setsockopt_exp.html"> Example</a><hr>
+
+<a name="lbAB">&nbsp;</a> 
+<h2>NAME</h2>
+
+getsockopt, setsockopt - get and set options on sockets
+<a name="lbAC">&nbsp;</a> 
+<h2>SYNOPSIS</h2>
+
+<b>#include &lt;<a href="lwip/sockets.h">lwip/socket.h</a>&gt;</b>
+
+<p>
+<b>int getsockopt(int </b><i>s</i><b>, int </b><i>level</i><b>, int </b><i>optname</i><b>,</b>
+
+<b>void *</b><i>optval</i><b>, int *</b><i>optlen</i><b>);</b>
+
+<p>
+<b>int setsockopt(int </b><i>s</i><b>, int </b><i>level</i><b>, int </b><i>optname</i><b>,</b>
+
+<b>const void *</b><i>optval</i><b>, int </b><i>optlen</i><b>);</b>
+
+<a name="lbAD">&nbsp;</a> 
+<h2>DESCRIPTION</h2>
+
+<b>Getsockopt</b>
+
+and
+<b>setsockopt</b>
+
+manipulate the <i>options</i> associated with a socket. 
+Options may exist at multiple protocol levels; they are always present at the
+uppermost <b>socket</b> level.
+
+When manipulating socket options the level at which the
+option resides and the name of the option must be specified.
+To manipulate options at the socket level,
+<i>level</i>
+
+is specified as <b>SOL_SOCKET</b>. To manipulate options at any
+
+
+The parameters
+<i>optval</i>
+
+and
+<i>optlen</i>
+
+are used to access option values for
+<b>setsockopt</b>.
+
+For
+<b>getsockopt</b>
+
+they identify a buffer in which the value for the
+requested option(s) are to be returned.  For
+<b>getsockopt</b>,
+
+<i>optlen</i>
+
+is a value-result parameter, initially containing the
+size of the buffer pointed to by
+<i>optval</i>,
+
+and modified on return to indicate the actual size of
+the value returned.  If no option value is
+to be supplied or returned,
+<i>optval</i>
+
+may be NULL.
+
+<i>Optname</i>
+
+and any specified options are passed uninterpreted to the appropriate
+protocol module for interpretation.  The include file
+<i>&lt;<a href="lwip/sockets.h">lwip/sockets.h</a>&gt;</i>
+
+contains definitions for socket level options, described below.  Options at
+other protocol levels vary in format and name; consult the appropriate
+entries in section 4 of the manual.
+
+Most socket-level options utilize an
+<i>int</i>
+
+parameter for
+<i>optval</i>.
+
+For
+<b>setsockopt</b>,
+
+the parameter should be non-zero to enable a boolean option, or zero if the
+option is to be disabled.
+<b>SO_LINGER</b> uses a <i>struct linger</i> parameter, defined in <i>&lt;
+<a href="lwip/sockets.h">lwip/sockets.h</a>&gt;</i>,
+which specifies the desired state of the option and the
+linger interval (see below).
+<b>SO_SNDTIMEO</b> and <b>SO_RCVTIMEO</b> use a <i>struct timeval</i>
+parameter, defined in
+<i>&lt;<a href="lwip/sockets.h">lwip/sockets.h</a>&gt;</i>.
+
+The following options are recognized at the socket level.
+Except as noted, each may be examined with
+<b>getsockopt</b> and set with <b>setsockopt</b>. 
+
+<dl COMPACT>
+<dt>SO_REUSEADDR<dd>
+enables local address reuse
+<dt>SO_KEEPALIVE<dd>
+enables keep connections alive
+<dt>SO_LINGER<dd>
+linger on close if data present
+<dt>SO_BROADCAST<dd>
+enables permission to transmit broadcast messages
+<dt>SO_SNDTIMEO<dd>
+get timeout value for output (get only)
+<dt>SO_RCVTIMEO<dd>
+get timeout value for input (get only)
+<dt>SO_TYPE<dd>
+get the type of the socket (get only)
+<dt>SO_ERROR<dd>
+get and clear error on the socket (get only)</dd>
+        
+</dl>
+
+      
+<b>SO_REUSEADDR</b>
+
+indicates that the rules used in validating addresses supplied
+in a
+<b><a href="bind.html">bind</a></b> call should allow reuse of local addresses.
+<b>SO_KEEPALIVE</b>
+        
+         
+enables the periodic transmission of messages on a connected socket.&nbsp;
+
+<b>SO_LINGER</b>
+controls the action taken when unsent messages
+are queued on socket and a <b><a href="close.html">close</a></b>
+is performed.  If the socket promises reliable delivery of data and
+
+<b>SO_LINGER</b> is set, the system will block the process on the 
+<b>close</b> attempt until it is able to transmit the data or until it 
+decides it is unable to deliver the information (a timeout period, termed the 
+linger interval, is specified in the <b>setsockopt</b> call when <b>SO_LINGER</b> is requested).  If <b>SO_LINGER</b> is disabled and a <b>close</b> is issued,
+the system will process the close in a manner that allows
+the process to continue as quickly as possible.
+
+The <i>linger</i> structure is defined in
+<i>&lt;<a href="lwip/sockets.h">lwip/sockets.h</a>&gt;</i>
+as follows:
+<p>
+<dl COMPACT><dt><dd>
+<pre>
+struct linger {
+		int  l_onoff;   /* linger option on or off */
+        int  l_linger;  /* How long to linger for */
+};
+
+
+<b>l_onoff</b>
+indicates wether to linger or not. If it is set to 1 then
+<b>l_linger</b>
+contains the time in hundredths of seconds how long the process should
+linger to complete the
+<b>close</b>.
+If
+<b>l_onoff</b>
+is set to zero the process returns immediately.
+
+The option
+<b>SO_BROADCAST</b>
+requests permission to send broadcast datagrams on the socket.  Broadcast
+was a privileged operation in earlier versions of the system.  With
+protocols that support out-of-band data, the
+<b>SO_OOBINLINE</b>
+option requests that out-of-band data be placed in the normal data input
+queue as received; it will then be accessible with
+<b>recv</b>
+or
+<b>read</b>
+calls without the
+<b>MSG_OOB</b>
+flag.  Some protocols always behave as if this option is set.
+<b>SO_SNDBUF</b>
+and
+<b>SO_RCVBUF</b>
+are options to adjust the normal buffer sizes allocated for output and
+input buffers, respectively.  The buffer size may be increased for
+high-volume connections, or may be decreased to limit the possible backlog
+of incoming data.  The system places an absolute limit on these values.
+
+<b>SO_SNDLOWAT</b>
+is an option to set the minimum count for output operations.  Most output
+operations process all of the data supplied by the call, delivering data to
+the protocol for transmission and blocking as necessary for flow control.
+Nonblocking output operations will process as much data as permitted
+subject to flow control without blocking, but will process no data if flow
+control does not allow the smaller of the low water mark value or the
+entire request to be processed.  A
+<b><a href="select.html">select</a></b>
+operation testing the ability to write to a socket will return true only if
+the low water mark amount could be processed.  The default value for
+<b>SO_SNDLOWAT</b>
+is set to a convenient size for network efficiency, often 1024.
+
+<b>SO_RCVLOWAT</b>
+is an option to set the minimum count for input operations.  In general,
+receive calls will block until any (non-zero) amount of data is received,
+then return with smaller of the amount available or the amount requested.
+The default value for
+<b>SO_RCVLOWAT</b>
+is 1.
+If 
+<b>SO_RCVLOWAT</b>
+is set to a larger value, blocking receive calls normally wait until they
+have received the smaller of the low water mark value or the requested
+amount.  Receive calls may still return less than the low water mark if an
+error occurs, a signal is caught, or the type of data next in the receive
+queue is different than that returned.
+
+<b>SO_SNDTIMEO</b>
+is an option to get the timeout value for output operations.
+(It can be used with
+<i>getsockopt</i>
+only).  It returns a
+<i>struct timeval</i>
+parameter with the number of seconds and microseconds used to limit waits
+for output operations to complete.  If a send operation has blocked for
+this much time, it returns with a partial count or with the error
+<b>EWOULDBLOCK</b>
+if no data were sent.  In the current implementation, this timer is
+restarted each time additional data are delivered to the protocol, implying
+that the limit applies to output portions ranging in size from the low
+water mark to the high water mark for output.
+<b>SO_RCVTIMEO</b>
+is an option to get the timeout value for input operations.
+(It can be used with
+<i>getsockopt</i>
+only).  It returns a
+<i>struct timeval</i>
+parameter with the number of seconds and microseconds used to limit waits
+for input operations to complete.  In the current implementation, this
+timer is restarted each time additional data are received by the protocol,
+and thus the limit is in effect an inactivity timer.  If a receive
+operation has been blocked for this much time without receiving additional
+data, it returns with a short count or with the error
+<b>EWOULDBLOCK</b>
+if no data were received.
+
+Finally, also
+<b>SO_TYPE</b>
+and
+<b>SO_ERROR</b>
+are options used only with
+<i>getsockopt</i>.
+<b>SO_TYPE</b>
+returns the type of the socket, such as
+<b>SOCK_STREAM</b>;
+it is useful for servers that inherit sockets on startup.
+<b>SO_ERROR</b>
+returns any pending error on the socket and clears the error status.  It
+may be used to check for asynchronous errors on connected datagram sockets
+or for other asynchronous errors.</pre></dd>
+             
+           
+    
+</dl><pre></pre><a name="lbAE">&nbsp;</a> 
+<h2>RETURN VALUE</h2>
+
+On success, zero is returned. On error, -1 is returned, and the specific error
+number can be obtained by calling the function GetSocketError. In a
+multi-threaded environment the last error number is held separately for each 
+thread.
+<a name="lbAF">&nbsp;</a> 
+<h2>ERRORS</h2>
+
+<dl COMPACT>
+<dt><b>EBADF</b>
+
+<dd>
+The argument
+<i>s</i>
+
+is not a valid descriptor.
+<dt><b>ENOTSOCK</b>
+
+<dd>
+The argument
+<i>s</i>
+
+is a file, not a socket.
+<dt><b>ENOPROTOOPT</b>
+
+<dd>
+The option is unknown at the level indicated.
+<dt><b>EFAULT</b>
+
+<dd>
+The address pointed to by 
+<i>optval</i>
+
+is not in a valid part of the process address space.  For
+<b>getsockopt</b>,
+
+this error may also be returned if
+<i>optlen</i> is not in a valid part of the 
+  process address space.</dd>
+
+          
+</dl>
+<p>
+<a name="lbAI"></a> 
+<h2>SEE ALSO</h2>
+
+<b><a href="ioctl.html">ioctl</a></b>,
+<b><a href="socket.html">socket</a></b>, 
+
+<p>
+<hr>
+<a name="index">&nbsp;</a><h2>Index</h2>
+<dl>
+<dt><a href="#lbAB">NAME</a><dd>
+<dt><a href="#lbAC">SYNOPSIS</a><dd>
+<dt><a href="#lbAD">DESCRIPTION</a><dd>
+<dt><a href="#lbAE">RETURN VALUE</a><dd>
+<dt><a href="#lbAF">ERRORS</a><dd>
+<dt><a href="#lbAI">SEE ALSO</a><dd></dd>
+</dl>
+<hr>
+</body>
+</html>

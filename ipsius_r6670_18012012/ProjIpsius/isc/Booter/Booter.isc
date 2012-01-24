@@ -1,0 +1,20 @@
+#define LoaderPath ..\fw_update\03_bf537loader_led.ldr
+#define BooterPath ..\fw_update\19_BfBoot_Ver_Booter11.Cfg06.Factory05.ldr
+#define FirmwarePath ..\fw_update\24_release.fwu
+
+//#define DefBoardAddress 192.168.0.202
+#define DefBoardAddress COM1@38400
+#define DefMAC 90:91:a1:88:00:0a
+
+
+CS_Exec "RunMiniFlasher.isc" "loader = %LoaderPath%; main = %BooterPath%"
+//CS_Exec "SetFactory.isc" "BoardAddress = %DefBoardAddress%; MAC = %DefMAC%;"
+//CS_Exec "SetNetworkAndPwd.isc" "BoardAddress = %DefBoardAddress%; UseDhcp = true; Ip =; Pwd =;"
+//CS_Exec "UpdateFw.isc" "BoardAddress = %DefBoardAddress%; BoardPwd =; Firmware = %FirmwarePath%;"
+
+
+#undef DefBoardAddress
+#undef DefMAC
+#undef LoaderPath 
+#undef BooterPath 
+#undef FirmwarePath

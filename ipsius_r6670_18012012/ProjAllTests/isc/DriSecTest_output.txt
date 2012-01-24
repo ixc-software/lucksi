@@ -1,0 +1,106 @@
+> Security.Profiles.Add "user" acReadOnly
+:OK
+
+> Security.Profiles.user.AddRec "n1"    t acFull  "" "Dec;NObjSecTestB.Value+"
+:OK
+
+> Security.Profiles.user.AddRec "n1.n0" t acDeny  "Inc"
+:OK
+
+> ObjCreate NObjSecTestA "n0"
+:OK
+
+> ObjCreate NObjSecTestA "n1"
+:OK
+
+> n0.ObjCreate NObjSecTestA "n0"
+:OK
+
+> n1.ObjCreate NObjSecTestA "n0"
+:OK
+
+> n1.ObjCreate NObjSecTestB "n1"
+:OK
+
+> Security.SwitchSecProfile "user"
+:OK
+
+:PRINT "------------------------------"
+
+> n0.Value
+0
+:OK
+
+> n0.Value = 3
+n0 action PropWrite for 'Value' by rec #0 // DENY by mode acReadOnly
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTest.isc, line 33 (command # 12)
+:ERROR DRI::CommandDriPrepareError
+
+> n0.Inc
+n0 action Execute for 'Inc' by rec #0 // DENY by mode acReadOnly
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTest.isc, line 34 (command # 13)
+:ERROR DRI::CommandDriPrepareError
+
+> n0.n0.Inc
+n0.n0 action Execute for 'Inc' by rec #0 // DENY by mode acReadOnly
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTest.isc, line 35 (command # 14)
+:ERROR DRI::CommandDriPrepareError
+
+> n1.n0.Value
+n1.n0 action PropRead for 'Value' by rec #3 // DENY by mode acDeny
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTest.isc, line 39 (command # 15)
+:ERROR DRI::CommandDriPrepareError
+
+> n1.n0.Inc
+:OK
+
+> n1.Inc
+:OK
+
+> n1.Value
+1
+:OK
+
+> n1.Dec
+n1 action Execute for 'Dec' by rec #2 // DENY by deny list
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTest.isc, line 44 (command # 19)
+:ERROR DRI::CommandDriPrepareError
+
+> n1.n1.Inc
+:OK
+
+> n1.n1.Dec
+n1.n1 action Execute for 'Dec' by rec #2 // DENY by deny list
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTest.isc, line 47 (command # 21)
+:ERROR DRI::CommandDriPrepareError
+
+> n1.n1.Value
+n1.n1 action PropRead for 'Value' by rec #2 // DENY by deny list
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTest.isc, line 48 (command # 22)
+:ERROR DRI::CommandDriPrepareError
+
+> n1.n1.Value = 5
+n1.n1 action PropWrite for 'Value' by rec #2 // DENY by deny list
+:LOCATION S:/proj/Ipsius/ProjDomain/isc/DriSecTest.isc, line 49 (command # 23)
+:ERROR DRI::CommandDriPrepareError
+
+> n0.ObjList t -1
+n0 : NObjSecTestA
+    LogLevel = 0
+    Value = 0
+    n0 : NObjSecTestA
+        LogLevel = 0
+        Value = 0
+:OK
+
+> n1.ObjList t -1
+n1 : NObjSecTestA
+    LogLevel = 0
+    Value = 1
+    n0 : NObjSecTestA
+    n1 : NObjSecTestB
+        LogLevel = 0
+:OK
+
+
+Commands in total 25, with errors 8, service 50, scripted 0

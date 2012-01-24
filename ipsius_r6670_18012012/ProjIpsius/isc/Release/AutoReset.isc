@@ -1,0 +1,9 @@
+// #define Addr // if Addr is COMx@x 
+
+ObjCreate NObjBroadcastReceiver autoReset true
+
+    .SrcAddress = "%Addr%"    
+    //.Trace true
+    .StartWaiting true -1 // ожидание бродкаста приложения и перезагрузка платы
+    
+autoReset.ObjDelete 

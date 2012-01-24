@@ -1,0 +1,66 @@
+CS_Set
+
+#define HwType       E1      		      // Harware type. Allowed "E1" or "T1"
+#define UseAlaw      true                 // A/U закон для RTP потока
+
+#define ExternalIp   ""                   // реальный IP адрес роутера (опционально, только для прохождения NAT)
+#define ProxyHost    "192.168.0.158:5066" // IP + порт удаленного SIP прокси, с которым будет взаимодействовать шлюз
+#define RegInd       false                // включить(true)/выключить(false) регистрацию шлюза на Sip прокси
+#define Password     "ipsius2009"         // пароль для регистрации на Sip прокси
+
+ObjCreate NObjBroadcastReceiver "Broadcast"
+Broadcast.Mac = "90:91:92:93:94:01"
+Broadcast.CbpPort = 0
+Broadcast.StartWaiting false
+
+#define BoardName "Board1"              // имя платы с которой будет взаимодействовать шлюз
+#define BoardHost "192.168.0.201:4097" // - укажите здесь правильный IP адрес платы, который она получит по DHCP 
+
+CS_Exec "Boards.isc" "boardName = %BoardName%; boardHost = %BoardHost%"
+
+#define GatewayName  "ipsius1"		      // имя шлюза 
+#define LocalHost    "192.168.0.158:5062" // IP + порт SIP шлюза
+#define Side         TE                   // выбор NT или TE режима для Dss1
+#define LiuSyncMaster false
+
+#include "BlackfinImpl.isc"
+
+#undef BoardName
+#undef BoardHost
+#undef GatewayName
+#undef LocalHost
+#undef Side
+#undef LiuSyncMaster
+ 
+ // ---------------------------------------------------------------------
+CS_Set 
+Broadcast.Mac = "90:91:92:93:94:0A"
+Broadcast.CbpPort = 0
+Broadcast.StartWaiting false
+
+#define BoardName "Board2"              // имя платы с которой будет взаимодействовать шлюз
+#define BoardHost "192.168.0.202:4097" // - укажите здесь правильный IP адрес платы, который она получит по DHCP 
+CS_Exec "Boards.isc" "boardName = %BoardName%; boardHost = %BoardHost%"
+
+CS_Set
+#define GatewayName  "ipsius2"		      // имя шлюза 
+#define LocalHost    "192.168.0.158:5068" // IP + порт SIP шлюза
+#define Side         NT                   // выбор NT или TE режима для Dss1
+#define LiuSyncMaster true
+
+#include "BlackfinImpl.isc"
+
+#undef BoardName
+#undef BoardHost
+#undef GatewayName
+#undef LocalHost
+#undef ExternalIp
+#undef ProxyHost
+#undef RegInd
+#undef Password
+#undef HwType
+#undef Side
+#undef UseAlaw
+#undef LiuSyncMaster
+
+CS_Exec "Test/SipTest.isc" "FirstNumber = 48000; OutName = 71000; OutHost = 192.168.0.158:5064; InHost = 192.168.0.158:5066; ProxyHost = 192.168.0.158:5062"

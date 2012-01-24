@@ -1,0 +1,16 @@
+CS_Set
+
+#define BoardAddres "192.168.0.202:4097" 
+
+ObjCreate NObjWatchdogTest "WatchdogTest" true  
+
+.SbpSettings.TraceInd = true
+.SbpSettings.TimeoutCheckInterval = 1000
+.StateInfo %BoardAddres%
+//.AssertTest %BoardAddres%
+//.SmalWatchdogTest %BoardAddres%
+//.HugeWatchdogTest %BoardAddres%
+//.LoopForeverTest %BoardAddres%
+
+
+

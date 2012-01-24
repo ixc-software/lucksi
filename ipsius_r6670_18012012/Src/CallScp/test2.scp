@@ -1,0 +1,46 @@
+/*
+    This is test script
+
+*/
+
+class pult:
+	start:        
+		incomingCallHandler c1
+
+class trainer:
+    start:
+		print "trainer started..."  
+		wait 2000
+		createOutgoingCall c1 "pult"
+
+class c1:
+
+	i.trying:
+		pass
+
+    i.alerting:
+        lp_ring self.conv
+        wait 2000
+        lp_accept self.conv
+
+    i.talking:
+        wait 2000
+        call_disc self
+       
+    i.disconnected:
+        assert self was talking 
+        end        
+
+    o.trying:
+		pass
+    
+    o.alerting:
+		print "pult call allerting"
+		
+    o.talking:
+        print "pult call accepted"           
+            
+    o.disconnected:
+        run c1 i.disconnected   // subroutine, do end
+        
+        

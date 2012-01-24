@@ -1,0 +1,22 @@
+CS_Exec "EmulTest/RunEmul.isc" "FIRST_BOARD_NUMBER = 75; SECOND_BOARD_NUMBER = 76; FIRST_BOARD_PORT = 5062; SECOND_BOARD_PORT = 5064; FIRST_BOARD_NAME = b1; SECOND_BOARD_NAME = b2; SIP_TEST_IN_PORT = 5084;"
+
+HeapTrace = false 
+
+#define TestWithRtpPoint True
+#define TestWithLocalGen False
+
+ObjCreate NObjConfTester tester true
+.LogLevel = 3
+.Channel = 10
+.Run("User.Trunk.i0.Cmp", "Net.Trunk.i0.Cmp", %TestWithRtpPoint%)
+.Run("User.Trunk.i0.Cmp", "Net.Trunk.i0.Cmp", %TestWithLocalGen%)
+
+tester.ObjDelete 
+
+User.ObjDelete 
+Net.ObjDelete 
+sip1.ObjDelete 
+sip2.ObjDelete 
+Emul.ObjDelete 
+HwFinder.ObjDelete 
+ResipLog.ObjDelete 

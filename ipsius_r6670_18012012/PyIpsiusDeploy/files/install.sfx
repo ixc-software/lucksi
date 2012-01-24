@@ -1,0 +1,8 @@
+; Hello world!
+
+; Setup=vcredist_x86.exe
+Overwrite=1
+Path=Ipsius
+Shortcut=P, run.bat,    Ipsius, "Run Ipsius", "Ipsius"
+Shortcut=P, runGui.bat, Ipsius, "Run Config", "Ipsius Config"
+

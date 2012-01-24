@@ -1,0 +1,63 @@
+Модуль ModArmIo позволяет обращатся к физическим адресам памяти S3c64xx напрямую. На момент написания 
+этого файла поддерживает только регион GPIO.
+
+Пользовательские приложения обращаются к драйверу через системный вызов ioctl.
+
+Пример пользовательского кода:
+//---------------
+#include <fcntl.h>
+#include <assert.h>
+#include <sys/ioctl.h>
+
+#include "ModArmIo.h"
+
+void foo()
+{
+    int fd = open("/dev/RegDrv", O_RDWR); 
+    assert(fd >= 0 && No such file);
+
+    // read by addres 0x7f0080e8
+    iUserData data;         
+    data.m_addr = 0x7f0080e8;
+    data.m_cmd = icmdRead;
+    data.m_magic = iCMagic;
+    
+    iReturnCode rc = ioctl(fd, 0, &m_data);
+    assert( rc == iretOk );         // cmd complete
+        assert(m_data.m_magic == iCMagic);
+
+    close(fd);
+    
+}
+
+//---------------
+
+Сборка модуля:
+1 Установить путь к коду ядра в Makefile (переменная KERNEL_DIR).
+2 make
+
+Установка модуля:
+1 Скопировать DynInsmod.sh и ModArmIo.ko на платформу.
+2 Перейти к DynInsmod.sh и ModArmIo.ko, запустить DynInsmod.sh.
+
+// DynInsmod.sh загружает модуль, определяет его MajorNumber и создает связанный с MajorNumber файл.
+
+ЗЫ: В модуле определены входные параметры.
+  
+  Параметры и их дефолтные значения (см ModArmIo.c):
+
+  int major = 0 // 0 - is auto, ro
+  bool traceOn = false // rw for root, ro - other
+  bool disableRead = false // rw for root, ro - other
+  bool disableWrite = false // rw for root, ro - other
+
+Эти параметры можно передать при загрузке, например: insmod major=12 traceOn=Y. Во время выполнения переменные доступны через файл 
+sysfs: /sys/module/ModArmIo/parameters.
+
+
+Deploy:
+ModArmIo.ko - binary of module
+DynInsmod.sh - insert script
+SharedConsts.h - variable shared between code and shell script
+
+

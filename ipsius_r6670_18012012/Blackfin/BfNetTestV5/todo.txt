@@ -1,0 +1,25 @@
+
+* RAII iVDK for critical section
+* boost, shared_ptr<>, noncopiable
+
+* RTP
+  - взаимодействие с настоящим стеком
+  - логирование
+  - редизайн
+  - оптимизация классов Sender/Recviever; RtpPacket, RtpHeap
+
+
+* error: invalid redeclaration of type name "MutexID"
+  VDK.h должен быть впереди всех STL хидеров
+
+	class  MutexID
+	{
+	public:
+	     int dummy;
+	};
+	
+	enum MutexID
+	{
+		last_mutex__3VDK=-1
+	};
+

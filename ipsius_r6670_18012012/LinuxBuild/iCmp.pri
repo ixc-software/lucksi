@@ -1,0 +1,3 @@
+
+SOURCES += \ 
+    iCmp/ChMngProtoData.cpp

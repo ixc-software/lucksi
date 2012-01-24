@@ -1,0 +1,115 @@
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of read</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>READ</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="read_exp.html"> Example</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+read - read from a file descriptor
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="lwip/sockets.h">lwip/sockets.h</A>&gt;</B>
+<P>
+<B>ssize_t read(int </B><I>fd</I><B>, void *</B><I>buf</I><B>, size_t </B><I>count</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>read()</B>
+
+attempts to read up to
+<I>count</I>
+
+bytes from file descriptor
+<I>fd</I>
+
+into the buffer starting at
+<I>buf</I>.
+
+
+If
+<I>count</I>
+
+is zero, <B>read()</B> returns zero and has no other results.
+
+<P>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+On success, the number of bytes read is returned (zero indicates end of
+file).
+It is not an error if this number is smaller than the number of bytes
+requested; this may happen for example because fewer bytes are actually
+available right now (maybe because we were close to end-of-file,
+or because
+<B>read()</B> was interrupted.
+On error, -1 is returned, and specific error can be obtained by calling the
+function GetSocketError. In multi-threaded environment the last error number
+is held seperately for each thread.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EINTR</B>
+
+<DD>
+The call was interrupted by a signal before any data was read. <font color="red"> Not Supported</font>
+<DT><B>EAGAIN </B>
+
+<DD>
+Non-blocking I/O has been selected using
+<B>O_NONBLOCK</B>
+
+and no data was immediately available for reading. <font color="red">Not Supported </font>
+
+<DT><B>EIO</B>
+
+<DD>
+I/O error. 
+<DT><B>EINVAL</B>
+
+<DD>
+<I>fd</I>
+
+is attached to an object which is unsuitable for reading.
+<DT><B>EFAULT</B>
+
+<DD>
+<I>buf</I>
+
+is outside your accessible address space. <font color="red">Not Supported</font>
+</DL>
+
+<A NAME="lbAI">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="write.html">write</A></B>, 
+<B><A HREF="close.html">close</A></B>, 
+<B><A HREF="select.html">select</A></B>,
+<B><A HREF="ioctl.html">ioctl</A></B>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAI">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

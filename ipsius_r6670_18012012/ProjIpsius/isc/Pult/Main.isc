@@ -1,0 +1,17 @@
+CS_Exec "../Header.isc"
+
+ObjCreate  NObjResipLog ResipLog
+//ResipLog.Type = Stack
+
+ObjCreate NObjCallMngTest Pult true 
+.LogLevel = 3
+.SoundMode = NullMode
+.Sip.LocalHost = 5062			            // IP + порт SIP шлюза (передается в скрипт в качестве параметра)
+.Sip.Proxy.ProxyHost = "192.168.0.214"		// IP + порт удаленного SIP прокси, с которым будет взаимодействовать шлюз
+//.Sip.WaitAnswerTimeout = 5000
+.Sip.Proxy.RegistrationInd = true           // включить(true)/выключить(false) регистрацию шлюза на Sip прокси
+.Sip.Proxy.UserName = pult                  // имя шлюза как Sip пользователя, используется при регистрации на Sip прокси
+                                             // по умолчанию используется имя шлюза 
+.Sip.Proxy.Password = 1                     // пароль для регистрации на Sip прокси
+
+.Enabled = true

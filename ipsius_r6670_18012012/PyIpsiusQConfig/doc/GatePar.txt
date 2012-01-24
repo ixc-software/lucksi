@@ -1,0 +1,22 @@
+// параметры создания шлюза для скрипта BlackfinImpl.isc
+QString GatewayName; // имя шлюза
+QString ExternalIp;  // реальный IP адрес роутера (опционально, только для прохождения NAT)
+QString LocalHost;   // IP + порт SIP шлюза (передается в скрипт в качестве параметра)
+QString ProxyHost;   // IP + порт удаленного SIP прокси, с которым будет взаимодействовать шлюз
+bool RegInd;         // включить(true)/выключить(false) регистрацию шлюза на Sip прокси
+QString Password;    // пароль для регистрации на Sip прокси
+
+
+enum HwType;           // тип устройства enum {T1,  E1}
+QString BoardName;     // имя платы
+enum Side;             // enum {TE, NT}
+bool LiuSyncMaster;    // синхронизация 
+
+bool UseAlow;          // A/U закон для RTP потока
+
+
+
+
+
+
+

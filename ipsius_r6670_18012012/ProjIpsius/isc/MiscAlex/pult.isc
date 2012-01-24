@@ -1,0 +1,27 @@
+
+ObjCreate NObjPult pult true
+
+    .LogLevel = 3
+
+	.SoundMode = "NullMode"
+	.SoundMode = LocalMode
+	.KeyboardType = "KbEmul"
+	.KbEmulSettings.EmbedDisp = true
+	
+	.ViewSettings.Embeded = true
+	.ViewSettings.Width = 400
+	.ViewSettings.Height = 240 
+	
+	.Sip.LocalHost = 5062			      
+	.Sip.Proxy.ProxyHost = "192.168.0.205"
+	//.Sip.WaitAnswerTimeout = 5000
+	.Sip.Proxy.RegistrationInd = true
+	.Sip.Proxy.UserName = alex_pult 
+	.Sip.Proxy.Password = 1
+	
+	.DirKeys.Set(0, "110")
+	.DirKeys.Set(1, "120")
+	
+	.PhBook.Set("Vasya", "120")
+		
+	.Enabled = true

@@ -1,0 +1,14 @@
+
+CS_Print "Loading define external test"
+
+// use defines from other file
+CS_Set
+CS_Set %_2nd_path%					
+// %_empty_%						
+CS_Set %_211th_path%
+%set2nd%
+ObjList false -1
+
+// create new define and use it in other file
+#define externCommandList CS_Set; CS_Set obj1; CS_Set
+

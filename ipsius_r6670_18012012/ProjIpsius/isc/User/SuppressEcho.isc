@@ -1,0 +1,8 @@
+
+#define TxFile "C:\eugene_v\MCD\MainE1\Tx.txt"
+#define RxFile "C:\eugene_v\MCD\MainE1\RxEcho.txt"
+#define Taps 127
+#define OutFile "C:\eugene_v\MCD\MainE1\SupressedBy127.wav"
+
+ObjCreate NObjEchoCanceler prc true
+	.Process(%TxFile%, %RxFile%, %Taps%, %OutFile%);

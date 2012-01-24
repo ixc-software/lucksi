@@ -1,0 +1,17 @@
+CS_Set
+
+ObjCreate NObjHwFinder HwFinder true 
+.TraceEnabled = true
+.BoardFilter.Include "19"
+//.BoardFilter.Exclude "17"                         // указываем номера плат, которые не будут обслуживаться 
+.FirmwarePath = "~IPSIUS_RELEASE~\FWU\DevIpTdm\"    // путь к прошивкам 
+.Enabled = true
+.Alias(19, "EchoTest")
+//.Alias(1002, "A1")
+//.Alias(19, "b1")
+//.Alias(19, "P2")
+//.Alias(75, "Em1")
+//.Alias(76, "Em2")
+//.Alias(4,  "Ingvar1")								
+//.Alias(11, "Ingvar2")								
+

@@ -1,0 +1,37 @@
+// TrunkName   - name Dss1Trunk
+// BoardName   - name of gateway which will be used in an interface Dss1Trunk
+// HwType      - Harware type. E1 or T1.
+// Side        - NT or TE
+// UseAlow     - type of codec
+// LiuSyncMaster - synchronization
+
+.AddDss1(%HwType%, %TrunkName%, %BoardName%, %Side%)
+.%TrunkName%.CS_Set
+.LogLevel = 0
+.RestartReq = false
+//.AddressCompleteSize = 0
+.RelAnonymCall = false
+.AnonymCallingAddr = "1111"
+//.L3.SendProgInd = false
+
+// Interface 0
+.i0.Global.DevTraceInd = false                  // trace on device ON/OFF
+.i0.Global.DevTraceHost = "192.168.0.112:56001" // log receiver (used LogViewer)
+.i0.Global.DevWatchdogEnabled = true
+.i0.Global.DevResetOnFatalError = true
+.i0.Liu.SyncMaster = %LiuSyncMaster%
+.i0.Liu.CRC4 = true                           // CRC4 on/off (on - true, off - false)
+//.i0.OutBlockingCh = "17..31"
+//.i0.InBlockingCh = "1..15, 17..31"
+
+.i0.Board.StartRtpPort = 8000     // range of RTP ports                    
+.i0.Board.UseAlaw = %UseAlaw%     // A/U codec
+.i0.Board.EchoTape = 64           // 64 – echo cancelation on, 0 – echo cancelation off
+
+.i0.Sbp.TimeoutCheckInterval = 0
+
+
+.L1.TraceType = State
+.L2TraceInd = false               // trace L2 DSS1
+.L3.Trace.Enabled = false        // trace L3 DSS1
+CS_SetBack

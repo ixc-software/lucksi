@@ -1,0 +1,43 @@
+
+*** О реализации Telnet ***
+
+Реализовывать нужно *серверную* сторону.
+
+Статья в WiKi -- http://en.wikipedia.org/wiki/Telnet
+Полезная диаграмма -- Telnet.pdf
+Полный список всех RFC.
+
+Коммерческая реклизация для Qt (клиент), можно посмотреть интерфейс
+http://trolltech.com/products/qt/addon/solutions/catalog/4/Utilities/qttelnet/
+
+Использовать SSH?
+Источник -- OpenSSH, http://www.openssh.org/
+Или PuTTY (только клиент)
+
+Возможность снять реальные логи для telnet, например в PuTTY
+
+Telnet есть для PHP, например PHPTelnet 1.1 by Antone Roundy (PHPTelnet.php)
+
+Реализация Telnet в проектах с открытым исходным кодом.
+Непосредственно telnet это обмен опциями и командами (через IAC байт), передача информации о размере окна терминала.
+
+Console Telnet (telnet-2.1b2-source.zip) -- Win32 проект на C++.
+Главный класс -- tnclass.h
+Непосредственно telnet -- ttelhndl.h.
+Консоль -- tconsole.h.
+Парсинг потока терминала (атрибуты, курсор etc.) -- ansiprsr.h
+
+PuTTY (putty-src.zip) -- кроссплатформенный, Telnet/SSH.
+Базовые протоколы обмена сделаны ввиде "объектов" типа Backend.
+Telnet реализован в telnet.c
+SSH реализован в ssh.c
+Парсинг потока для терминала -- terminal.c
+
+
+dtelnet (dt124src.zip) -- Win32 реализация.
+Непосредственно telnet в файле raw.c
+
+
+
+
+

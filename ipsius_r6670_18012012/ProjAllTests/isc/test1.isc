@@ -1,0 +1,182 @@
+// ----------------------------
+
+// Method ObjDeleteChildren was temporary removed from the system
+
+CS_Print "Stage: ObjCreate() and ObjList()"
+
+CS_Set                              // make root object current in session (do nothing)
+
+ObjCreate NObjTestType test         // create object
+ObjCreate NObjTestType              // create, with auto-gen name
+
+ObjCreate NObjTestType t true       // create "t", set it current
+.ObjCreate NObjTestType
+.ObjCreate NObjTestType
+.ObjCreate NObjTestType
+
+ObjList   // list
+
+ObjCreate NObjTestType "lev0"
+lev0.ObjCreate NObjTestType "lev1"
+lev0.lev1.ObjCreate NObjTestType "lev2"
+
+// list with/without props
+ObjList false 99  
+ObjList false -1  
+
+
+// ----------------------------
+
+CS_Print "Stage: Meta stuff"
+
+ObjCreate NObjTestTypeInner     // non-creatable error
+
+CS_Set                          // current = root
+
+ObjCreate NObjTestType parent true      // create, change current
+.AddChild
+.AddChild
+.AddChild
+.AddChild
+.ObjList true -1
+
+// inc, view changes
+.Child0.Inc
+.Child0.ObjList true
+.Child0.ObjView true   // with field types
+.Child0.ObjView        // without
+
+// meta-methods
+.Child0.MetaMethods
+MetaMethods NObjTestType
+MetaMethods NObjTestType ObjCreate  // single method info
+
+MetaFields  NObjTestTypeInner Number  // single field info
+
+// MetaEnums()
+.Child0.MetaEnums
+MetaEnums NObjTestTypeInner NumberState  // signle
+
+// MetaTypeInfo()
+MetaTypeInfo NObjTestTypeInner true
+.Child0.MetaTypeInfo 
+CS_Set
+MetaTypeInfo  // for root
+
+// MetaTypes()
+MetaTypes
+MetaTypes true
+
+// list all
+ObjList false -1 
+
+// -------------------------------
+
+CS_Print "Stage: Transactions and errors"
+
+// errors
+CS_End    // end without begin
+
+CS_Begin
+CS_Begin  // inner begin
+CS_Set
+CS_End
+
+// transaction continue work after error
+CS_Begin(true)
+kk.ObjList  // object not found
+CS_Set      // OK
+CS_End
+
+// transaction aborted after first error
+CS_Begin
+kk.ObjList  // object not found
+CS_Set      // aborted
+CS_End
+
+CS_Set
+
+CS_Set xxx          // object not found
+MetaTypes 15        // bad arg, can't convert to bool
+ObjXXX              // method/property not found
+ObjCreate ttt       // type "ttt" not found in factory
+parent.a.Run        // object "a" not found
+
+
+// -------------------------------
+
+CS_Print "Stage: properties"
+
+parent.Child2.Number
+parent.Child2.SqrtNumber
+
+parent.Child2.ObjView
+
+parent.Child2.SqrtNumber = "1.45"   // can't set r/o field
+parent.Child2.Number(3)             // bad syntax for set
+parent.Child2.Number 3              // OK
+parent.Child2.Number = 5            // OK
+
+parent.Child2.ObjView               // view -- Number must changed to "5"
+
+parent.Number = -1                  // property setter exception
+parent.Number = 17                  // OK
+parent.Child0.ObjView false Number  // view only property Number
+
+// -------------------------------
+
+CS_Print "Stage: CS_Discard() and CS_Exec()"
+
+CS_Discard              // error, not in transaction
+
+CS_Begin
+ObjCreate ttttt         // with bug, but not executed
+CS_Discard a            // bug, "a" params
+CS_Discard              // abort transaction
+
+parent.Child2.Number
+
+CS_Exec "test1_extern.isc"   // OK, execute external script
+
+parent.Child3.Number
+
+CS_Exec "test1_macro_print.isc" "a;;;"   // bad macro list
+CS_Exec "test1_macro_print.iscxxx"       // bad file name
+
+// -------------------------------
+
+CS_Print "Stage: delete tests"
+
+ObjList false -1 
+
+ObjDelete "parent.Child1"  // error -- R/O
+ObjDelete "parent.Child7"  // error -- not exists
+parent.ObjDeleteChildren   // error -- R/O children
+
+t.ObjDeleteChildren
+lev0.lev1.ObjDelete 
+
+ObjList false -1 
+
+parent.ObjDelete
+ObjList false -1 
+
+// -------------------------------
+
+CS_Print "Stage: async methods"
+
+ObjCreate NObjTestType delTest
+
+delTest.AddChild
+delTest.AddChild
+delTest.AddChild
+delTest.AddChild
+
+delTest.ObjList
+
+delTest.RemoveChild(5)   // not found
+delTest.RemoveChild(0)
+delTest.RemoveChild(3)
+
+delTest.ObjList
+

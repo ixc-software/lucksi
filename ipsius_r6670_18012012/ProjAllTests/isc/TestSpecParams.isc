@@ -1,0 +1,50 @@
+//
+// usage: %_0%
+//
+// _0 string 	- .exe name
+// _1 bool 	- true 
+// _2 string 	- spObj11
+// _3 string 	- spObj11.spObj111
+// _4 int	- 1024
+// _5 int	- 0xAF
+// _6 int	- AF
+// _7 HostInf	- 127.10.20.85:10058
+
+CS_Print "Stage: Using command line special params test --- "
+
+// CS_Print %_0%
+
+// HostInf test
+Log.TraceToUdp false
+Log.DstUdpTrace %_7%
+Log.DstUdpTrace
+Log.TraceToUdp true
+
+// string and correct replace test
+ObjCreate NObjTestType spObj1 true
+.ObjCreate NObjTestType %_2%		// OK: create spObj1.spObj11
+// .ObjCreate NObjTestType %_3%		// OK: create spObj1.spObj11.spObj111
+.ObjCreate NObjTestType spObj_0		// OK: create spObj1.spObj_0
+.ObjCreate NObjTestType _0spObj		// OK: create spObj1._0spObj
+.%_2%.ObjCreate NObjTestType "spObj112" // OK: create spObj11.spObj112
+
+// bool test
+.ObjList %_1% -1				// OK
+
+// int test
+.%_2%.Number				// OK: look for params inside excpretions
+.Number = %_4%				// request spObj1.Number
+.Number
+
+.Number = %_5%				// OK: value unquoted
+.Number = %_6%				// OK: value unquoted
+
+// unknown special param test
+// CS_Set %_20%				// result - empty string
+
+CS_Print "Stage: Delete all created objects --------------- "
+
+ObjList
+
+spObj1.ObjDelete 
+

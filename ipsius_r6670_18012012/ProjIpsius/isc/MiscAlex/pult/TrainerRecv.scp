@@ -1,0 +1,98 @@
+
+class pult:
+
+	start:
+		print "pult started..."
+
+// -----------------------------------------------------
+
+class trainer:
+
+	start:		
+		print "recv trainer started..."
+
+		treatInCallAs     cDrop                         // drop all		
+		treatInCallByTo   cRingInf              101		
+		treatInCallByTo   cRingAndDrop          102
+		treatInCallByTo   cRingAndTalk          103
+		treatInCallByTo   cRingAndTalkInf       104
+		treatInCallByTo   cCallback             105
+		treatInCallByTo   cTalkAndHold          106
+				
+
+// -----------------------------------------------------
+
+class cDrop:
+
+	i.Incoming:
+        releaseCall self
+
+// -----------------------------------------------------
+        
+class cRingInf:
+
+	i.Incoming:
+        pass
+
+// -----------------------------------------------------
+                
+class cRingAndDrop:
+
+	i.Incoming:
+        wait 5000
+        releaseCall self
+
+// -----------------------------------------------------
+
+class cRingAndTalk:
+
+	i.Incoming:
+        wait 4000
+        connectToConv lp self
+
+    i.Talk:
+        wait 5000
+        releaseCall self
+
+// -----------------------------------------------------
+        
+class cRingAndTalkInf:
+
+	i.Incoming:
+        wait 4000
+        connectToConv lp self
+
+    i.Talk:
+        pass
+
+// -----------------------------------------------------
+
+class cCallback:
+
+	i.Incoming:
+        releaseCall self
+        wait 6000
+        createCall cOutCall 105_callback
+        
+
+// -----------------------------------------------------
+
+class cOutCall:
+
+    // nothing
+    
+// -----------------------------------------------------
+
+class cTalkAndHold:
+
+	i.Incoming:
+        wait 1000
+        connectToConv lp self
+
+    i.Talk:
+        wait 4000
+        removeFromConv self   // hold
+        wait 4000
+        connectToConv lp self        
+        // releaseCall self
+    

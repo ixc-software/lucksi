@@ -1,0 +1,139 @@
+
+
+// All objects of this test should have prefix "csc"
+
+CS_Print "Stage: Init ------------------------------------- "
+// Remove all ROOT children
+
+CS_Set
+.ObjDeleteChildren
+
+CS_xxx				// error: Invalid command
+
+// Create objects to test commands
+ObjCreate                 NObjTestType cscObj1
+ObjCreate                 NObjTestType cscObj2
+cscObj1.ObjCreate         NObjTestType cscObj2
+cscObj1.cscObj2.ObjCreate NObjTestType cscObj21
+cscObj1.ObjCreate         NObjTestType cscObj11
+cscObj1.ObjCreate         NObjTestType cscObj12
+
+// -----------------------------------
+CS_Print "Stage:  Path test ----------------------------- "
+
+CS_Set cscObj1			// OK
+CS_Set "cscObj1.cscObj2"	// OK
+CS_Set
+CS_Set cscObj1.cscObj2		// OK
+//CS_Set cscObj1.			// error: Unquoted symbol
+CS_Set "cscObj1."		// error: RuntimeError
+
+// -----------------------------------
+CS_Print "Stage:  CS_Set test ----------------------------- "
+
+CS_Set cscObj1 			// now cscObj1>
+CS_Set cscObj11 		// error: BadPath -- no object on the same level as cscObj1
+.CS_Set cscObj11 		// now cscObj1.cscObj11>
+.CS_Set cscObj2			// error: BadPath -- no cscObj2 on this level
+CS_Set cscObj2 			// now cscObj2>
+CS_Set cscObj1			// now cscObj1>
+CS_Set cscObj12			// error: Bad path
+.CS_Set cscObj2			// now cscObj1.cscObj2> -- call method of local object, 
+				// with local path
+.CS_Set ".cscObj21"		// error: don't need dot in relative path
+.CS_Set cscObj21		// now cscObj1.cscObj2.cscObj21>
+CS_Set ".cscObj2"		// error: only absolute path is correct
+
+CS_Set invalid_cscObject 	// error: Object not found
+CS_Set; CS_Set cscObj1; 	// now cscObj1>
+CS_Set; CS_xxx; CS_Set cscObj2	// OK; error; now cscObj2>
+
+// -----------------------------------
+CS_Print "Stage:  Transaction test ------------------------ "
+CS_Print "SubStage:  CS_Begin/CS_End test ----------------- "
+
+CS_End				// error: End without begin
+
+CS_Begin
+CS_Set cscObj2
+CS_Set cscObj1
+CS_End				// now cscObj1>
+.CS_Set cscObj11		// now cscObj1.cscObj11>
+
+CS_Begin false			// continueOnError == false
+CS_Set cscObj1			// will be cscObj1> 
+CS_Begin			// error: Inner begin (parsing error)
+.CS_Set cscObj11		// will be cscObj1.cscObj11> 
+CS_End
+
+.CS_Set cscObj12		// error: Bad path (check line 52)
+
+CS_Begin false		
+CS_Set				// now ROOT>
+CS_Begin			// error: Inner begin (parsing error)
+CS_unknown_command		// transaction error
+CS_Set				// aborted
+CS_End
+
+CS_Begin false		
+CS_unknown_command		// error
+CS_Set 				// aborted
+CS_End				// aborted
+
+.CS_Set cscObj1 		// OK (check line 58)
+
+CS_Begin true			// continueOnError == true
+CS_unknown_command		// error
+CS_Set				// will be ROOT>
+CS_End				// OK
+
+.CS_Set cscObj11		// error (check line 73)
+
+// -----------------------------------
+CS_Print "SubStage:  CS_Discard test ---------------------- "
+
+CS_Discard			// error: Without CS_Begin
+
+CS_Begin			// discarded
+CS_Set cscObj1			// discarded
+CS_Discard			// OK
+
+.CS_Set cscObj11		// fail
+  
+// -----------------------------------
+CS_Print "Stage:  CS_Timeout test ------------------------- "
+
+CS_Timeout			// not implemented yet 
+
+// -----------------------------------
+CS_Print "Stage:  CS_Exec test ---------------------------- "
+
+CS_Exec					// error: File name is empty
+
+CS_Exec "TestExtern.isc"   		// OK, execute external script
+
+CS_Exec "TestMacroPrint.isc__"       	// error: Bad file name
+CS_Exec "TestMacroPrint.isc" "a;;;"   	// error: Bad macro list
+
+CS_Set 
+CS_Begin true
+CS_Exec "TestExecInTransaction.isc" 		// OK, path to cscObj1> will be set
+						// after CS_End
+.CS_Set cscObj11				// failed
+CS_End
+
+.CS_Set cscObj11				// OK
+
+// -----------------------------------
+CS_Print "Stage: Delete all created objects --------------- "
+
+ObjList
+
+cscObj1.ObjDelete 
+cscObj2.ObjDelete 
+
+// -----------------------------------
+CS_Print "Stage: Finish. CS_Exit test --------------------- "
+
+CS_Exit
+CS_Print "CS_Exit failed!" 			// never happend

@@ -1,0 +1,107 @@
+//CS_Set
+//CS_Exec "Header.isc"
+//ObjCreate  NObjResipLog "ResipLog"
+//ResipLog.Type = None
+
+
+//CS_Exec "Ingvar/Aoz.isc"
+//CS_Exit
+
+//CS_Exec "AutoTest/Main.isc"
+
+//CS_Exec "AutoTest/DssTest.isc"
+//CS_Exit
+
+//CS_Exec "User/HwFinder.isc"
+
+//CS_Exec "Test/WatchdogTest.isc"
+//CS_Exec "Test/B2BTest.isc"
+
+//CS_Exec "User/Blackfin.isc" "GatewayName = Dss1; LocalHost = 5062;"
+// for f1500
+//CS_Exec "Test/SipTest.isc" "FirstNumber = 48000; OutName = 71000; OutHost = 192.168.0.158:5064; InHost = 192.168.0.158:5066; ProxyHost = 192.168.0.158:5062"
+
+//CS_Exec "User/Aoz.isc" "GatewayName = Aoz; LocalHost = 5064"
+
+//CS_Exec "Test/EmulSipTest.isc" "EmulName = Emul; boardNumber1 = 75; boardNumber2 = 76"
+//CS_Exec "Test/SipTest.isc" "FirstNumber = 8000; OutName = 71000; OutHost = 127.0.0.1:5086; InHost = 127.0.0.1:5080; ProxyHost = 127.0.0.1:5082"
+//CS_Exec "Test/MainTest.isc"
+//CS_Exec "User/UpdateBoardFwu.isc" "BoardNum = 10"
+//CS_Exec "Test/TestEchoChipCtrl.isc" "COM = 4"
+//CS_Exec "Test\TestEcoCanceler.isc"
+
+//CS_Exec "Test/EmulTest.isc"
+//CS_Exec "Test/DtmfTest.isc"
+
+//CS_Exec User/AutoUpdateFwu.isc "_1 = 19"
+
+//ObjCreate NObjBinToCpp converter true
+//.Make("Bin/")
+
+//CS_Exec "Test/TestRealEcho.isc" "BoardNum = 1000; BChannel = 30; EchoTaps = 0"
+
+//CS_Exec "User/CallMeeting.isc" "AgentName = ipsius; LocalHost = 5062"
+//CS_Exec "a.isc"
+
+//CS_Exec "User/Pcid.isc"
+
+//TestStackTrace
+//ObjList true -1
+
+
+
+	
+//CS_Exec "Test/KbEmulPrb.isc"
+
+//ObjCreate NObjPultKbEmulProbe kb_1 true
+	//.DisplayEmbeded = true
+	//.Active = true	
+	//.Active = false
+	
+//ObjCreate NObjPultKbEmulProbe kb_2 true
+	//.DisplayEmbeded = false
+	//.Active = true	
+	//.Active = false
+	
+// ------------------------------------------------------------
+
+
+//#define StartPos 0
+//#define PosCount 13
+//#define T1 500
+//#define T2 300
+
+
+//ObjCreate NObjPultKbMcuProbe kbMcu true
+    //.Com = 4
+    
+    //.Active = true                
+    //.SetLed(lcRed, lcOff, %T1%, %T2%, %StartPos%, %PosCount%)
+    //.SetLed(lcGreen, lcOff, %T1%, %T2%, %StartPos%, %PosCount%)    
+    
+    //.Active = false
+    
+// -------------------------------------------------------------
+
+CS_Exec "Eugene/DebugView.isc"
+//CS_Exec "Eugene/Pult.isc"
+//CS_Exec "Eugene/SndTest.isc"
+
+CS_Exec "MiscAlex/pult_alex.isc"
+
+// -------------------------------------------------------------
+
+//CS_Exec "AutoTest/DssTest.isc"
+	
+// -------------------------------------------------------------	
+	
+//ObjCreate NObjUartTurnTest uartTest true
+	//.Start(4)
+	//.Send("text ")
+
+
+
+
+
+
+

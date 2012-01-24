@@ -1,0 +1,229 @@
+:PRINT "Stage: Init ------------------------------------- "
+
+> CS_Set
+:OK
+
+> .ObjDeleteChildren
+Method/property 'ObjDeleteChildren' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestIncludeAndDefine.isc, line 7 (command # 3)
+:ERROR DRI::CommandDriPrepareError
+
+> ObjCreate NObjTestType defObj1
+:OK
+
+> ObjCreate NObjTestType defObj2 true
+:OK
+
+> .ObjCreate NObjTestType defObj21 true
+:OK
+
+> .ObjCreate NObjTestType defObj211 true
+:OK
+
+:PRINT "Stage: #define test (without exceptions) -------- "
+
+> CS_Set
+:OK
+
+> CS_Set
+:OK
+
+> CS_Set defObj2
+:OK
+
+> CS_Set defObj2
+:OK
+
+> CS_Set "defObj2.defObj21.defObj211"
+:OK
+
+> CS_Set defObj2
+:OK
+
+> CS_Set "defObj2.defObj21"
+:OK
+
+> .defObj211.ObjCreate NObjTestType "defObj2111"
+:OK
+
+> defObj2.defObj21.defObj211.defObj2111.ObjDelete
+:OK
+
+> CS_Set defObj2
+:OK
+
+> set2nd
+Method/property 'set2nd' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestIncludeAndDefine.isc, line 46 (command # 17)
+:ERROR DRI::CommandDriPrepareError
+
+> .defObj21.ObjCreate NObjTestType "defObj212" true
+:OK
+
+> .ObjCreate NObjTestType
+:OK
+
+> ObjCreate NObjTestType defObj3 true
+:OK
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    defObj1 : NObjTestType
+    defObj2 : NObjTestType
+        defObj21 : NObjTestType
+            defObj211 : NObjTestType
+            defObj212 : NObjTestType
+                NObjTestType1 : NObjTestType
+    defObj3 : NObjTestType
+:OK
+
+:PRINT "Try to use defines in external file that was executed via CS_Exec. Error!"
+
+> CS_Exec "TestDefineExtern.isc"
+Exception "Unknown defined name: _2nd_path, in line 'CS_Set %_2nd_path%'"; DRI::DriDefineAndMacroList::DriDefineError in thread DomainClass:TestDomain/main (2784) @ ..\Src\DRI\DriDefineAndMacroList.cpp:131 in void __cdecl DRI::DriDefineAndMacroList::DefineErr(const class QString &,const class QString &,const class QString &) @ ROOT.CS_Exec
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestIncludeAndDefine.isc, line 56 (command # 23)
+:ERROR DRI::CommandDriRuntimeError
+
+:PRINT "Stage: #include test (without exceptions) ------- "
+
+:PRINT "Using defines in external file. All commands succeed"
+
+:PRINT "Loading define external test"
+
+> CS_Set
+:OK
+
+> CS_Set defObj2
+:OK
+
+> CS_Set "defObj2.defObj21.defObj211"
+:OK
+
+> CS_Set defObj2
+:OK
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    defObj1 : NObjTestType
+    defObj2 : NObjTestType
+        defObj21 : NObjTestType
+            defObj211 : NObjTestType
+            defObj212 : NObjTestType
+                NObjTestType1 : NObjTestType
+    defObj3 : NObjTestType
+:OK
+
+:PRINT "Using define from external file. OK"
+
+> CS_Set
+:OK
+
+> CS_Set obj1
+Exception "Bad path! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (2784) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestIncludeAndDefine.isc, line 65 (command # 33)
+:ERROR DRI::CommandDriRuntimeError
+
+> CS_Set
+:OK
+
+:PRINT "Multiple includes in one file. OK"
+
+:PRINT "#include external file"
+
+:PRINT "#include external file"
+
+:PRINT "#include external file"
+
+:PRINT "#include external file"
+
+:PRINT "#include external file"
+
+:PRINT "#include external file"
+
+:PRINT "#include external file"
+
+:PRINT "#include external file"
+
+:PRINT "#include external file"
+
+:PRINT "#include external file"
+
+:PRINT "Stage: #undef test (without exceptions) --------- "
+
+> CS_Set "defObj2.defObj21.defObj211"
+:OK
+
+> CS_Set defObj2
+:OK
+
+> .ObjCreate NObjTestType true
+:OK
+
+> CS_Set defObj2
+:OK
+
+> CS_Set "defObj2.defObj21.defObj211"
+:OK
+
+> CS_Set defObj2
+:OK
+
+> CS_Set defObj2
+:OK
+
+> CS_Set "defObj2.defObj21.defObj211"
+:OK
+
+> CS_Set defObj2
+:OK
+
+> CS_Set defObj2
+:OK
+
+:PRINT "Test smart defined name replacing"
+
+:PRINT "Current % of success is 100%"
+
+:PRINT "Stage: Delete all created objects --------------- "
+
+> ObjList
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    defObj1 : NObjTestType
+    defObj2 : NObjTestType
+    defObj3 : NObjTestType
+:OK
+
+> defObj1.ObjDelete
+:OK
+
+> defObj2.ObjDelete
+:OK
+
+> defObj3.ObjDelete
+:OK
+
+
+Commands in total 66, with errors 4, service 132, scripted 0

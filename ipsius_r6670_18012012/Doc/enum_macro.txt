@@ -1,0 +1,50 @@
+
+#define ENUM_SOMETING EVAL(BEER_64, 1) EVAL(BEER_128, 2) EVAL(BEER_256, 3)
+
+MAKE_FULL_ENUM(SOMETHING, ENUM_SOMETING) MAKE_ENUM(ENUM_SOMETING) MAKE_ENUM_STRINGS(ENUM_SOMETING)
+
+#undef ENUM_SOMETING
+
+class vs enum
+
+EnumToString
+TypeToString
+
+Get pairs <int, string>
+
+
+
+
+
+// use AENUM_BODY
+#define AENUM_GENERATE(enumName)
+
+    /*
+    class enumName 
+    {
+    public:
+
+    } */
+
+#define AENUM_VAL(name, val)  \
+  #ifdef AENUM_MODE_ENUM  \
+     name = val  \
+  #else  \
+     if (eVal == val) return #name  \
+  #endif
+
+// -------------------------------------------------------------
+
+enum SomeEnum
+{
+    ByValue = 0,
+    ByRef,
+    ByPointer,
+};
+
+#define AENUM_BODY \ 
+            AENUM_VAL(ByValue,   0) \
+            AENUM_VAL(ByRef,     1) \
+            AENUM_VAL(ByPointer, 2) 
+
+AENUM_GENERATE(AESomeEnum);

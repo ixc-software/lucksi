@@ -1,0 +1,67 @@
+
+
+class IConfigValue
+{
+   virtual std::string& getDescription() = 0;
+   virtual std::string  getValueAsString() = 0;
+};
+
+template<class TValue>  // bool, int, string
+class CfgVar : IConfigValue
+{
+   name
+   descrition
+   default val
+   value
+   
+   T Get() const {}
+   
+   std::string getValueAsString() {}
+};
+
+
+class Config
+{
+   vector<IConfigValue*> m_vars;
+   
+   void Add(IConfigValue &val)
+   {
+      m_vars.push_back(&val);
+   }
+
+public:
+
+   CfgVar<int> 		ConnectionTimeout;
+   CfgVar<string> 	IpAddress;
+   
+   Config() :
+      ConnectionTimeout("ConnectionTimeout", 150, 5000),
+      ...
+   {
+      
+      Add(ConnectionTimeout);
+      Add(IpAddress);
+      // ...
+   }
+   
+   void SaveToStringList(StringList &sl)
+   {
+       TextConfig cfg;
+       
+       foreach(m_vars)
+       {
+          cfg.Add(i->getName(), i->getValueAsString());
+       }
+       
+       cfg.Save(sl);
+   }
+   
+};
+
+
+    TCPSocketListener socketListener(
+        executer,
+        serverConfig.ConnectionTimeout.Get(),
+        ...
+        );
+

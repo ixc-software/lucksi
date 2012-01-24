@@ -1,0 +1,1 @@
+#include "BfBootCore/IHwFirmware.h"

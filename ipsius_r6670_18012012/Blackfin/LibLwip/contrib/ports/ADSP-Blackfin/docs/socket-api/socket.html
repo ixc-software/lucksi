@@ -1,0 +1,153 @@
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of SOCKET</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>SOCKET</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="socket_exp.html"> Example</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+socket - create an endpoint for communication
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="/include/lwip/sockets.h">lwip/sockets.h</A>&gt;</B>
+<P>
+<B>int socket(int </B><I>domain</I><B>, int </B><I>type</I><B>, int </B><I>protocol</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>Socket</B>
+creates an endpoint for communication and returns a descriptor.
+The <I>domain</I> 
+parameter specifies a communications domain within which communication will
+take place; this selects the protocol family which should be used.  These
+families are defined in the include file
+<I>lwip/sockets.h</I>.
+
+The currently understood formats are
+
+<DL COMPACT><DT><DD>
+<DL COMPACT>
+<DT>AF_INET<DD>
+</DL>
+</DL>
+
+
+The socket has the indicated
+<I>type</I>,
+
+which specifies the semantics of communication.  Currently defined types
+are:
+
+<DL COMPACT><DT><DD>
+<PRE>
+SOCK_STREAM
+SOCK_DGRAM
+SOCK_RAW
+</PRE>
+
+</DL>
+
+A <B>SOCK_STREAM</B> type provides sequenced, reliable, two-way connection 
+based byte streams.An out-of-band data transmission mechanism may be supported.
+A <B>SOCK_DGRAM</B> socket supports datagrams (connectionless, unreliable 
+messages of a fixed (typically small) maximum length).  
+
+<B>SOCK_RAW</B> sockets provide access to internal network protocols and 
+interfaces.  
+
+The <I>protocol</I> specifies a particular protocol to be used with the socket.
+Normally only a single protocol exists to support a particular socket type 
+within a given protocol family.  However, it is possible that many protocols 
+may exist, in which case a particular protocol must be specified in this manner.
+The protocol number to use is particular to the ``communication domain''
+in which communication is to take place.
+
+Sockets of type <B>SOCK_STREAM</B> are full-duplex byte streams, similar to 
+pipes.  A stream socket must be in a <I>connected</I> state before any data 
+may be sent or received on it.  A connection to another socket is created with a
+<B><A HREF="connect.html">connect</A></B> call.  Once connected, data may be 
+transferred using <B><A HREF="read.html">read</A></B> and
+<B><A HREF="write.html">write</A></B> calls or some variant of the
+<B><A HREF="send.html">send</A></B> and <B><A HREF="recv.html">recv</A></B>
+calls.  When a session has been completed a <B><A HREF="close.html">close</A></B> may be performed.  Out-of-band data may also be transmitted as described in
+<B><A HREF="send.html">send</A></B> and received as described in
+<B><A HREF="recv.html">recv</A></B>.
+
+
+The communications protocols used to implement a
+<B>SOCK_STREAM</B>
+
+insure that data is not lost or duplicated.  If a piece of data for which
+the peer protocol has buffer space cannot be successfully transmitted
+within a reasonable length of time, then the connection is considered
+broken and calls will fail returning -1.
+
+
+<B>SOCK_DGRAM</B> and <B>SOCK_RAW</B>
+sockets allow sending of datagrams to correspondents named in
+<B><A HREF="send.html">send</A></B> calls.  Datagrams are generally received 
+with <B><A HREF="recvfrom.html">recvfrom</A></B>, which returns the next 
+datagram with its return address.
+
+
+The operation of sockets is controlled by socket level <I>options</I>.
+These options are defined in the file
+<I>lwip/sockets.h</I>.
+
+<B><A HREF="setsockopt.html">setsockopt</A></B> and <B>
+<A HREF="setsockopt.html">getsockopt</A></B> are used to set and get options, 
+respectively.  <A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUES</H2>
+The return value is a descriptor referencing the socket unless the value -1 
+which indicates an error has occured and specific error number can be obtained 	
+by calling the function GetSocketError(). In multithreaded environments last
+error number is held seperately for each thread.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT> <B>EINVAL</B> <DD> Invalid Argument.
+<DT><B>ENOBUFS</B> <DD> Insufficient buffer space is available.  The socket cannot be created until sufficient resources are freed.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="accept.html">accept</A></B>,
+<B><A HREF="bind.html">bind</A></B>,
+<B><A HREF="connect.html">connect</A></B>,
+<B><A HREF="getsockname.html">getsockname</A></B>, 
+<B><A HREF="setsockopt.html">getsockopt</A></B>,
+<B><A HREF="ioctl.html">ioctl</A></B>, 
+<B><A HREF="listen.html">listen</A></B>, 
+<B><A HREF="read.html">read</A></B>, 
+<B><A HREF="recv.html">recv</A></B>,
+<B><A HREF="select.html">select</A></B>,
+<B><A HREF="send.html">send</A></B>,
+<B><A HREF="shutdown.html">shutdown</A></B>, 
+<!--<B><A HREF="socketpair">socketpair</A></B>,-->
+<B><A HREF="write.html">write</A></B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUES</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

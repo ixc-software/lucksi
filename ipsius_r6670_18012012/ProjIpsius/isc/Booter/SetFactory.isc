@@ -1,0 +1,26 @@
+#define TraceClient true
+#define TraceServer false
+
+#define HwType 1
+#define HwNum  4
+
+//--------------------------------------------------------------------------
+
+
+// Настройка общих параметров объектов-заданий
+ObjCreate NObjCommonBfTaskProfile commonProfile true        
+    .BoardAddress = %BoardAddress% 
+    .TraceClient = %TraceClient%
+    .TraceServer = %TraceServer%
+    .ObtainCbpPort
+
+//-------------------------------------------------------------------------
+
+ObjCreate NObjBfTaskSetParams setFactory true
+    
+    .Init commonProfile
+    
+    .SetFactoryParams(%HwType%, %HwNum%, %MAC%);    
+   
+    .Run // старт задачи    
+

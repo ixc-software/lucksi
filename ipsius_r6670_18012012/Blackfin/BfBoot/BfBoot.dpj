@@ -1,0 +1,2826 @@
+<?xml version="1.0" encoding='ISO-8859-1'?>
+<visualdsp-project schema="17" name="BfBoot" file="BfBoot.dpj" version="1">
+	<!-- Project build target -->
+	<target>
+		<processor revision="Automatic">ADSP-BF537</processor>
+		<extension>.ldr</extension>
+		<type>Loader file</type>
+	</target>
+	<!-- Configurations -->
+	<configurations active="Release">
+		<configuration name="Debug">
+			<intermediate-dir>.\Debug</intermediate-dir>
+			<output-dir>.\Debug</output-dir>
+			<changed-property-page-flags>4</changed-property-page-flags>
+			<tools>
+				<tool type="Compiler">
+					<option><![CDATA[|-Version>5.0|-O>0|-O1>0|-Ov>100|-ipa>0|-g>1|-no-annotate>0|-save-temps -path-output>0|-ED>0|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>1|-implicit-pointers>0|-eh >1|-rtti>1|-check-init-order>0|-ignore-std>1|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>0|-misra-testing>0|-misra-suppress-advisory>0|-I>..\src;..\..;.\cfg|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>1|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>1|-sdram>1|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>0|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -Wsuppress 236,381,111,1,1572 -no-implicit-inclusion]]></option>
+				</tool>
+				<tool type="Assembler">
+					<option><![CDATA[|-Version>4.5|-v>0|-g>1|-l>0|-save-temps>0|-sp>0|AdditionalOptions>-D_ADI_THREADS]]></option>
+				</tool>
+				<tool type="Linker">
+					<option><![CDATA[|-Version>5.0|-flags-link -t>0|-flags-link -S>0|-flags-link -s>0|-mem>0|-flags-link -warnonce>0|-map>0|-flags-link -xref>0|-flags-link -save-temps>0|-flags-link -ip>0|-flags-link -e>0|-flags-link -ev>0|-add-debug-libpaths>0|-flags-link -MD__ADI_LIBEH__>1|-multicore>0|NOSWITCH>1|-flags-link -MDUSE_CACHE>1|AdditionalOptions>-MD_ADI_THREADS ADI_ETHER_BF537.dlb kervdkbf537.dlb liblwipbf537.dlb tcpipbf537.dlb|-MD>USE_SDRAM,USER_CRT="BfBoot_basiccrt.doj",__cplusplus,USE_CACHE,USE_INSTRUCTION_CACHE,USE_DATA_B_CACHE,USER_CPLBTAB=".\Debug\\BfBoot_cplbtab.doj",USE_FILEIO]]></option>
+				</tool>
+				<tool type="Archiver">
+					<option><![CDATA[]]></option>
+				</tool>
+				<tool type="Loader">
+					<option><![CDATA[|-Version>4.5|-b SPI>1|-f BINARY>1|-Width 8>1|-p>0x0|DefaultStart>0|-v>0|-waits >-1|-HoldTime >-1|-pFlag >-1|-init>..\BfInitCode\Release\ADSP-BF537_InitCode.dxe|-zinit>0|-COMPRESSION>0|-COMPRESSIONOVERLAY>0|-RETAINSECONDSTAGEKERNEL>0|-COMPRESSWS>9|-No2Kernel>0|-o2>0|-kb Flash>1|-kf HEX>1|-kWidth 8>1|-kp>0x0|DefaultKernelStart>1|UserKernel>1|-romsplitter>0|split HEX>1|-maskaddr>0]]></option>
+				</tool>
+				<tool type="VdkGen">
+					<option><![CDATA[]]></option>
+				</tool>
+			</tools>
+			<pre-build-description><![CDATA[Fixing LDF...]]></pre-build-description>
+			<pre-build-command><![CDATA[cmd /C python.exe ../PyBfTools/src/PcLdfFix.py  ./BfBoot.ldf
+]]></pre-build-command>
+			<post-build-description><![CDATA[Fixing LDR...]]></post-build-description>
+			<post-build-command><![CDATA[cmd /C python.exe ../PyBfTools/src/LdrDump.py ./Debug/BfBoot.ldr -repack 8 ./Debug/BfBoot_packed.ldr
+]]></post-build-command>
+		</configuration>
+		<configuration name="Release">
+			<intermediate-dir>.\Release</intermediate-dir>
+			<output-dir>.\Release</output-dir>
+			<changed-property-page-flags>0</changed-property-page-flags>
+			<tools>
+				<tool type="Compiler">
+					<option><![CDATA[|-Version>5.0|-O>1|-O1>1|-Ov>100|-ipa>0|-g>0|-no-annotate>0|-save-temps -path-output>0|-ED>0|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>1|-implicit-pointers>0|-eh >1|-rtti>1|-check-init-order>0|-ignore-std>0|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>1|-misra-testing>1|-misra-suppress-advisory>0|-I>..\src;..\..;.\cfg;D:\Dev\boost_1_36_0\boost\|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>1|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>1|-sdram>0|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>0|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -Wsuppress 236,381,111,1,1572 -no-implicit-inclusion]]></option>
+				</tool>
+				<tool type="Assembler">
+					<option><![CDATA[|-Version>4.5|-v>0|-g>0|-l>0|-save-temps>0|-sp>0|AdditionalOptions>-D_ADI_THREADS]]></option>
+				</tool>
+				<tool type="Linker">
+					<option><![CDATA[|-Version>5.0|-flags-link -t>0|-flags-link -S>0|-flags-link -s>0|-mem>0|-flags-link -warnonce>0|-map>0|-flags-link -xref>0|-flags-link -save-temps>0|-flags-link -ip>1|-MD>USE_SDRAM,USER_CRT="BfBoot_basiccrt.doj",__cplusplus,USER_CPLBTAB=".\Release\\BfBoot_cplbtab.doj",USE_CACHE,USE_INSTRUCTION_CACHE,USE_DATA_B_CACHE,USE_FILEIO|-flags-link -e>1|-flags-link -ev>0|-add-debug-libpaths>0|-flags-link -MD__ADI_LIBEH__>0|-multicore>0|NOSWITCH>1|AdditionalOptions>-MD_ADI_THREADS ADI_ETHER_BF537.dlb kervdkbf537.dlb liblwipbf537.dlb tcpipbf537.dlb]]></option>
+				</tool>
+				<tool type="Archiver">
+					<option><![CDATA[]]></option>
+				</tool>
+				<tool type="Loader">
+					<option><![CDATA[|-Version>4.5|-b UART>1|-f BINARY>1|-Width 8>1|-p>0x0|DefaultStart>0|-v>0|-waits >-1|-HoldTime >-1|-pFlag >0|-init>..\BfInitCode\Release\ADSP-BF537_InitCode.dxe|-zinit>0|-COMPRESSION>0|-COMPRESSIONOVERLAY>0|-RETAINSECONDSTAGEKERNEL>0|-COMPRESSWS>9|-No2Kernel>0|-o2>0|-kb Flash>1|-kf HEX>1|-kWidth 8>1|DefaultKernelStart>1|UserKernel>1|-romsplitter>0|split HEX>1|-maskaddr>0]]></option>
+				</tool>
+				<tool type="VdkGen">
+					<option><![CDATA[]]></option>
+				</tool>
+			</tools>
+			<pre-build-description><![CDATA[Fixing LDF...]]></pre-build-description>
+			<pre-build-command><![CDATA[cmd /C python.exe ../PyBfTools/src/PcLdfFix.py  ./BfBoot.ldf
+]]></pre-build-command>
+			<post-build-description><![CDATA[Fixing LDR...]]></post-build-description>
+			<post-build-command><![CDATA[cmd /C python.exe ../PyBfTools/src/LdrDump.py ./Release/BfBoot.ldr -repack 8 ./Release/BfBoot_packed.ldr
+]]></post-build-command>
+		</configuration>
+	</configurations>
+	<!-- Project folders -->
+	<folders>
+		<folder name="Generated Files">
+			<folders>
+				<folder name="Startup">
+					<files>
+						<file name=".\BfBoot_basiccrt.s">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name=".\BfBoot_cplbtab.c">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="file"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+									<option><![CDATA[|-Version>5.0|-O>0|-O1>0|-Ov>100|-ipa>0|-g>1|-no-annotate>0|-save-temps -path-output>0|-ED>0|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>1|-implicit-pointers>0|-eh >1|-rtti>1|-check-init-order>0|-ignore-std>1|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>0|-misra-testing>0|-misra-suppress-advisory>0|-I>..\src;..\..;.\cfg|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>1|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>1|-sdram>1|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>0|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -Wsuppress 236,381,111,1,1572 ]]></option>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="file"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+									<option><![CDATA[|-Version>5.0|-O>1|-O1>1|-Ov>100|-ipa>0|-g>0|-no-annotate>0|-save-temps -path-output>0|-ED>0|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>1|-implicit-pointers>0|-eh >1|-rtti>1|-check-init-order>0|-ignore-std>0|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>1|-misra-testing>1|-misra-suppress-advisory>0|-I>..\src;..\..;.\cfg;D:\Dev\boost_1_36_0\boost\|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>1|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>1|-sdram>0|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>0|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -Wsuppress 236,381,111,1,1572 ]]></option>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="User Heap">
+					<files>
+						<file name=".\BfBoot_heaptab.c">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="file"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+									<option><![CDATA[|-Version>5.0|-O>0|-O1>0|-Ov>100|-ipa>0|-g>1|-no-annotate>0|-save-temps -path-output>0|-ED>0|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>1|-implicit-pointers>0|-eh >1|-rtti>1|-check-init-order>0|-ignore-std>1|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>0|-misra-testing>0|-misra-suppress-advisory>0|-I>..\src;..\..;.\cfg|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>1|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>0|-sdram>0|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>0|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -Wsuppress 236,381,111,1,1572]]></option>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="file"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+									<option><![CDATA[|-Version>5.0|-O>1|-O1>1|-Ov>100|-ipa>0|-g>0|-no-annotate>0|-save-temps -path-output>0|-ED>0|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>1|-implicit-pointers>0|-eh >1|-rtti>1|-check-init-order>0|-ignore-std>0|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>1|-misra-testing>1|-misra-suppress-advisory>0|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>1|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>1|-sdram>0|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>0|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -Wsuppress 236,381,111,1,1572]]></option>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+			</folders>
+		</folder>
+		<folder name="Header Files" ext=".h,.hpp,.hxx">
+			<files>
+				<file name=".\adi_ssl_init.h">
+				</file>
+				<file name=".\lwip_sysboot_threadtype.h">
+				</file>
+				<file name=".\MainThread.h">
+				</file>
+				<file name="..\Src\stdafx.h">
+				</file>
+			</files>
+			<folders>
+				<folder name="BfBootCore">
+					<files>
+						<file name="..\..\Src\BfBootCore\StringToTypeConverter.h">
+						</file>
+					</files>
+				</folder>
+				<folder name="BfBootSrv" ext=".h">
+					<files>
+						<file name="..\Src\BfBootSrv\BfStorage.h">
+						</file>
+						<file name="..\Src\BfBootSrv\BootControl.h">
+						</file>
+						<file name="..\Src\BfBootSrv\BooterStartupParams.h">
+						</file>
+						<file name="..\Src\BfBootSrv\BootServer.h">
+						</file>
+						<file name="..\Src\BfBootSrv\BroadcastAutoSender.h">
+						</file>
+						<file name="..\Src\BfBootSrv\CfgField.h">
+						</file>
+						<file name="..\Src\BfBootSrv\CfgRestoreError.h">
+						</file>
+						<file name="..\Src\BfBootSrv\CfgSource.h">
+						</file>
+						<file name="..\Src\BfBootSrv\Config.h">
+						</file>
+						<file name="..\Src\BfBootSrv\ConfigLineList.h">
+						</file>
+						<file name="..\Src\BfBootSrv\ConfigSetup.h">
+						</file>
+						<file name="..\Src\BfBootSrv\ConfigString.h">
+						</file>
+						<file name="..\Src\BfBootSrv\ExitAction.h">
+						</file>
+						<file name="..\Src\BfBootSrv\FieldList.h">
+						</file>
+						<file name="..\Src\BfBootSrv\Flash_M25P128.h">
+						</file>
+						<file name="..\Src\BfBootSrv\FlashIOStream.h">
+						</file>
+						<file name="..\Src\BfBootSrv\IBootCmdSource.h">
+						</file>
+						<file name="..\Src\BfBootSrv\IBootCtrlOwner.h">
+						</file>
+						<file name="..\Src\BfBootSrv\IRegField.h">
+						</file>
+						<file name="..\Src\BfBootSrv\LaunchBooter.h">
+						</file>
+						<file name="..\Src\BfBootSrv\RangeIOBase.h">
+						</file>
+						<file name="..\Src\BfBootSrv\RangeValidator.h">
+						</file>
+						<file name="..\Src\BfBootSrv\SectorInfo.h">
+						</file>
+						<file name="..\Src\BfBootSrv\SectorMap.h">
+						</file>
+						<file name="..\Src\BfBootSrv\SectorStorageDeviceBase.h">
+						</file>
+						<file name="..\Src\BfBootSrv\StoreRange.h">
+						</file>
+					</files>
+				</folder>
+				<folder name="BfDev" ext=".h">
+					<files>
+						<file name="..\Src\BfDev\AdiGPTimer.h">
+						</file>
+						<file name="..\Src\BfDev\BfSpi.h">
+						</file>
+						<file name="..\Src\BfDev\BfWatchdog.h">
+						</file>
+						<file name="..\Src\BfDev\EventTime.h">
+						</file>
+						<file name="..\Src\BfDev\VdkThreadDcb.h">
+						</file>
+					</files>
+				</folder>
+				<folder name="ExtFlash" ext=".h">
+					<files>
+						<file name="..\Src\ExtFlash\flashMap.h">
+						</file>
+						<file name="..\Src\ExtFlash\M25P128.h">
+						</file>
+					</files>
+				</folder>
+				<folder name="iLog">
+					<files>
+						<file name="..\..\Src\iLog\LogInterfaces.h">
+						</file>
+						<file name="..\..\Src\iLog\LogManager.h">
+						</file>
+						<file name="..\..\Src\iLog\LogRecordT.h">
+						</file>
+						<file name="..\..\Src\iLog\LogSessionT.h">
+						</file>
+						<file name="..\..\Src\iLog\LogStoreT.h">
+						</file>
+					</files>
+				</folder>
+				<folder name="iRtp" ext=".h">
+					<files>
+						<file name="..\Src\iRtp\IRtpCoreToUser.h">
+						</file>
+						<file name="..\Src\iRtp\IRtpInfra.h">
+						</file>
+						<file name="..\Src\iRtp\LogSession.h">
+						</file>
+						<file name="..\Src\iRtp\RtpConstants.h">
+						</file>
+						<file name="..\Src\iRtp\RtpCoreSession.h">
+						</file>
+						<file name="..\Src\iRtp\RtpCoreSocket.h">
+						</file>
+						<file name="..\Src\iRtp\RtpError.h">
+						</file>
+						<file name="..\Src\iRtp\RtpEvent.h">
+						</file>
+						<file name="..\Src\iRtp\RtpParams.h">
+						</file>
+						<file name="..\Src\iRtp\RtpPayload.h">
+						</file>
+						<file name="..\Src\iRtp\RtpSocketInterfaces.h">
+						</file>
+						<file name="..\Src\iRtp\SsrcSeqCounter.h">
+						</file>
+					</files>
+				</folder>
+				<folder name="iVDK">
+					<files>
+						<file name="..\Src\iVDK\CriticalRegion.h">
+						</file>
+						<file name="..\Src\iVDK\Mutex.h">
+						</file>
+						<file name="..\Src\iVDK\Semaphore.h">
+						</file>
+						<file name="..\Src\iVDK\VdkThread.h">
+						</file>
+						<file name="..\Src\iVDK\VdkUtils.h">
+						</file>
+					</files>
+				</folder>
+				<folder name="Lw" ext=".h">
+					<files>
+						<file name="..\Src\Lw\NetUtils.h">
+						</file>
+						<file name="..\Src\Lw\TcpServerSocket.h">
+						</file>
+						<file name="..\Src\Lw\TcpSocket.h">
+						</file>
+						<file name="..\Src\Lw\UdpSocket.h">
+						</file>
+					</files>
+				</folder>
+				<folder name="Platform">
+					<files>
+						<file name="..\Src\Platform\Platform.h">
+						</file>
+						<file name="..\Src\Platform\PlatformAtomic.h">
+						</file>
+						<file name="..\Src\Platform\PlatformMemory.h">
+						</file>
+						<file name="..\Src\Platform\PlatformMutex.h">
+						</file>
+						<file name="..\Src\Platform\PlatformMutexLocker.h">
+						</file>
+						<file name="..\Src\Platform\PlatformThread.h">
+						</file>
+						<file name="..\Src\Platform\PlatformTypes.h">
+						</file>
+						<file name="..\Src\Platform\PlatformWaitCondition.h">
+						</file>
+					</files>
+				</folder>
+				<folder name="QtNetwork" ext=".h">
+					<files>
+						<file name="..\Src\QtCore\qchar.h">
+						</file>
+						<file name="..\Src\QtCore\qunicodetables_p.h">
+						</file>
+					</files>
+				</folder>
+				<folder name="TdmMng" ext=".h">
+					<files>
+						<file name="..\Src\TdmMng\DataPacket.h">
+						</file>
+						<file name="..\Src\TdmMng\ITdmManager.h">
+						</file>
+						<file name="..\Src\TdmMng\ITdmSource.h">
+						</file>
+						<file name="..\Src\TdmMng\RtpToTdmBuff.h">
+						</file>
+						<file name="..\Src\TdmMng\TdmChannel.h">
+						</file>
+						<file name="..\Src\TdmMng\TdmChannelSender.h">
+						</file>
+						<file name="..\Src\TdmMng\TdmException.h">
+						</file>
+						<file name="..\Src\TdmMng\TdmHAL.h">
+						</file>
+						<file name="..\Src\TdmMng\TdmManager.h">
+						</file>
+						<file name="..\Src\TdmMng\TdmStream.h">
+						</file>
+						<file name="..\Src\TdmMng\TdmToTdmBuff.h">
+						</file>
+					</files>
+				</folder>
+				<folder name="Utils" ext=".h">
+					<files>
+						<file name="..\..\Src\Utils\BinaryReader.h">
+						</file>
+						<file name="..\..\Src\Utils\FixedFifo.h">
+						</file>
+						<file name="..\..\Src\Utils\MemoryPool.h">
+						</file>
+						<file name="..\..\Src\Utils\MemoryPoolBody.h">
+						</file>
+					</files>
+				</folder>
+			</folders>
+		</folder>
+		<folder name="Kernel Files" ext=".vdk">
+			<files>
+				<file name=".\BfBoot.vdk">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Debug</intermediate-dir>
+							<output-dir>.\Debug</output-dir>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Release</intermediate-dir>
+							<output-dir>.\Release</output-dir>
+						</file-configuration>
+					</file-configurations>
+				</file>
+				<file name=".\VDK.cpp">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Debug</intermediate-dir>
+							<output-dir>.\Debug</output-dir>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Release</intermediate-dir>
+							<output-dir>.\Release</output-dir>
+						</file-configuration>
+					</file-configurations>
+				</file>
+				<file name=".\VDK.h">
+				</file>
+			</files>
+		</folder>
+		<folder name="Linker Files" ext=".ldf,.dlb">
+			<files>
+				<file name=".\BfBoot.ldf">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Debug</intermediate-dir>
+							<output-dir>.\Debug</output-dir>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Release</intermediate-dir>
+							<output-dir>.\Release</output-dir>
+						</file-configuration>
+					</file-configurations>
+				</file>
+			</files>
+		</folder>
+		<folder name="Source Files" ext=".c,.cpp,.cxx,.asm,.dsp,.s">
+			<files>
+				<file name=".\adi_ssl_Init.c">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="file"/>
+							<intermediate-dir>.\Debug</intermediate-dir>
+							<output-dir>.\Debug</output-dir>
+							<option><![CDATA[|-Version>5.0|-O>0|-O1>0|-Ov>100|-ipa>0|-g>1|-no-annotate>0|-save-temps -path-output>0|-ED>0|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>1|-implicit-pointers>0|-eh >0|-rtti>1|-check-init-order>0|-ignore-std>1|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>0|-misra-testing>0|-misra-suppress-advisory>0|-I>..\src;..\..;.\cfg|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>0|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>0|-sdram>0|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>0|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -Wsuppress 236,381,111]]></option>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="file"/>
+							<intermediate-dir>.\Release</intermediate-dir>
+							<output-dir>.\Release</output-dir>
+							<option><![CDATA[|-Version>5.0|-O>1|-O1>1|-Ov>100|-ipa>0|-g>0|-no-annotate>0|-save-temps -path-output>0|-ED>0|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>1|-implicit-pointers>0|-eh >1|-rtti>1|-check-init-order>0|-ignore-std>0|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>1|-misra-testing>1|-misra-suppress-advisory>0|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>1|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>1|-sdram>0|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>0|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -Wsuppress 236,381,111,1,1572]]></option>
+						</file-configuration>
+					</file-configurations>
+				</file>
+				<file name=".\ExceptionHandler-BF537.asm">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Debug</intermediate-dir>
+							<output-dir>.\Debug</output-dir>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Release</intermediate-dir>
+							<output-dir>.\Release</output-dir>
+						</file-configuration>
+					</file-configurations>
+				</file>
+				<file name=".\lwip_sysboot_threadtype.c">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="file"/>
+							<intermediate-dir>.\Debug</intermediate-dir>
+							<output-dir>.\Debug</output-dir>
+							<option><![CDATA[|-Version>5.0|-O>0|-O1>0|-Ov>100|-ipa>0|-g>1|-no-annotate>0|-save-temps -path-output>0|-ED>1|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>1|-implicit-pointers>0|-eh >0|-rtti>1|-check-init-order>0|-ignore-std>1|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>0|-misra-testing>0|-misra-suppress-advisory>0|-I>..\src;..\..;.\cfg|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>0|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>0|-sdram>0|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>0|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -Wsuppress 236,381,111]]></option>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="file"/>
+							<intermediate-dir>.\Release</intermediate-dir>
+							<output-dir>.\Release</output-dir>
+							<option><![CDATA[|-Version>5.0|-O>1|-O1>1|-Ov>100|-ipa>0|-g>0|-no-annotate>0|-save-temps -path-output>0|-ED>0|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>1|-implicit-pointers>0|-eh >1|-rtti>1|-check-init-order>0|-ignore-std>0|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>1|-misra-testing>1|-misra-suppress-advisory>0|-I>..\src;..\..;.\cfg|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>1|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>1|-sdram>0|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>0|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -Wsuppress 236,381,111,1,1572]]></option>
+						</file-configuration>
+					</file-configurations>
+				</file>
+				<file name=".\MainBody.cpp">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Debug</intermediate-dir>
+							<output-dir>.\Debug</output-dir>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Release</intermediate-dir>
+							<output-dir>.\Release</output-dir>
+						</file-configuration>
+					</file-configurations>
+				</file>
+				<file name=".\MainThread.cpp">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Debug</intermediate-dir>
+							<output-dir>.\Debug</output-dir>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Release</intermediate-dir>
+							<output-dir>.\Release</output-dir>
+						</file-configuration>
+					</file-configurations>
+				</file>
+				<file name="..\Src\iVDK\VdkCheckInit.cpp">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Debug</intermediate-dir>
+							<output-dir>.\Debug</output-dir>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Release</intermediate-dir>
+							<output-dir>.\Release</output-dir>
+						</file-configuration>
+					</file-configurations>
+				</file>
+			</files>
+			<folders>
+				<folder name="BfBootCore" ext=".cpp">
+					<files>
+						<file name="..\..\Src\BfBootCore\BooterVersion.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\BfBootCore\BroadcastMsg.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\BfBootCore\ConfigLine.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\BfBootCore\CRC.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\BfBootCore\ImgDescriptor.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\BfBootCore\ImgDescrList.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\BfBootCore\NamedScript.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\BfBootCore\ScriptCmdList.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\BfBootCore\ScriptList.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\BfBootCore\StartScript.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\BfBootCore\UdpCommandsOfAutoSender.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="BfBootSrv" ext=".cpp">
+					<files>
+						<file name="..\Src\BfBootSrv\ApplicationLoader.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\BFstorage.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\BoardSetup.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\BootControl.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\BootServer.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\BroadcastAutoSender.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\Config.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\ConfigLineList.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\ConfigSetup.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\ExitAction.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\FactorySettings.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\Flash_M25P128.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\FlashIOStream.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\LaunchBooter.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\RangeIOBase.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfBootSrv\Script.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="BfDev" ext=".cpp">
+					<files>
+						<file name="..\Src\BfDev\AdiDevice.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\AdiDeviceManager.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\AdiDeviceResult.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\AdiGPTimer.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\AdiTimer.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\BfPio.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\BfSpi.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\BfSpiLoader.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\BfTimerCounter.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\BfTwi.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\BfUartSimple.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\BfWatchdog.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\DcbMsgQueue.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\SpiBusMng.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\SysProperties.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\BfDev\VdkThreadDcb.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="boost">
+				</folder>
+				<folder name="cfg" ext=".cpp">
+					<files>
+						<file name="..\..\Src\Utils\CfgInfo.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="DevIpTdm" ext=".cpp">
+					<files>
+						<file name="..\Src\DevIpTdm\BootFromSpi.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\DevIpTdm\BootFromSpi.h">
+						</file>
+						<file name="..\Src\DevIpTdm\BootFromSpiAsm.asm">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\DevIpTdm\DevIpTdmSpiMng.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="E1App" ext=".cpp">
+					<files>
+						<file name="..\Src\E1App\AppPlatformHook.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\E1App\MngLwip.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="ExtFlash" ext=".cpp">
+					<files>
+						<file name="..\Src\ExtFlash\M25P128.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="iCore" ext=".cpp">
+					<files>
+						<file name="..\..\Src\iCore\MsgBase.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iCore\MsgObject.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iCore\MsgProcessor.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iCore\MsgThread.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iCore\MsgTimer.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iCore\ThreadPool.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iCore\ThreadRunner_i.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iCore\TimerThread.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="iLog" ext=".cpp">
+					<files>
+						<file name="..\..\Src\iLog\iLogTestGroup.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iLog\LogBinaryUtils.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iLog\LogCommonImpl.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iLog\LogManager.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iLog\LogManagerOutput.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iLog\LogManagerOutput_i.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iLog\LogUartStream_i.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iLog\LogWrapper.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\iLog\LogWrapperTest.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="iNet">
+					<files>
+						<file name="..\Src\iNet\UdpPing_i.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="iUart">
+					<files>
+						<file name="..\Src\iUart\BfUart.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iUart\BfUartBuffers.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iUart\BfUartIO.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iUart\BfUartManagement.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iUart\BfUartProfile.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iUart\UartReturnCode_i.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="iVDK" ext=".cpp">
+					<files>
+						<file name="..\Src\iVDK\CriticalRegion.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iVDK\Mutex.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iVDK\Semaphore.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iVDK\VdkCheckInit.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iVDK\VdkThread.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\iVDK\VdkUtils.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="Lw" ext=".cpp">
+					<files>
+						<file name="..\Src\Lw\NetUtils.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\Lw\TcpServerSocket.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\Lw\TcpSocket.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\Lw\UdpSocket.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="Platform" ext=".cpp">
+					<files>
+						<file name="..\Src\Platform\PlatformBlackfin.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\Platform\PlatformBlackfinMini.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\Platform\PlatformThread.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Platform\PlatformUtils.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\Platform\PlatformWaitCondition.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="QtCore" ext=".cpp">
+					<files>
+						<file name="..\Src\QtCore\qchar.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="QtNetwork" ext=".cpp">
+					<files>
+						<file name="..\Src\QtNetwork\qhostaddress.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="SafeBiProto">
+					<files>
+						<file name="..\..\Src\SafeBiProto\LogSbpProtoMonitor.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProto\SafeBiProto.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProto\SbpCRC.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProto\SbpFrame.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProto\SbpFrameHeader.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProto\SbpGetTypeInfo.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProto\SbpPacketHeader.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProto\SbpPackInfo.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProto\SbpRecvPack.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProto\SbpSendPack.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProto\SbpSettings.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\SafeBiProto\SbpTcpTransport_i.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProto\SbpUtils.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="SafeBiProtoExt">
+					<files>
+						<file name="..\..\Src\SafeBiProtoExt\SbpConnection.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProtoExt\SbpConnectionList.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\SafeBiProtoExt\SbpUartTransport.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\SafeBiProtoExt\SbpUartTransportFactory_i.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\SafeBiProtoExt\SpbTcpServer_i.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+				<folder name="Utils" ext=".cpp">
+					<files>
+						<file name="..\..\Src\Utils\BidirBuffer.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\CPUUsageThread.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\DelayInit.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\DeleteIfPointer.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\ErrorsSubsystem.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\UtilsTests\ErrorsSubsystemTests.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\Src\Utils\ExeName.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\GlobalMutex.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\IntToString.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\MemoryPoolForceDefaultInstantiation.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\MemReaderStream.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\MemWriterStream.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\MsDateTime.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\Random.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\RawCRC32.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\SafeRef.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\StatisticElement.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\StringParser.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\StringUtils.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\ThreadNames.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\TimerBase.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\Utils\UtilsDateTime.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+						<file name="..\..\Src\UtilsTests\VirtualInvokeTest.cpp">
+							<file-configurations>
+								<file-configuration name="Debug">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Debug</intermediate-dir>
+									<output-dir>.\Debug</output-dir>
+								</file-configuration>
+								<file-configuration name="Release">
+									<excluded-flag value="no"/>
+									<build-with-flag value="project"/>
+									<intermediate-dir>.\Release</intermediate-dir>
+									<output-dir>.\Release</output-dir>
+								</file-configuration>
+							</file-configurations>
+						</file>
+					</files>
+				</folder>
+			</folders>
+		</folder>
+	</folders>
+	<!-- System Builder Components -->
+	<system-builder-component-tables>
+		<system-builder-plugin name="LwIP Ethernet application">
+			<system-builder-component name="LwIP Ethernet Application Settings">
+				<property name="Output type"><![CDATA[Executable file]]></property>
+				<property name="Use DMA"><![CDATA[True]]></property>
+			</system-builder-component>
+			<system-builder-component name="Select Processor">
+				<property name="Processor family"><![CDATA[Blackfin]]></property>
+			</system-builder-component>
+		</system-builder-plugin>
+		<system-builder-plugin name="Startup Code Wizard" version="2.0">
+			<system-builder-component name="Advanced Options">
+				<property name="Include C++ support"><![CDATA[True]]></property>
+				<property name="Include C/C++ support"><![CDATA[True]]></property>
+				<property name="Include LDF exceptions support"><![CDATA[True]]></property>
+				<property name="Search for libraries in the tools installation directory"><![CDATA[True]]></property>
+			</system-builder-component>
+			<system-builder-component name="Cache and Memory Protection">
+				<property name="DCBS"><![CDATA[Unset]]></property>
+				<property name="Data cache memory configuration"><![CDATA[Data cache (Banks A and B)]]></property>
+				<property name="Generate support for memory protection"><![CDATA[True]]></property>
+				<property name="Instruction cache memory configuration"><![CDATA[Instruction cache]]></property>
+				<property name="Write-back cache"><![CDATA[False]]></property>
+				<property name="Write-through cache"><![CDATA[True]]></property>
+			</system-builder-component>
+			<system-builder-component name="Compiler Instrumented Profiling">
+				<property name="Enable profiling"><![CDATA[False]]></property>
+				<property name="Profiling output"><![CDATA[mon.out]]></property>
+			</system-builder-component>
+			<system-builder-component name="Configuration">
+				<property name="Add LDF"><![CDATA[True]]></property>
+				<property name="Add startup code"><![CDATA[True]]></property>
+				<property name="CPLB template schema"><![CDATA[2]]></property>
+				<property name="LDF template schema"><![CDATA[3.3]]></property>
+				<property name="Startup code template schema"><![CDATA[3.8]]></property>
+			</system-builder-component>
+			<system-builder-component name="Custom system heap settings">
+				<property name="Absolute size"><![CDATA[16 MB]]></property>
+				<property name="Customize system heap"><![CDATA[True]]></property>
+				<property name="Memory types"><![CDATA[L3]]></property>
+				<property name="Minimum size"><![CDATA[]]></property>
+			</system-builder-component>
+			<system-builder-component name="Custom system stack settings">
+				<property name="Absolute size"><![CDATA[8 kB]]></property>
+				<property name="Customize system stack"><![CDATA[True]]></property>
+				<property name="Memory types"><![CDATA[L3]]></property>
+				<property name="Minimum size"><![CDATA[]]></property>
+			</system-builder-component>
+			<system-builder-component name="External memory settings">
+				<property name="Partition external memory"><![CDATA[None]]></property>
+				<property name="Size"><![CDATA[32MB]]></property>
+				<property name="Using external memory"><![CDATA[True]]></property>
+			</system-builder-component>
+			<system-builder-component name="Linker Options">
+				<property name="Search Directory"><![CDATA[]]></property>
+			</system-builder-component>
+			<system-builder-component name="Multi-core Selection">
+				<property name="Core"><![CDATA[Core A]]></property>
+			</system-builder-component>
+			<system-builder-component name="PGO">
+				<property name="Using PGO"><![CDATA[False]]></property>
+			</system-builder-component>
+			<system-builder-component name="Processor clock and power settings">
+				<property name="Clock and power settings"><![CDATA[Optimize for speed]]></property>
+				<property name="Configure clock and power settings"><![CDATA[False]]></property>
+				<property name="EZ-KIT"><![CDATA[ADSP-BF537 EZ-KIT]]></property>
+			</system-builder-component>
+			<system-builder-component name="Program Running From">
+				<property name="Internal Memory"><![CDATA[True]]></property>
+			</system-builder-component>
+			<system-builder-component name="Project Options">
+				<property name="Compiler Multicore"><![CDATA[False]]></property>
+				<property name="Configuration"><![CDATA[Release]]></property>
+				<property name="Full IO"><![CDATA[True]]></property>
+				<property name="Intermediate Directory"><![CDATA[.\Release]]></property>
+				<property name="Linker Multicore"><![CDATA[False]]></property>
+				<property name="Name"><![CDATA[BfBoot]]></property>
+				<property name="Processor"><![CDATA[ADSP-BF537]]></property>
+				<property name="Silicon Revision"><![CDATA[Automatic]]></property>
+				<property name="Strict IEEE Floating Point Compliance"><![CDATA[False]]></property>
+				<property name="Use C++ exceptions libraries"><![CDATA[False]]></property>
+			</system-builder-component>
+			<system-builder-component name="Run-time Initialization">
+				<property name="I/O device initialization"><![CDATA[True]]></property>
+				<property name="Initialize data registers"><![CDATA[True]]></property>
+				<property name="Initialize return registers to zero"><![CDATA[True]]></property>
+				<property name="Run-time memory initialization"><![CDATA[False]]></property>
+				<property name="Run-time memory location"><![CDATA[L3]]></property>
+			</system-builder-component>
+		</system-builder-plugin>
+		<system-builder-plugin name="VDK application">
+			<system-builder-component name="VDKApplicationSettings">
+				<property name="VDK"><![CDATA[True]]></property>
+			</system-builder-component>
+		</system-builder-plugin>
+	</system-builder-component-tables>
+</visualdsp-project>

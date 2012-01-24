@@ -1,0 +1,10 @@
+
+// comment
+
+ObjCreate NObjDss1ToSip {StaticName} true			// comment 2
+{StaticName}.AddDss1(E1, Trunk1, {StaticName}, TE)  // comment "3"
+
+   // comment 4
+CS_Set {StaticName}
+
+CS_Print "// not a comment" 						// comment 5 

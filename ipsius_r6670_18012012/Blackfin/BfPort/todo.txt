@@ -1,0 +1,159 @@
+
+
+
+* IRQ_ASSERT vs ESS_ASSERT, use new/delete
+* IRQ detection
+* Address on heap or stack detection
+
+* Thread safety to ESS hooks -- thru platform
+* Global new for all tests project
+* disable MSVC warnings for PlatformMemory.h -- 4311;4312  (проблема, это происходит в шаблонах)
+
+* SIP -- special .cpp for include <asio.hpp>, remove stdafx.cpp, autodetect self IP address
+
+--------
+
+Own DCB based on VDK::Thread (?!)
+
+!!
+_Ev -- file rename
+Valkiriy -- folder rename
+
+
+--------
+
+SafeBiProto -- send header as separate data pack!!
+
+SafeBiProto -- protocol conception.
+Single command type for in/out
+Send -> just call
+Recv -> callback for interface
+Commands factory for recv
+
+--------
+
+TDM/RTP plan!!
+
+- источники данных -- активный или пассивные?
+- синхронность системы (раньше цеплялись за IRQ)
+- msg vs call
+- данные -- read-only, счетчик использования -> write mode, тэг типа + блок двоичных данных 
+- данные -- BiDir buffer vs что-то другое (недостаток -- фиксированный размер)
+- работа буфера приема (компенсация джиттера)
+- API для внешней системы
+- режим локальной коммутации (на каком уровне?)
+- несколько получателей RTP/TDM
+- сумматоры потоков (как сделать полное прослушивание канала?)
+- статистика / бенчмарки
+- RTP -- one socket, one recv, multi-send
+
+(дописать фичи и требования)
+
+--------
+
+* lwIP TCP/IP socks
+  - loopback, commit code + config
+  - TCP.Connect -- блокирует 12 секунда 
+  - Listen/Connect не работает (localhost ??), проверить UDP
+  
+* Accept is blocked, try Async interface (?)
+  - LWIP_SO_RCVTIMEO (?)
+  - accept в другом потоке, close в основном делает разблокировку - ?
+  
+----------
+
+* LwIP TCP/IP, stack vs sockets - ?!
+* iCore Blackfin test group, Utils test group
+
+* SIP phone, test service -- code review
+* binary r/w test code review; protocol -- keep on watching
+
+
+* timeBeginPeriod + sleep/tick precision test
+* VDK thread destructor crush -- thread info must be single global class (?)
+
+* Test MsgTimer interval is correct
+
+----------------------
+
+* VDK primitives
+* Tests for platform layer
+* BfPort *must* be work (or just compile)
+
+
+* Blackfin log store records limit
+* Blackfin cout redefine
+
+* Heap control for all tests (detail inside test fw)
+* MsgThread count max N then remove from queue @ object delete
+
+* Boost review
+* Library thru header include
+
+----------------------
+
+iLog:
+
+* formater вкладывать в стрим vs класс FormatedOutput
+* null stream, base stream
+
+
+* Dox -- architecture, UML (?)
+* ISDN, Linux build
+
+
+--------
+    
+Monitor SIP code, library and compilation; UML
+
+Virtual Invoke + arg
+scoped_ptr in iCore, iLog
+
+
+
+- iLog -- customize solution (ISDN, RTP, etc.)
+
+* Bf iLog: Кэширование данных замедляет реальное время отладки, попробовать без JTAG, 
+  выводя результаты по UART, Release build
+* JTAG slow from mutex or malloc (?!)
+
+дата время:
+- тесты (для удобства можно в режиме vs QDateTime)
+- доработать форматирование
+- документация (UML?)
+- различать классы на уровне iLog или на уровне Utils (?)
+
+
+--------
+
+* Msg thread overload:
+     
+- печать статистики по работе MsgThread
+
+--------
+    
+* капитальная прогонка ProjAllTests с использованием TutRunner
+* промотреть код SIP
+* explore theme: pointer to virtual/non-virtual member, sizeof, impl
+    
+  
+* SafeRef<> -- enable thread-safe debug mode (debug enum profiles)      
+* проблема работы со ссылками (?!)
+    
+
+--------
+
+template<class T>
+void SetBit(T &val, byte bitNumber)
+{
+   T mask = ((T)1) << bitNumber;
+   val |= mask;
+}
+
+template<class T>
+void SetBit(T *pVal, byte bitNumber)
+{
+   T mask = ((T)1) << bitNumber;
+   *pVal = *pVal | mask;
+}
+

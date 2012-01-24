@@ -1,0 +1,45 @@
+Выполняет по одной команде (/upl | /dwl | /network).
+
+Порядок отработки:
+1. parse cmd line
+2. connect telnet
+3. telnet: IsMontSD? -> MountSD
+4. connect ftp
+
+Далее в зависимости от команды
+/Upl src forced
+    
+    1 выбор версии:
+    Выбор версии производится сравнением макс. версии в пакетах в src/ 
+    с текущей версией - SDCard/ipsius/ver.txt поле AutoVersion (ftp)
+    Если тек. версия не известна или forced = True выбираем максимальную из src
+    src может быть конкретным пакетом src
+    
+    2 Распаковка пакета и загрузка в SDCard/ipsius_new
+
+/network ip mask gateway
+   
+    ftp: create file sdcard/network.cfg
+    Формат файла:
+    
+    IP=xxx.xxx.xxx.xxx
+    Mask=xxx.xxx.xxx.xxx
+    Gateway=xxx.xxx.xxx.xxx
+    DNS=xxx.xxx.xxx.xxx
+
+    
+/Dwl dst
+    
+    Получение по ftp копии sdcard во временную директорию
+    Архивироваие в dst/{TS}_AozBackup.zip если dst это директория или в файл dst, если это файл.
+    Уничтожение временной директории
+
+    
+    
+6. telnet: 
+    Выполняется, если есть, скрипт остановки sdcard/ipsius/stop.sh
+    Команда перезагрузки Aoz.
+    
+    Скрипт stop.sh должен в конце иметь строку 'echo StopComplete'
+    
+   

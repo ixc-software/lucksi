@@ -1,0 +1,26 @@
+IpsiusMonitor - гибкое средство мониторинга состояния DRI-объектов домена.
+
+Возможности:
+	Подключение к удаленному домену по протоколу Telnet
+	Отображение истории и текущего состояния подключения к домену.
+	Автоматически обновляемый вывод состояния DRI-объектов домена.
+	Конфигурирование списка отображения объектов и периода их обновления 
+
+Запуск:
+	Параметры командной строки.
+	Usage: script [/help] </telnetHost ('telnetHost', 'ip')> </port port> [/pwd ('pwd', 'pwd')] [/login login] </cfg cfg> 
+    /help; /h                              This help
+    /telnetHost; /ip ('telnetHost', 'ip')  Ipsius telnet host address
+    /port; /p port                         Ipsius telnet port number
+	/cfg; /c cfg                           User config file
+    /pwd; /pwd ('pwd', 'pwd')              Ipsius telnet password
+    /login; /l login                       Ipsius telnet login    
+	
+	параметры /l и /pwd опциональны
+	
+Gui:
+	В верхней части окна расположена панель управления 'DriConnection' и область вывода информации о изменениях состояния подключения к домену.
+	Панель управления имеет индикатор состояния подключения, кнопку запуска телнет-консоли, кнопки свернуть/развернуть всё.
+	
+Настройка:
+

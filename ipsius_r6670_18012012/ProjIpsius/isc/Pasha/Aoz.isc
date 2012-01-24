@@ -1,0 +1,24 @@
+CS_Exec "HwFinder.isc"
+
+ObjCreate NObjAoz Aoz true		// создание шлюза (имя шлюза передается в скрипт в качестве параметра)
+.LogLevel = 3   							// включение/отключение трассировки
+.Sip.ContactToFrom = true
+//.Sip.ExternalIp = 83.85.98.198          	// реальный IP адрес роутера (опционально, только для прохождения NAT)
+.Sip.LocalHost = 5068						// IP + порт SIP шлюза
+.Sip.Proxy.ProxyHost = "192.168.0.240:5060"
+.Sip.Proxy.RegistrationInd = true         	// включить(true)/выключить(false) регистрацию шлюза на Sip прокси
+.Sip.Proxy.UserName = pasha8                 // имя шлюза как Sip пользователя, используется при регистрации на Sip прокси
+                                            // по умолчанию используется имя шлюза 
+.Sip.Proxy.Password = pasha8              // пароль для регистрации на Sip прокси
+
+CS_Exec "AozImpl.isc" "BoardName = bfPult; FirstNumber = 7100; SecondNumber = 7200; UseAlaw = true; HiTdmChPart = false; DevTraceInd = true"
+//Aoz.A1.TestMode = true
+
+Aoz.bfPult.Board.TestBodyBaseException = t
+Aoz.bfPult.Board.ThrowFromInit = t
+
+Aoz.Enabled = true
+
+
+
+

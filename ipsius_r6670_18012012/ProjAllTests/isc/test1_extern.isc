@@ -1,0 +1,5 @@
+CS_Print "Script loaded!"
+
+CS_Exec "test1_macro_print.isc" "p1 = 1; p2 = 2"
+CS_Exec "test1_macro_print.isc" "p1 = John; p2 = Doe"
+

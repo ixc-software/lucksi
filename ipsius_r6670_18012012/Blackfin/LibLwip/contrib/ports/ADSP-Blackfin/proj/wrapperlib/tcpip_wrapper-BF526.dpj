@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding='ISO-8859-1'?>
+<visualdsp-project schema="17" name="tcpip_wrapper-BF526" file="tcpip_wrapper-BF526.dpj" version="1">
+	<!-- Project build target -->
+	<target>
+		<processor revision="any">ADSP-BF526</processor>
+		<extension>.dlb</extension>
+		<type>Library file</type>
+	</target>
+	<!-- Configurations -->
+	<configurations active="Release">
+		<configuration name="Debug">
+			<intermediate-dir>.\Debug526</intermediate-dir>
+			<output-dir>.\Debug526</output-dir>
+			<changed-property-page-flags>4</changed-property-page-flags>
+			<tools>
+				<tool type="Compiler">
+					<option><![CDATA[|-Version>5.0|-O>0|-O1>0|-Ov>100|-ipa>0|-g>1|-no-annotate>0|-save-temps -path-output>0|-ED>0|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>0|-implicit-pointers>0|-eh >0|-rtti>1|-check-init-order>0|-ignore-std>1|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>0|-misra-testing>0|-misra-suppress-advisory>0|-I>$(VDSP)\Blackfin\lib\src\lwip\src\include, $(VDSP)\Blackfin\lib\src\lwip\contrib\ports\ADSP-Blackfin\include\netif, $(VDSP)\Blackfin\include\drivers\ethernet, $(VDSP)\Blackfin\include\lwip, $(VDSP)\Blackfin\lib\src\lwip\contrib\ports\ADSP-Blackfin\include, $(VDSP)\Blackfin\lib\src\lwip\contrib\ports\ADSP-Blackfin\proj\lwIPv4lib, $(VDSP)\Blackfin\lib\src\lwip\src\include\ipv4|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>0|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>0|-sdram>0|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>1|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -double-size-any]]></option>
+				</tool>
+				<tool type="Assembler">
+					<option><![CDATA[|-Version>4.5|-v>0|-g>1|-l>0|-save-temps>0|-sp>0]]></option>
+				</tool>
+				<tool type="Linker">
+					<option><![CDATA[|-Version>5.0|-flags-link -t>0|-flags-link -S>0|-flags-link -s>0|-mem>0|-flags-link -warnonce>0|-map>0|-flags-link -xref>0|-flags-link -save-temps>0|-flags-link -ip>0|-flags-link -e>0|-flags-link -ev>0|-add-debug-libpaths>1|-flags-link -MD__ADI_LIBEH__>0|-multicore>0|NOSWITCH>1]]></option>
+				</tool>
+				<tool type="Archiver">
+					<option><![CDATA[]]></option>
+				</tool>
+				<tool type="Loader">
+					<option><![CDATA[|-Version>4.5|-b Flash>1|-f HEX>1|-Width 8>1|-p>0x0|DefaultStart>0|-v>0|-waits >15|-BaudRate 500k>1|-HoldTime >3|-pFlag >0|-zinit>0|-No2Kernel>1|-o2>0|-kb Flash>1|-kf HEX>1|-kWidth 8>1|DefaultKernelStart>1|UserKernel>1|-romsplitter>0|split HEX>1|-maskaddr>0]]></option>
+				</tool>
+				<tool type="VdkGen">
+					<option><![CDATA[]]></option>
+				</tool>
+			</tools>
+			<post-build-command><![CDATA[cmd /C copy .\Debug526\tcpip_wrapper-BF526.dlb  .\debug526\libtcpipbf526.dlb
+cmd /c copy .\Debug526\libtcpipbf526.dlb $(VDSP)\Blackfin\lib
+]]></post-build-command>
+		</configuration>
+		<configuration name="Release">
+			<intermediate-dir>.\Release526</intermediate-dir>
+			<output-dir>.\Release526</output-dir>
+			<changed-property-page-flags>0</changed-property-page-flags>
+			<tools>
+				<tool type="Compiler">
+					<option><![CDATA[|-Version>5.0|-O>1|-O1>1|-Ov>100|-ipa>0|-g>0|-no-annotate>0|-save-temps -path-output>0|-ED>0|-no-auto-attrs>0|-no-builtin>0|-no-extra-keywords>0|-enum-is-int>0|-no-fp-associative>0|-structs-do-not-overlap>0|-implicit-pointers>0|-eh >0|-rtti>0|-check-init-order>0|-ignore-std>1|-const-read-write>0|-const-strings>0|-no-multiline>1|-misra>0|-misra-strict>0|-misra-no-cross-module>0|-misra-no-runtime>1|-misra-testing>1|-misra-suppress-advisory>0|-I>$(VDSP)\Blackfin\lib\src\lwip\src\include, $(VDSP)\Blackfin\lib\src\lwip\contrib\ports\ADSP-Blackfin\include\netif, $(VDSP)\Blackfin\include\drivers\ethernet, $(VDSP)\Blackfin\include\lwip, $(VDSP)\Blackfin\lib\src\lwip\contrib\ports\ADSP-Blackfin\include, $(VDSP)\Blackfin\lib\src\lwip\contrib\ports\ADSP-Blackfin\proj\lwIPv4lib, $(VDSP)\Blackfin\lib\src\lwip\src\include\ipv4|-no-std-inc>0|-double-size-32>1|-double-size-any>0|-Ofp>0|-full-io>0|-guard-vol-loads>0|-decls-strong>1|-no-saturation>0|-cplbs>0|-sdram>0|-multicore>0|-pguide>0|NOSWITCH>0|-flags-compiler --diag_warning,implicit_func_decl>1|-warn-protos>1|-flags-compiler --diag_warning,call_not_inlined>0|-Wremarks>0|-w>0|AdditionalOptions>-threads -double-size-any]]></option>
+				</tool>
+				<tool type="Assembler">
+					<option><![CDATA[|-Version>4.5|-v>0|-g>1|-l>0|-save-temps>0|-sp>0]]></option>
+				</tool>
+				<tool type="Linker">
+					<option><![CDATA[|-Version>5.0|-flags-link -t>0|-flags-link -S>0|-flags-link -s>0|-mem>0|-flags-link -warnonce>0|-map>0|-flags-link -xref>0|-flags-link -save-temps>0|-flags-link -ip>0|-flags-link -e>1|-flags-link -ev>0|-add-debug-libpaths>0|-flags-link -MD__ADI_LIBEH__>0|-multicore>0|NOSWITCH>1]]></option>
+				</tool>
+				<tool type="Archiver">
+					<option><![CDATA[]]></option>
+				</tool>
+				<tool type="Loader">
+					<option><![CDATA[|-Version>4.5|-b Flash>1|-f HEX>1|-Width 8>1|-p>0x0|DefaultStart>0|-v>0|-waits >15|-BaudRate 500k>1|-HoldTime >3|-pFlag >0|-zinit>0|-No2Kernel>0|-o2>0|-kb Flash>1|-kf HEX>1|-kWidth 8>1|-kp>0x0|DefaultKernelStart>1|UserKernel>1|-romsplitter>0|split HEX>1|-maskaddr>29]]></option>
+				</tool>
+				<tool type="VdkGen">
+					<option><![CDATA[]]></option>
+				</tool>
+			</tools>
+			<post-build-command><![CDATA[cmd /C copy .\Release526\tcpip_wrapper-BF526.dlb  .\Release526\libtcpipbf526.dlb
+cmd /c copy .\Release526\libtcpipbf526.dlb $(VDSP)\Blackfin\lib
+]]></post-build-command>
+		</configuration>
+	</configurations>
+	<!-- Project folders -->
+	<folders>
+		<folder name="Header Files" ext=".h,.hpp,.hxx">
+		</folder>
+		<folder name="Linker Files" ext=".ldf,.dlb">
+		</folder>
+		<folder name="Source Files" ext=".c,.cpp,.cxx,.asm,.dsp,.s">
+			<files>
+				<file name="$(ADI_DSP)\Blackfin\lib\src\lwip\contrib\ports\ADSP-Blackfin\proj\wrapperlib\GetSocketError.c">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Debug526</intermediate-dir>
+							<output-dir>.\Debug526</output-dir>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Release526</intermediate-dir>
+							<output-dir>.\Release526</output-dir>
+						</file-configuration>
+					</file-configurations>
+				</file>
+				<file name="$(ADI_DSP)\Blackfin\lib\src\lwip\contrib\ports\ADSP-Blackfin\proj\netif\nifce_driver.c">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Debug526</intermediate-dir>
+							<output-dir>.\Debug526</output-dir>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Release526</intermediate-dir>
+							<output-dir>.\Release526</output-dir>
+						</file-configuration>
+					</file-configurations>
+				</file>
+				<file name="$(ADI_DSP)\Blackfin\lib\src\lwip\contrib\ports\ADSP-Blackfin\proj\arch-VDK\pkthandler.c">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Debug526</intermediate-dir>
+							<output-dir>.\Debug526</output-dir>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Release526</intermediate-dir>
+							<output-dir>.\Release526</output-dir>
+						</file-configuration>
+					</file-configurations>
+				</file>
+				<file name="$(ADI_DSP)\Blackfin\lib\src\lwip\contrib\ports\ADSP-Blackfin\proj\arch-VDK\sys_arch.c">
+					<file-configurations>
+						<file-configuration name="Debug">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Debug526</intermediate-dir>
+							<output-dir>.\Debug526</output-dir>
+						</file-configuration>
+						<file-configuration name="Release">
+							<excluded-flag value="no"/>
+							<build-with-flag value="project"/>
+							<intermediate-dir>.\Release526</intermediate-dir>
+							<output-dir>.\Release526</output-dir>
+						</file-configuration>
+					</file-configurations>
+				</file>
+				<file name="$(ADI_DSP)\Blackfin\lib\src\lwip\contrib\ports\ADSP-Blackfin\proj\arch-VDK\VDK.h">
+				</file>
+			</files>
+		</folder>
+	</folders>
+	<!-- System Builder Components -->
+	<system-builder-component-tables>
+		<system-builder-plugin name="Startup Code Wizard" version="2.0">
+			<system-builder-component name="Name">
+				<property name="Configuration"><![CDATA[tcpip_wrapper-BF526]]></property>
+			</system-builder-component>
+			<system-builder-component name="Project Options">
+				<property name="Compiler Multicore"><![CDATA[False]]></property>
+				<property name="Configuration"><![CDATA[Release]]></property>
+				<property name="Intermediate Directory"><![CDATA[.\Release526]]></property>
+				<property name="Linker Multicore"><![CDATA[False]]></property>
+				<property name="Name"><![CDATA[tcpip_wrapper-BF526]]></property>
+				<property name="Silicon Revision"><![CDATA[any]]></property>
+			</system-builder-component>
+		</system-builder-plugin>
+	</system-builder-component-tables>
+</visualdsp-project>

@@ -1,0 +1,28 @@
+HaltOnQtWarning(f)
+
+ObjCreate NObjSipUserAgent sip true
+//  .ResipLogMode = Detail
+    .SetupTransport(Udp, 5092)
+    //.AddTransport(5092)  // (5064) // localport   
+    
+    //.AddAccessPoint(pointName, sip:userName@host, passwd)
+    .AddAccessPoint("pult", "sip:5053@192.168.0.184:5062", "5053")
+    .pult.SetAsDefaultReceiver
+    .Enabled = t    
+    
+ObjCreate NObjPult pult true
+    .SoundMode = "NullMode"
+    .KeyboardType = "KbEmul"
+    .KbDriver.EmbedDisp = true
+    
+    .ViewSettings.Embeded = true
+    .ViewSettings.Width = 600//400//800
+    .ViewSettings.Height = 360//240//480
+    //.ViewSettings.SetThemeName("f:\_IPSIUS_RELEASE\PultGfx\Theme0")
+    //.ViewSettings.SetThemeName("F:\_IPSIUS_RELEASE\ArmSdFatFs\PultGfx\Theme0")
+    .ViewSettings.SetThemeName("/mnt/IpsiusRelease/ArmSdFatFs/PultGfx/Theme0")
+    
+    .SipPoint = sip.pult    
+    
+    .Enabled = true    
+    //.Enabled = false

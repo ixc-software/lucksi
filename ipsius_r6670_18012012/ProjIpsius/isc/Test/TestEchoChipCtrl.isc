@@ -1,0 +1,22 @@
+// input params:
+// COM
+
+ObjCreate NObjTestEchoChipCtrl "testCtrl" true
+	.COM = %COM%
+	.DataInit.VoiceChMask = "1..15, 17..31" 
+	.BodeRate = 38400	
+	.EchoTaps = 64
+	.TestErrorReport = true
+	.Run(-1)	
+ObjDelete testCtrl
+
+ObjCreate NObjTestEchoChipCtrl "testCtrl" true
+	.COM = %COM%
+	.Run(10000)	
+ObjDelete testCtrl
+
+ObjCreate NObjTestEchoChipCtrl "testCtrl" true
+	.COM = %COM%
+	.Run(10000)	
+ObjDelete testCtrl
+	

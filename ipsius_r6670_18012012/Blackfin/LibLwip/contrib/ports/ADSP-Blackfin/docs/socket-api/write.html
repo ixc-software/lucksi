@@ -1,0 +1,110 @@
+
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of Write</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>WRITE</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="write_exp.html"> Example</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+write - write to a file descriptor
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="lwip/sockets.h">lwip/sockets.h</A>&gt;</B>
+
+<P>
+<B>ssize_t write(int </B><I>fd</I><B>, const void *</B><I>buf</I><B>, size_t </B><I>count</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>write</B>
+
+writes up to
+<I>count</I>
+
+bytes to the file referenced by the file descriptor
+<I>fd</I>
+
+from the buffer starting at
+<I>buf.</I>
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+On success, the number of bytes written are returned (zero indicates
+nothing was written).  On error, -1 is returned, and the specific error number
+can be obtained by calling the function <a href="GetSocketError.html">GetSocketError</a>. In multi-threaded environment the last error number is held seperately
+for each thread.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EBADF</B><DD>
+<I>fd</I>
+
+is not a valid file descriptor or is not open for writing.
+<DT><B>EINVAL</B><DD>
+<I>fd</I>
+
+is attached to an object which is unsuitable for writing.
+<DT><B>EFAULT</B><DD>
+<I>buf</I>
+
+is outside your accessible address space.
+
+<DT><B>EAGAIN</B><DD>
+Non-blocking I/O has been selected using
+<B>O_NONBLOCK</B>
+
+and there was no room in the pipe or socket connected to
+<I>fd</I>
+
+to write the data immediately.
+<DT><B>EINTR</B><DD>
+The call was interrupted by a signal before any data was written.
+<DT><B>ENOSPC</B><DD>
+The device containing the file referred to by
+<I>fd</I>
+
+has no room for the data.
+<DT><B>EIO</B><DD>
+A low-level I/O error occurred while modifying the inode.
+</DL>
+<br>
+Other errors may occur, depending on the object connected to
+<I>fd</I>.
+<p>
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+
+<B><A HREF="read.html">read</A></B>,
+<B><A HREF="close.html">close</A></B>,
+<B><A HREF="select.html">select</A></B>,
+<B><A HREF="ioctl.html">ioctl</A></B>,
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

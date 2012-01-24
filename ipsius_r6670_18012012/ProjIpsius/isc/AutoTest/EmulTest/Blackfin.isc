@@ -1,0 +1,18 @@
+// GatewayName  - имя шлюза
+// SipPoint - sip access point
+// BoardName
+// Side
+// StartRtpPort
+CS_Set
+
+HeapTrace = true
+
+ObjCreate NObjDss1ToSip %GatewayName% true       // создание шлюза (имя шлюза передается в скрипт в качестве параметра)
+.LogLevel = 3
+.SipPoint = %SipPoint%
+.FromSip.CallingAddrNoDigit = UsePilotNumber
+.FromSip.PilotNumber = "2222"	
+
+CS_Exec "EmulTest/Dss1Trunk.isc" "TrunkName = Trunk; BoardName = %BoardName%; HwType = E1; Side = %Side%; UseAlaw = true; LiuSyncMaster = false; StartRtpPort = %StartRtpPort%"
+%GatewayName%.Enabled = true  
+

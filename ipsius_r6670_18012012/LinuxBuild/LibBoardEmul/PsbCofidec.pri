@@ -1,0 +1,2 @@
+ 
+SOURCES += psbCofidec/psbCofidecDrv.cpp

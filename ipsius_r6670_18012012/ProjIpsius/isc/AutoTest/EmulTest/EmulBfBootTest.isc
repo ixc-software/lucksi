@@ -1,0 +1,182 @@
+#define LocalIp "127.0.0.1"
+#define Dhcp "False"
+#define Gateway "192.168.0.32"
+#define NetMask "255.255.255.0"
+
+
+#define PrimPwd "PresetPwd" 
+#define HwType 1 
+#define HwNum 999 
+#define MAC "91:92:93:94:93:E7"
+
+// Запуск эмулятора
+ObjCreate NObjEmulRunner emulRunner true
+	.InitRtpRange(0, 1000)	
+	.CreateEmul(MyBoard, %HwNum%)	
+	.MyBoard.BoardSettings.SetDefaultParams(%HwType%, %HwNum%, %MAC%)
+	.MyBoard.BoardSettings.SetNetwork(%Dhcp%, %LocalIp%, %Gateway%, %NetMask%)	
+	.MyBoard.BoardSettings.UserPwd = %PrimPwd%
+	
+	.StartAllEmul				
+	
+//---------------------------------------------------------------------------
+
+// Прошивка содержащая скрипт TEST_NAMED, запускающий на основной плате приложение базируемое на BoardSetup
+// В случае эмулятора загрузочные образы могут быть фальшивые
+#define FwuFile ../FirmwareForBooterTest/FakeForBooterTest.fwu 
+#define LdrFile ../FirmwareForBooterTest/FakeBfBoot.ldr 
+
+//-------------------------------------------------------------------------
+
+#define ReloadTimeout 30000 
+
+#define NewHwType 2
+#define NewHwNum 1000
+#define NewMAC "91:92:93:94:93:E8"
+
+#define Pwd "DefaultTestPwd"
+
+//-------------------------------------------------------------------------
+
+// Настройка общих параметров объектов-заданий.
+ObjCreate NObjCommonBfTaskProfile commonProfile true            
+    .TraceClient = False
+    .TraceServer = False
+    .BoardPwd = %PrimPwd%
+    
+    .ObtainAddressByNum(%HwType%, %HwNum%, %ReloadTimeout%) // получение адреса по номеру платы    
+    .ObtainCbpPort %ReloadTimeout% // проверка того что адрес был получен верно
+    
+    .ObtainAddressByMac(%MAC%, %ReloadTimeout%) // проверка получения адресс по Mac   
+    .ObtainCbpPort %ReloadTimeout% // проверка того что адрес был получен верно       
+
+//-------------------------------------------------------------------------
+
+// Stage #1 "Set FActory"
+// Проверяется процедура установки фабричных настроек
+ObjCreate NObjBfTaskSetParams setFactory true
+    
+    .Init commonProfile
+    
+    .ResetFactoryIfExist = true;
+    .SetFactoryParams(%NewHwType%, %NewHwNum%, %NewMAC%);
+    .CheckAfter = true
+    
+    .Run // старт задачи    
+    // завершение Run подтверждает прием бродкаста с новыми фабричными настройками после перезагрузки бутера
+
+setFactory.ObjDelete  
+
+//-------------------------------------------------------------------------
+
+
+// Stage #2 "Set UserParams"
+commonProfile.ObtainCbpPort %ReloadTimeout% // порт изменялся при перезагрузке бутера
+
+// проверка альтернативных способов получения адреса
+commonProfile.ObtainAddressByMac(%NewMAC%, %ReloadTimeout%) // получение адреса по новому MAC
+commonProfile.ObtainAddressByNum(%NewHwType%, %NewHwNum%, %ReloadTimeout%) // получение адреса по новому номеру платы
+
+// Проверка процедуры изменения пользовательских настроек, в данном случае - пароля.
+ObjCreate NObjBfTaskSetParams setUserParams true
+    
+    .Init commonProfile         
+    .SetOptUserPwd(%Pwd%);
+    .CheckAfter = true
+    
+    .Run 
+
+setUserParams.ObjDelete  
+
+//-------------------------------------------------------------------------
+
+// Stage #3 "UpdateFirmware"
+
+// изменяем некоторые общие настройки
+commonProfile.BoardPwd = %Pwd% // пароль был изменен в Stage #2
+commonProfile.ObtainCbpPort %ReloadTimeout% // порт мог изменялся при загрузке бутера
+
+// Проверка процедуры обновления прошивки.
+ObjCreate NObjBfTaskUpdateFw updateFirmware true
+
+    .Init commonProfile
+    .SetFirmware "%FwuFile%" // прошивка должна иметь дополнительный скрипт с именем TEST_NAMED для этапа №4            
+    .CheckAfter = true    
+    .Run        
+
+updateFirmware.ObjDelete 
+
+//-------------------------------------------------------------------------
+
+// Stage #4 "Validate: RunNamedScript, AppReset"
+
+commonProfile.ObtainCbpPort %ReloadTimeout%
+
+ObjCreate NObjBfTaskStartNamedScript startNamedScr true
+    .Init commonProfile
+    .ScriptName TEST_NAMED               
+    .Run // выполнение задачи запуска именованного скрипта    
+startNamedScr.ObjDelete 
+    
+ObjCreate NObjBroadcastReceiver broadcastFromApp true    
+    .Mac = %NewMAC%
+    .CbpPort = 0 //признак того что бродкаст отправлен из приложения
+    .StartWaiting true %ReloadTimeout% // ожидание бродкаста приложения и перезагрузка платы
+broadcastFromApp.ObjDelete 
+            
+ObjCreate NObjBroadcastReceiver broadcastAfterAppReset true    
+    .Mac = %NewMAC%
+    .CmpPort = 0 //признак того что бродкаст отправлен из BootServer
+    .StartWaiting false %ReloadTimeout% // ожидание бродкаста приложения и перезагрузка платы   
+broadcastAfterAppReset.ObjDelete             
+
+//-------------------------------------------------------------------------
+
+// Stage #5 "Validate: Run BOOT script"
+
+ObjCreate NObjBroadcastReceiver stage_runBOOTscript true
+    .Mac = %NewMAC%
+    .CbpPort = 0 //признак того что бродкаст отправлен из приложения
+    .StartWaiting true %ReloadTimeout% // ожидание бродкаста приложения и перезагрузка платы        
+          
+stage_runBOOTscript.ObjDelete 
+
+//-------------------------------------------------------------------------
+
+// Stage #6 "Validate: UpdatingBootImage"
+ObjCreate NObjBfTaskUpdateBooter updateBooter true
+    commonProfile.ObtainCbpPort %ReloadTimeout%
+
+    .Init commonProfile
+    .SetBootImage "%LdrFile%"
+    
+    ObjCreate NObjBroadcastReceiver broadcastFromBooter
+    broadcastFromBooter.Mac = %NewMAC%
+    broadcastFromBooter.CmpPort = 0
+    
+    .Run
+    broadcastFromBooter.StartWaiting false %ReloadTimeout% // ожидание загрузки бутера  
+    
+broadcastFromBooter.ObjDelete 
+updateBooter.ObjDelete 
+
+//-------------------------------------------------------------------------
+
+// Stage #7 "Reset factory settings. Nex boot go on in service state."
+
+ObjCreate NObjBfTaskEraseDefault resetAllSettings true
+	commonProfile.ObtainCbpPort %ReloadTimeout%
+	
+    .Init commonProfile
+    .Run
+    
+resetAllSettings.ObjDelete 
+    
+//-------------------------------------------------------------------------
+
+commonProfile.ObjDelete 
+
+// stop emulation
+emulRunner.StopAllEmul
+    
+

@@ -1,0 +1,33 @@
+
+Reg.RegEvents = t
+Reg.RegCalls = t
+
+
+ObjCreate  NObjResipLog ResipLog
+ResipLog.LogLevel = 0
+ResipLog.SetTraceType(All, None)
+
+HaltOnQtWarning(f)
+TraceSessions = f
+
+// ----------------------------------------------------------
+
+ObjCreate NObjSipUserAgent sip true
+//	.ResipLogMode = Detail
+	.SetupTransport(Udp, 5064, "127.0.0.1")
+	.LogLevel = 0	
+	.AddAccessPoint("pult",    "sip:pult@127.0.0.1:5064", "1")
+	.pult.SetAsDefaultReceiver	
+	.pult.EnableRegistration = f
+	.AddAccessPoint("trainer", "sip:trainer@127.0.0.1:5064", "1")
+	.trainer.EnableRegistration = f
+	.Enabled = t	
+
+CS_Exec "pult.isc" "PultName = pult; SipPoint = sip.pult; SoundType = NullType; Visible = true"
+CS_Exec "pult.isc" "PultName = trainer; SipPoint = sip.trainer; SoundType = QtSimpleType; Visible = true"
+
+ObjCreate NObjPultScript script t
+.AddPult(pult.Body, pult)
+.AddPult(trainer.Body, trainer)
+.Run("Base.scp")
+//.Run("Chain.scp")	

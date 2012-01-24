@@ -1,0 +1,71 @@
+
+Reg.RegEvents = t
+Reg.RegCalls = t
+
+
+ObjCreate  NObjResipLog ResipLog
+ResipLog.LogLevel = 0
+ResipLog.SetTraceType(All, None)
+
+HaltOnQtWarning(f)
+TraceSessions = f
+
+// --------------------------------------------------
+
+ObjCreate NObjSipUserAgent sip1 true
+//	.ResipLogMode = Detail
+	.SetupTransport(Udp, 5064, "127.0.0.1")
+	.LogLevel = 0	
+	.AddAccessPoint("pult",    "sip:trainer@127.0.0.1:5066", "1")
+	.pult.SetAsDefaultReceiver	
+	.pult.EnableRegistration = f
+	.Enabled = t	
+
+ObjCreate NObjSipUserAgent sip2 true
+//	.ResipLogMode = Detail
+	.SetupTransport(Udp, 5066, "127.0.0.1")
+	.LogLevel = 0	
+	.AddAccessPoint("pult",    "sip:pult@127.0.0.1:5064", "1")
+	.pult.SetAsDefaultReceiver	
+	.pult.EnableRegistration = f
+	.Enabled = t	
+
+// --------------------------------------------------
+
+
+CS_Exec "pult.isc" "PultName = pult;    SipPoint = sip1.pult;    SoundType = QtSimpleType"
+CS_Exec "pult.isc" "PultName = trainer; SipPoint = sip2.pult;    SoundType = NullType"
+
+// --- view trainer ---
+CS_Set trainer
+
+    .Sound.IO.SetSoundNullType()
+
+	.Enabled = true
+	.Body.ViewVisible(f)	
+	
+// --- view pult --- 
+CS_Set pult
+
+    .Sound.IO.SetSoundQtSimple(0, 0)
+
+	.KbDriver.PosX = 600
+	.KbDriver.PosY = 100
+	.ViewSettings.Width  = 600  // 400
+	.ViewSettings.Height = 360  // 240 
+	.Settings.TraceStates t
+			
+	.Enabled = true
+			
+	.Body.RuntimeInfo 
+	.Body.ViewVisible(t)
+	
+
+// --------------------------------------------------
+
+ObjCreate NObjPultScript script t
+.LogLevel = 3
+.AddPult(pult.Body, pult)
+.AddPult(trainer.Body, trainer)
+.Run("TrainerRecv.scp")
+

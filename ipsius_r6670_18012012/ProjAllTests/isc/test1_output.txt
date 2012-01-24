@@ -1,0 +1,908 @@
+:PRINT "Stage: ObjCreate() and ObjList()"
+
+> CS_Set
+:OK
+
+> ObjCreate NObjTestType test
+:OK
+
+> ObjCreate NObjTestType
+:OK
+
+> ObjCreate NObjTestType t true
+:OK
+
+> .ObjCreate NObjTestType
+:OK
+
+> .ObjCreate NObjTestType
+:OK
+
+> .ObjCreate NObjTestType
+:OK
+
+> ObjList
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    test : NObjTestType
+    NObjTestType1 : NObjTestType
+    t : NObjTestType
+:OK
+
+> ObjCreate NObjTestType "lev0"
+:OK
+
+> lev0.ObjCreate NObjTestType "lev1"
+:OK
+
+> lev0.lev1.ObjCreate NObjTestType "lev2"
+:OK
+
+> ObjList false 99
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    test : NObjTestType
+    NObjTestType1 : NObjTestType
+    t : NObjTestType
+        NObjTestType1 : NObjTestType
+        NObjTestType2 : NObjTestType
+        NObjTestType3 : NObjTestType
+    lev0 : NObjTestType
+        lev1 : NObjTestType
+            lev2 : NObjTestType
+:OK
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    test : NObjTestType
+    NObjTestType1 : NObjTestType
+    t : NObjTestType
+        NObjTestType1 : NObjTestType
+        NObjTestType2 : NObjTestType
+        NObjTestType3 : NObjTestType
+    lev0 : NObjTestType
+        lev1 : NObjTestType
+            lev2 : NObjTestType
+:OK
+
+:PRINT "Stage: Meta stuff"
+
+> ObjCreate NObjTestTypeInner
+Exception "Type NObjTestTypeInner is non-creatable @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (4848) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.ObjCreate
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 32 (command # 16)
+:ERROR DRI::CommandDriRuntimeError
+
+> CS_Set
+:OK
+
+> ObjCreate NObjTestType parent true
+:OK
+
+> .AddChild
+:OK
+
+> .AddChild
+:OK
+
+> .AddChild
+:OK
+
+> .AddChild
+:OK
+
+> .ObjList true -1
+parent : NObjTestType
+    LogLevel = 0
+    Number = 9
+    Child0 : NObjTestTypeInner #
+        LogLevel = 0
+        Number = 0
+        IsUserUpdated = false #
+        SqrtNumber = 0 #
+        NumberAsString = "0" #
+        NumState = Even #
+        Binary = [] #
+    Child1 : NObjTestTypeInner #
+        LogLevel = 0
+        Number = 1
+        IsUserUpdated = false #
+        SqrtNumber = 1 #
+        NumberAsString = "1" #
+        NumState = Odd #
+        Binary = Bit0 #
+    Child2 : NObjTestTypeInner #
+        LogLevel = 0
+        Number = 2
+        IsUserUpdated = false #
+        SqrtNumber = 1.4142135623731 #
+        NumberAsString = "2" #
+        NumState = Even #
+        Binary = Bit1 #
+    Child3 : NObjTestTypeInner #
+        LogLevel = 0
+        Number = 3
+        IsUserUpdated = false #
+        SqrtNumber = 1.73205080756888 #
+        NumberAsString = "3" #
+        NumState = Odd #
+        Binary = Bit0|Bit1 #
+:OK
+
+> .Child0.Inc
+:OK
+
+> .Child0.ObjList true
+Child0 : NObjTestTypeInner #
+    LogLevel = 0
+    Number = 1
+    IsUserUpdated = true #
+    SqrtNumber = 1 #
+    NumberAsString = "1" #
+    NumState = Odd #
+    Binary = Bit0 #
+:OK
+
+> .Child0.ObjView true
+LogLevel : int = 0
+Number : int = 1
+IsUserUpdated : bool = true #
+SqrtNumber : double = 1 #
+NumberAsString : QString = "1" #
+NumState : NumberState = Odd #
+Binary : Binaries = Bit0 #
+:OK
+
+> .Child0.ObjView
+LogLevel = 0
+Number = 1
+IsUserUpdated = true #
+SqrtNumber = 1 #
+NumberAsString = "1" #
+NumState = Odd #
+Binary = Bit0 #
+:OK
+
+> .Child0.MetaMethods
+CS_Set([QString path])
+CS_SetBack()
+CS_Begin([bool continueOnError])
+CS_End()
+CS_Discard()
+CS_Timeout(int intervalMs)
+CS_Exec(QString fileName[, QString macroReplaceList])
+CS_Print([QString text])
+CS_Exit()
+CS_Info()
+ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+ObjDelete()
+ObjList([bool listProperties, int recurseLevel])
+ObjView([bool withTypes, QString propertyName])
+MetaMethods([QString typeName, QString methodName])
+MetaFields([QString typeName, QString propertyName])
+MetaEnums([QString typeName, QString enumName])
+MetaTypeInfo([QString typeName, bool withInherited])
+MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+Inc()
+Dec()
+:OK
+
+> MetaMethods NObjTestType
+CS_Set([QString path])
+CS_SetBack()
+CS_Begin([bool continueOnError])
+CS_End()
+CS_Discard()
+CS_Timeout(int intervalMs)
+CS_Exec(QString fileName[, QString macroReplaceList])
+CS_Print([QString text])
+CS_Exit()
+CS_Info()
+ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+ObjDelete()
+ObjList([bool listProperties, int recurseLevel])
+ObjView([bool withTypes, QString propertyName])
+MetaMethods([QString typeName, QString methodName])
+MetaFields([QString typeName, QString propertyName])
+MetaEnums([QString typeName, QString enumName])
+MetaTypeInfo([QString typeName, bool withInherited])
+MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+AddChild()
+RemoveChild(int childIndex)
+ParamsFn(int first[, QString second, int last])
+InfiniteAsyncCmd()
+:OK
+
+> MetaMethods NObjTestType ObjCreate
+ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+:OK
+
+> MetaFields  NObjTestTypeInner Number
+Number : int
+:OK
+
+> .Child0.MetaEnums
+LogTag { ErrorTag, WarningTag, InfoTag }
+NumberState { Even, Odd }
+Binary { Bit0, Bit1, Bit2, Bit3 }
+Binaries [ Bit0, Bit1, Bit2, Bit3 ]
+:OK
+
+> MetaEnums NObjTestTypeInner NumberState
+NumberState { Even, Odd }
+:OK
+
+> MetaTypeInfo NObjTestTypeInner true
+class NObjTestTypeInner # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    NumberState { Even, Odd }
+    Binary { Bit0, Bit1, Bit2, Bit3 }
+    Binaries [ Bit0, Bit1, Bit2, Bit3 ]
+    LogLevel : int
+    Number : int
+    IsUserUpdated : bool #
+    SqrtNumber : double #
+    NumberAsString : QString #
+    NumState : NumberState #
+    Binary : Binaries #
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    Inc()
+    Dec()
+:OK
+
+> .Child0.MetaTypeInfo
+class NObjTestTypeInner # : NamedObject #
+    NumberState { Even, Odd }
+    Binary { Bit0, Bit1, Bit2, Bit3 }
+    Binaries [ Bit0, Bit1, Bit2, Bit3 ]
+    Number : int
+    IsUserUpdated : bool #
+    SqrtNumber : double #
+    NumberAsString : QString #
+    NumState : NumberState #
+    Binary : Binaries #
+    Inc()
+    Dec()
+:OK
+
+> CS_Set
+:OK
+
+> MetaTypeInfo
+class NObjRoot # : NamedObject #
+    LogTag { ErrorTag, WarningTag, InfoTag }
+    LogLevel : int
+    BuildInfo : QString #
+    Started : QString #
+    HeapTrace : bool
+    HeapInfo : QString #
+    Sessions : QString #
+    NetMonitorStatus : QString #
+    ExitOnLastSessionDrop : bool
+    TraceSessions : bool
+    CS_Set([QString path])
+    CS_SetBack()
+    CS_Begin([bool continueOnError])
+    CS_End()
+    CS_Discard()
+    CS_Timeout(int intervalMs)
+    CS_Exec(QString fileName[, QString macroReplaceList])
+    CS_Print([QString text])
+    CS_Exit()
+    CS_Info()
+    ObjCreate(QString objectType[, QString objectName, bool setAsCurrent])
+    ObjDelete()
+    ObjList([bool listProperties, int recurseLevel])
+    ObjView([bool withTypes, QString propertyName])
+    MetaMethods([QString typeName, QString methodName])
+    MetaFields([QString typeName, QString propertyName])
+    MetaEnums([QString typeName, QString enumName])
+    MetaTypeInfo([QString typeName, bool withInherited])
+    MetaTypes([bool fullInfo, bool withInherited, bool onlyCreatable])
+    TestStackTrace()
+    TestAssertion()
+    TestException()
+    TestAsyncException()
+    TestAV()
+    TestMsgOverload()
+    TestAsyncCmd([bool canAborted, int timeOut])
+    TestQtWarningMsg()
+    Sleep(int timeOut)
+    SetMsgProfiling(int depth)
+    PrintMsgProfiling()
+    SetMaxMessageTime(int intervalMs)
+    TestMsgWatchdog()
+    StartNetMonitor(int intervalMs)
+    StopNetMonitor()
+    SessionsList()
+    HaltOnQtWarning(bool val)
+    RunTestScript(QString scpName[, QString refOutput])
+    DomainExit()
+    ListThreads()
+:OK
+
+> MetaTypes
+class NObjTestTypeInner # : NamedObject #
+class NObjTestType : NamedObject #
+class NObjString : NamedObject #
+class NObjPropertyTest : NamedObject #
+class NObjFlushTest : NamedObject #
+class NObjDomainAutorun # : NamedObject #
+class NObjLogManager # : NamedObject #
+class NObjLogSettings # : NamedObject #
+class NObjRoot # : NamedObject #
+class NObjSecProfile # : NamedObject #
+class NObjSecSpecial # : NamedObject #
+class NObjSecProfiles # : NObjProfilesBase # : NamedObject #
+class NObjSecUsers # : NamedObject #
+class NObjSecRoot # : NamedObject #
+class NObjSecTestBase : NamedObject #
+class NObjSecTestA : NObjSecTestBase : NamedObject #
+class NObjSecTestB : NObjSecTestBase : NamedObject #
+class NObjSecUser # : NamedObject #
+class NObjTelnetServerSessionDRI # : NamedObject #
+class NObjTelnetServerDRI # : NamedObject #
+class NObjThreadMonitor # : NamedObject #
+class NObjProfilesBase # : NamedObject #
+class NObjReg # : NamedObject #
+:OK
+
+> MetaTypes true
+class NObjTestTypeInner # : NamedObject #
+    NumberState { Even, Odd }
+    Binary { Bit0, Bit1, Bit2, Bit3 }
+    Binaries [ Bit0, Bit1, Bit2, Bit3 ]
+    Number : int
+    IsUserUpdated : bool #
+    SqrtNumber : double #
+    NumberAsString : QString #
+    NumState : NumberState #
+    Binary : Binaries #
+    Inc()
+    Dec()
+class NObjTestType : NamedObject #
+    Number : int
+    AddChild()
+    RemoveChild(int childIndex)
+    ParamsFn(int first[, QString second, int last])
+    InfiniteAsyncCmd()
+class NObjString : NamedObject #
+    Val : QString
+class NObjPropertyTest : NamedObject #
+    ColorEnum { clBlack, clWhite, clRed, clBlue, clGreen }
+    Binary { Bit0, Bit1, Bit2, Bit3, Bit4, Bit5 }
+    Binaries [ Bit0, Bit1, Bit2, Bit3, Bit4, Bit5 ]
+    Str : QString
+    Color : ColorEnum
+    Bin : Binaries
+    Time : QTime
+    Date : QDate
+    DT : QDateTime
+class NObjFlushTest : NamedObject #
+    FlushTimeoutMs : int
+    AddTimeoutMs : int
+    Run(int runTimeMs)
+    RunWithFakeAbort(int runTimeMs)
+    RunWithError()
+    RunInfinite()
+    RunWithAsyncException()
+    RunSafeWithAsyncException()
+    RunWithSyncException()
+class NObjDomainAutorun # : NamedObject #
+    TraceToCout : bool
+class NObjLogManager # : NamedObject #
+    TraceToCout : bool
+    TraceToFile : bool
+    FileName : QString
+    DirectSaveToFile : bool
+    TraceToUdp : bool
+    DstUdpTrace : QString
+    Timestamp : bool
+    CountToSync : int
+    TimeoutToSync : int
+    MaxRecords : int
+    CleanTo : int
+    PathSeparator : QString
+    Stat : QString #
+    Clear()
+    Log(QString s)
+    DumpSessionsToFile([QString fileName])
+class NObjLogSettings # : NamedObject #
+    Timestamp : bool
+    CountToSync : int
+    TimeoutToSync : int
+    MaxRecords : int
+    CleanTo : int
+    PathSeparator : QString
+class NObjRoot # : NamedObject #
+    BuildInfo : QString #
+    Started : QString #
+    HeapTrace : bool
+    HeapInfo : QString #
+    Sessions : QString #
+    NetMonitorStatus : QString #
+    ExitOnLastSessionDrop : bool
+    TraceSessions : bool
+    TestStackTrace()
+    TestAssertion()
+    TestException()
+    TestAsyncException()
+    TestAV()
+    TestMsgOverload()
+    TestAsyncCmd([bool canAborted, int timeOut])
+    TestQtWarningMsg()
+    Sleep(int timeOut)
+    SetMsgProfiling(int depth)
+    PrintMsgProfiling()
+    SetMaxMessageTime(int intervalMs)
+    TestMsgWatchdog()
+    StartNetMonitor(int intervalMs)
+    StopNetMonitor()
+    SessionsList()
+    HaltOnQtWarning(bool val)
+    RunTestScript(QString scpName[, QString refOutput])
+    DomainExit()
+    ListThreads()
+class NObjSecProfile # : NamedObject #
+    List([bool withSysItems])
+    AddRec(QString path, bool recursive, NObjProfilesBase::Mode mode[, QString allowList, QString denyList])
+    DeleteRec(int index)
+    Delete()
+class NObjSecSpecial # : NamedObject #
+class NObjSecProfiles # : NObjProfilesBase # : NamedObject #
+    Add(QString name, Mode rootMode[, QString allowList, QString denyList, bool blockSecurity])
+class NObjSecUsers # : NamedObject #
+    Add(QString login, QString password, QString profile[, int loginLimit, QString desc])
+class NObjSecRoot # : NamedObject #
+    SwitchSecProfile(QString profileName)
+class NObjSecTestBase : NamedObject #
+    Value : int
+    Inc()
+    Dec()
+class NObjSecTestA : NObjSecTestBase : NamedObject #
+class NObjSecTestB : NObjSecTestBase : NamedObject #
+class NObjSecUser # : NamedObject #
+    Info : QString #
+    Delete()
+    SetLoginLimit(int value)
+    SetPassword(QString value)
+class NObjTelnetServerSessionDRI # : NamedObject #
+    Info : QString #
+    Close()
+    GetStats()
+class NObjTelnetServerDRI # : NamedObject #
+    CloseAllSessions()
+class NObjThreadMonitor # : NamedObject #
+    MaxMsgQueueSize : int #
+    MaxTimerLagCount : int #
+    MaxTimerLag : int #
+    MsgGrowCount : int #
+    MsgGrowLimit : int #
+    Statistic : QString #
+    SetMaxMsgQueueSize(int msgCount)
+    ResetMaxMsgQueueSize()
+    SetMaxTimerLag(int timerLagCount, int maxTimerLag)
+    ResetMaxTimerLag()
+    SetMsgGrowDetection(int msgGrowCount, int msgGrowLimit)
+    ResetMsgGrowDetection()
+    Reset()
+class NObjProfilesBase # : NamedObject #
+    Mode { acDeny, acReadOnly, acFull }
+class NObjReg # : NamedObject #
+    Dir : QString
+    RegCalls : bool
+    RegEvents : bool
+    RegTelnet : bool
+    RunSelfTest()
+:OK
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    test : NObjTestType
+    NObjTestType1 : NObjTestType
+    t : NObjTestType
+        NObjTestType1 : NObjTestType
+        NObjTestType2 : NObjTestType
+        NObjTestType3 : NObjTestType
+    lev0 : NObjTestType
+        lev1 : NObjTestType
+            lev2 : NObjTestType
+    parent : NObjTestType
+        Child0 : NObjTestTypeInner #
+        Child1 : NObjTestTypeInner #
+        Child2 : NObjTestTypeInner #
+        Child3 : NObjTestTypeInner #
+:OK
+
+:PRINT "Stage: Transactions and errors"
+
+> CS_End
+CS_End without CS_Begin
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 78 (command # 42)
+:ERROR DRI::CommandDriTransactionError
+
+> CS_Begin
+Inner CS_Begin
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 81 (command # 44)
+:ERROR DRI::CommandDriTransactionError
+
+> CS_Begin
+:OK
+
+> CS_Set
+:OK
+
+> CS_End
+:OK
+
+> CS_Begin(true)
+:OK
+
+> kk.ObjList
+Object 'kk' not found!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 87 (command # 48)
+:ERROR DRI::CommandDriPrepareError
+
+> CS_Set
+:OK
+
+> CS_End
+:OK
+
+> CS_Begin
+:OK
+
+> kk.ObjList
+Object 'kk' not found!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 93 (command # 52)
+:ERROR DRI::CommandDriPrepareError
+
+> CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 94 (command # 53)
+:ERROR DRI::CommandDriAborted
+
+> CS_End
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 95 (command # 54)
+:ERROR DRI::CommandDriAborted
+
+> CS_Set
+:OK
+
+> CS_Set xxx
+Exception "Bad path! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (4848) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 99 (command # 56)
+:ERROR DRI::CommandDriRuntimeError
+
+> MetaTypes 15
+Exception "Bad bool: 15"; DRI::DriArgException in thread DomainClass:TestDomain/main (4848) @ ..\Src\DRI\DriArgFactory.cpp:90 in class DRI::IQGenericArgument *__thiscall `anonymous-namespace'::ArgBool::FromString(const class QString &) const @ ROOT.MetaTypes
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 100 (command # 57)
+:ERROR DRI::CommandDriRuntimeError
+
+> ObjXXX
+Method/property 'ObjXXX' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 101 (command # 58)
+:ERROR DRI::CommandDriPrepareError
+
+> ObjCreate ttt
+Exception "Type ttt not found in factory @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (4848) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.ObjCreate
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 102 (command # 59)
+:ERROR DRI::CommandDriRuntimeError
+
+> parent.a.Run
+Object 'parent.a' not found!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 103 (command # 60)
+:ERROR DRI::CommandDriPrepareError
+
+:PRINT "Stage: properties"
+
+> parent.Child2.Number
+2
+:OK
+
+> parent.Child2.SqrtNumber
+1.4142135623731 #
+:OK
+
+> parent.Child2.ObjView
+LogLevel = 0
+Number = 2
+IsUserUpdated = false #
+SqrtNumber = 1.4142135623731 #
+NumberAsString = "2" #
+NumState = Even #
+Binary = Bit1 #
+:OK
+
+> parent.Child2.SqrtNumber = "1.45"
+Exception "PropertyReadOnly"; `anonymousnamespace'::PropertyReadOnly in thread DomainClass:TestDomain/main (4848) @ ..\Src\DRI\DriPropertyFactory.cpp:319 in void __thiscall DRI::DriPropertyFactory::Set(const class QString &,class Domain::NamedObject *,const class QString &) const @ parent.Child2.SqrtNumber = 1.45
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 115 (command # 65)
+:ERROR DRI::CommandDriWriteProperty
+
+> parent.Child2.Number(3)
+Bad property access 'Number'
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 116 (command # 66)
+:ERROR DRI::CommandDriPrepareError
+
+> parent.Child2.Number 3
+:OK
+
+> parent.Child2.Number = 5
+:OK
+
+> parent.Child2.ObjView
+LogLevel = 0
+Number = 5
+IsUserUpdated = true #
+SqrtNumber = 2.23606797749979 #
+NumberAsString = "5" #
+NumState = Odd #
+Binary = Bit0|Bit1|Bit2 #
+:OK
+
+> parent.Number = -1
+Exception "BadNumber"; DriTests::NObjTestType::BadNumber in thread DomainClass:TestDomain/main (4848) @ s:\proj\ipsius\projalltests\generatedfiles\release\..\..\..\Src\DriTests\NamedObjectTestType.h:183 in void __thiscall DriTests::NObjTestType::Number(int) @ parent.Number = -1
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 122 (command # 70)
+:ERROR DRI::CommandDriWriteProperty
+
+> parent.Number = 17
+:OK
+
+> parent.Child0.ObjView false Number
+Number = 1
+:OK
+
+:PRINT "Stage: CS_Discard() and CS_Exec()"
+
+> CS_Discard
+CS_Discard without CS_Begin
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 130 (command # 74)
+:ERROR DRI::CommandDriTransactionError
+
+> CS_Discard a
+Call CS_Discard with params!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 134 (command # 77)
+:ERROR DRI::CommandDriTransactionError
+
+> CS_Begin
+Discarded!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 132 (command # 75)
+:ERROR DRI::CommandDriDiscarded
+
+> ObjCreate ttttt
+Discarded!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 133 (command # 76)
+:ERROR DRI::CommandDriDiscarded
+
+> CS_Discard
+:OK
+
+> parent.Child2.Number
+5
+:OK
+
+> CS_Exec "test1_extern.isc"
+:OK
+
+:PRINT "Script loaded!"
+
+> CS_Exec "test1_macro_print.isc" "p1 = 1; p2 = 2"
+:OK
+
+:PRINT "macro_print"
+
+:PRINT "Params are 1 and 2!"
+
+> CS_Exec "test1_macro_print.isc" "p1 = John; p2 = Doe"
+:OK
+
+:PRINT "macro_print"
+
+:PRINT "Params are John and Doe!"
+
+> parent.Child3.Number
+3
+:OK
+
+> CS_Exec "test1_macro_print.isc" "a;;;"
+Exception "Missed '=', in 'a;;;'"; DRI::DriDefineAndMacroList::DriMacroError in thread DomainClass:TestDomain/main (4848) @ ..\Src\DRI\DriDefineAndMacroList.cpp:144 in void __cdecl DRI::DriDefineAndMacroList::MacroErr(const class QString &,const class QString &,const class QString &) @ ROOT.CS_Exec
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 143 (command # 82)
+:ERROR DRI::CommandDriRuntimeError
+
+> CS_Exec "test1_macro_print.iscxxx"
+Exception "Path wasn't found in list or file doesn't exist: "S:/proj/Ipsius/ProjAllTests/Release/test1_macro_print.iscxxx; S:/proj/Ipsius/ProjAllTests/isc/test1_macro_print.iscxxx""; DRI::DriIncludeDirList::InvalidPath in thread DomainClass:TestDomain/main (4848) @ ..\Src\DRI\DriIncludeDirList.cpp:33 in void __cdecl DRI::DriIncludeDirList::ThrowException(const class QString &,const class QString &) @ ROOT.CS_Exec
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 144 (command # 83)
+:ERROR DRI::CommandDriRuntimeError
+
+:PRINT "Stage: delete tests"
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    test : NObjTestType
+    NObjTestType1 : NObjTestType
+    t : NObjTestType
+        NObjTestType1 : NObjTestType
+        NObjTestType2 : NObjTestType
+        NObjTestType3 : NObjTestType
+    lev0 : NObjTestType
+        lev1 : NObjTestType
+            lev2 : NObjTestType
+    parent : NObjTestType
+        Child0 : NObjTestTypeInner #
+        Child1 : NObjTestTypeInner #
+        Child2 : NObjTestTypeInner #
+        Child3 : NObjTestTypeInner #
+:OK
+
+> ObjDelete "parent.Child1"
+Exception "DriMethodExtraParams"; DRI::DriMethodExtraParams in thread DomainClass:TestDomain/main (4848) @ ..\Src\DRI\MetaInvoke.cpp:192 in void __thiscall DRI::MetaInvoke::AddParam(const class QString &) @ ROOT.ObjDelete
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 152 (command # 86)
+:ERROR DRI::CommandDriRuntimeError
+
+> ObjDelete "parent.Child7"
+Exception "DriMethodExtraParams"; DRI::DriMethodExtraParams in thread DomainClass:TestDomain/main (4848) @ ..\Src\DRI\MetaInvoke.cpp:192 in void __thiscall DRI::MetaInvoke::AddParam(const class QString &) @ ROOT.ObjDelete
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 153 (command # 87)
+:ERROR DRI::CommandDriRuntimeError
+
+> parent.ObjDeleteChildren
+Method/property 'ObjDeleteChildren' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 154 (command # 88)
+:ERROR DRI::CommandDriPrepareError
+
+> t.ObjDeleteChildren
+Method/property 'ObjDeleteChildren' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 156 (command # 89)
+:ERROR DRI::CommandDriPrepareError
+
+> lev0.lev1.ObjDelete
+:OK
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    test : NObjTestType
+    NObjTestType1 : NObjTestType
+    t : NObjTestType
+        NObjTestType1 : NObjTestType
+        NObjTestType2 : NObjTestType
+        NObjTestType3 : NObjTestType
+    lev0 : NObjTestType
+    parent : NObjTestType
+        Child0 : NObjTestTypeInner #
+        Child1 : NObjTestTypeInner #
+        Child2 : NObjTestTypeInner #
+        Child3 : NObjTestTypeInner #
+:OK
+
+> parent.ObjDelete
+:OK
+
+> ObjList false -1
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+        Profiles : NObjSecProfiles #
+            root : NObjSecProfile #
+        Users : NObjSecUsers #
+            root : NObjSecUser #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    test : NObjTestType
+    NObjTestType1 : NObjTestType
+    t : NObjTestType
+        NObjTestType1 : NObjTestType
+        NObjTestType2 : NObjTestType
+        NObjTestType3 : NObjTestType
+    lev0 : NObjTestType
+:OK
+
+:PRINT "Stage: async methods"
+
+> ObjCreate NObjTestType delTest
+:OK
+
+> delTest.AddChild
+:OK
+
+> delTest.AddChild
+:OK
+
+> delTest.AddChild
+:OK
+
+> delTest.AddChild
+:OK
+
+> delTest.ObjList
+delTest : NObjTestType
+    Child0 : NObjTestTypeInner #
+    Child1 : NObjTestTypeInner #
+    Child2 : NObjTestTypeInner #
+    Child3 : NObjTestTypeInner #
+:OK
+
+> delTest.RemoveChild(5)
+Child not found!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/test1.isc, line 177 (command # 101)
+:ERROR DRI::CommandDriRuntimeAsyncError
+
+> delTest.RemoveChild(0)
+OK!
+:OK
+
+> delTest.RemoveChild(3)
+OK!
+:OK
+
+> delTest.ObjList
+delTest : NObjTestType
+    Child1 : NObjTestTypeInner #
+    Child2 : NObjTestTypeInner #
+:OK
+
+
+Commands in total 111, with errors 26, service 186, scripted 7

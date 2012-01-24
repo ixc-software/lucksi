@@ -1,0 +1,2473 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ 
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE>Kernel API Documentation</TITLE>
+</HEAD>
+ 
+<BODY>
+<div id="kernel"><H1>Kernel API Documentation</H1></div>
+
+<H2>Processor Family</H2>
+<P class = "INDENTED">Blackfin</P>
+
+<H2>Description</H2>
+<P> </P>
+<P>
+ Kernel api abstracts the primitive operating system services and
+ facilitates easy migration of applications to different operating
+ system environments.The basic services include synchronization services,
+ interrupt services, and timer based callback services.kernel-api provides a
+ standard and uniform interface irrespective of the underlying operating
+ environment. This abstraction enables the applications to be portable
+ across different operating system platforms and environments.
+
+ <H3> Operation of Kernel Interface </H3>
+ The kernel interface is designed to allow it to be provided in both
+ multi-threaded and single threaded environments.The kernel api interface
+ abstracts a minimal set of operating system services that are required
+ by most of the algorithmic and control applications.
+
+ <H3>Synchronization Services </H3>
+ The kernel api offers counting semaphore as synchronization or
+ communication
+ mechanism among executing entities. Counting semaphores are used to
+ schedule multiple instances of a resource between several executing
+ entities (threads or processes). Each counting semaphore is associated
+ with a maximum-count and initial-count. Maximum count specifies the
+ maximum number of resource instances that can be acquired.If a semaphore
+ is released more than the maximum-count number of times the count will
+ not exceed maximum-count.
+ Initial count specifies the count of the semaphore when its created.If
+ maximum-count is 1 then its a binary semaphore and can be treated as
+ mutex.
+ If the initial-count is 0 (binary semaphore) means its not
+ available so an execution entity will block until its available.
+
+ To acquire an instance of a resource the associated semaphore count is
+ atomically decremented. If the value is greater than 0 the resource is
+ still available and can be acquired  by other execution entities.
+ In a multi-threaded environment all calling
+ threads will block if the count is 0. kernel API interface implementations must
+ document the schedule criteria if multiple threads are blocked on a
+ semaphore when the semaphore is released.
+ <p>
+ Each semaphore object is allocated a unique identifier by the underlying kernel
+ implementation and this identifier is passed by any application on each
+ function that operates on the object.
+ The unique identifier is a
+ <a href="kernel_api.html#ker_sem_id_t">ker_sem_id_t</a> type
+ whose C declaration is as shown below<p>
+ <CODE>
+ typedef unsigned int ker_sem_id_t<p>
+ </CODE>
+
+ Applications use the kernel api <a href="kernel_api.html#ker_get_semaphore">ker_get_semaphore</a>
+ function to obtain a
+ semaphore object and the
+ <a href="kernel_api.html#ker_rel_semaphore">ker_rel_semaphore</a>
+ function to release the object and hand the ownership of the object back
+ to the operating
+ system when it is no longer required by the component.
+ Once an object has been obtained, the component calls the
+ <a href="kernel_api.html#ker_pend_semaphore">ker_pend_semaphore</a> to acquire the
+ synchronization object and the kernel is expected to block the execution
+ entity if the object is
+ not available. Once the object has been acquired it is made available by
+ calling the
+ <a href="kernel_api.html#ker_post_semaphore">ker_post_semaphore</a> function.
+ Multiple <a href="kernel_api.html#ker_pend_semaphore">
+ ker_pend_semaphore </a> may be active on a synchronization object when the
+ <a href="kernel_api.html#ker_post_semaphore">ker_post_semaphore</a> function is invoked and
+ in such a scenario
+ the kernel is expected to release only one execution entity on each
+ invocation of
+ <a href="kernel_api.html#ker_post_semaphore">ker_post_semaphore</a> function for the object.
+ <H3> An sync service example </H3>
+ If an application's <code> read</code> request on a socket, can not be
+ satisfied
+ then the TCP/IP module will perform a
+ <a href="kernel_api.html#ker_pend_semaphore">ker_pend_semaphore</a> on
+ the associated synchronization object.
+ Once data is available on the socket then the associated synchronization
+ object is signaled through
+ a call on the <a href="kernel_api.html#ker_post_semaphore">ker_post_semaphore</a> function
+ which will unblock the
+ waiting execution entity.
+ <p>
+
+ <div id="SyncCriteria"><H3>Synchronization Object Criteria</H3></div>
+
+ The nature of the implementation of the kernel api's synchronization
+ services will be dependent
+ on the functionality provided by the underlying operating system. The
+ underlying implementation object
+ could be a binary semaphore, mutex or any other specific implementation.
+ The interface does not
+ mandate the implementation mechanism but does require that all
+ implementations
+ meet some specific criteria.
+
+ Irrespective of its implementation, an kernel api's synchronization object must
+ fulfill the following
+ criteria:
+ <ul>
+ <li> <a  href="kernel_api.html#ker_get_semaphore"> ker_get_semaphore</a> Creates a
+ semaphore object and returns a unique object identifier to the
+ caller. The underlying OS
+ must not re-use the allocated
+ object until it is released by
+ <a href="kernel_api.html#ker_rel_semaphore">ker_rel_semaphore</a>
+ <li>The underlying OS must <b>not</b> free the allocated object until
+ the control is given back via
+  <a href="kernel_api.html#ker_rel_semaphore">ker_rel_semaphore</a>
+ <li> Each object identifier can only be associated with a single
+ synchronization object.
+ <li> When the caller issues
+ <a href="kernel_api.html#ker_pend_semaphore">ker_pend_semaphore</a> for an object which
+ is not
+ available then the kernel
+ should block the current execution unit until the object is available
+ (i.e. after a call on <a href="kernel_api.html#ker_post_semaphore">
+ ker_post_semaphore </a>) or the specified timeout occurs.
+  <li> Operating system must carry out all operations on synchronization
+ objects atomically.
+  <li> Interface functions should return the specified errors as described
+ in <a href="#sem_obj_cre_err">error enumerations </a>
+ <li> When multiple <a href="kernel_api.html#ker_pend_semaphore">ker_pend_semaphore</a>
+ are active, then
+ only one execution unit is unblocked
+ following each invocation of <a href="kernel_api.html#ker_post_semaphore">
+ ker_post_semaphore</a>.
+ </ul>
+
+ <H3>Timer Services</H3>
+ All timer related calls in the kernel API  operate on milli-second granularity.
+ The interface abstracts the underlying tick period and timer
+ configuration.
+ The kernel api allows a thread to request that it should block for
+ a specified
+ period by calling the <a href="kernel_api.html#ker_sleep">ker_sleep</a> function.
+
+</P>
+
+
+
+<TABLE  BORDER="1">
+
+<TR>
+<TH WIDTH="20">Name</TH>
+<TH>Type</TH>
+<TH>Description</TH>
+</TR>
+
+
+
+<TR>
+<TD>
+<A HREF="#ker_sem_id_t">ker_sem_id_t</A>
+</TD>
+<TD>
+typdef
+</TD>
+<TD>
+ker_sem_id_t is the type for the identifier of a Semaphore synchronization
+ object.The kernel api returns an id  when a new object
+ is allocated by a call on the <a href="kernel_api.html#ker_get_semaphore">
+ ker_get_semaphore</a> function and is used on the other function calls to
+ identify which synchronization object is being operated on.
+</TD>
+</TR>
+
+<TR>
+<TD>
+<A HREF="#ker_priority_level_e">ker_priority_level_e</A>
+</TD>
+<TD>
+enum
+</TD>
+<TD>
+The Priority level enumeration defines the priority levels that
+  are accepted by the <a href="kernel_api.html#ker_disable_interrupts">
+  ker_disable_interrupts</a> and <a href="kernel_api.html#ker_enable_interrupts">
+  ker_enable_interrupts </a> functions. These enumerations are valid only for the
+  Blackfin Family of processors running on VDK.
+</TD>
+</TR>
+
+
+
+</TABLE>
+
+
+<H2>Methods</H2>
+
+
+
+<TABLE  BORDER="1">
+
+<TR>
+<TH WIDTH="20">Name</TH>
+<TH>Description</TH>
+</TR>
+
+
+
+<TR>
+<TD>
+<A HREF="#ker_get_semaphore">ker_get_semaphore</A>
+</TD>
+<TD>
+ker_get_semaphore is used obtain the identifier for a new semaphore
+ object.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_rel_semaphore">ker_rel_semaphore</A>
+</TD>
+<TD>
+ker_rel_semaphore releases a semaphore object and returns ownership of
+ the object to the underlying operating system.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_pend_semaphore">ker_pend_semaphore</A>
+</TD>
+<TD>
+ker_pend_semaphore enables the caller to acquire a semaphore object.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_post_semaphore">ker_post_semaphore</A>
+</TD>
+<TD>
+ker_post_semaphore releases (or signals) the specified synchronization
+ object.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_disable_interrupts">ker_disable_interrupts</A>
+</TD>
+<TD>
+ker_disable_interrupts disables interrupts up to the priority level
+ specified.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_enable_interrupts">ker_enable_interrupts</A>
+</TD>
+<TD>
+ker_enable_interrupts re-enables interrupts after a call on
+ <a href="kernel_api.html#ker_disable_interrupts">ker_disable_interrupts</a>.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_sleep">ker_sleep</A>
+</TD>
+<TD>
+Blocks the execution entity for the specified number of milliseconds.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_set_lasterror">ker_set_lasterror</A>
+</TD>
+<TD>
+ker_set_lasterror sets the supplied last error value to the
+ executing thread or process specific error of the OS.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_get_lasterror">ker_get_lasterror</A>
+</TD>
+<TD>
+ker_get_lasterror returns the last error value for the
+ current executing thread.<a href="kernel_api.html#IOE_ker_set_lasterror">ker_set_lasterror</a>
+ sets the error value and typically stores in the executing threads
+ context.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_get_systime">ker_get_systime</A>
+</TD>
+<TD>
+ker_get_systime returns the current system time in milliseconds since
+ the system boot.
+</TD>
+</TR>
+
+<TR>
+<TD>
+<A HREF="#ker_get_auxdata">ker_get_auxdata</A>
+</TD>
+<TD>
+Auxiliary data thats passed by the environment to the kernel. This value can be
+used by the kernel api interface developers to pass in any extra data during the
+initialization. ker_get_auxdata returns the pointer to the data.
+</TD>
+</TR>
+
+<TR>
+<TD>
+<A HREF="#ker_set_auxdata">ker_set_auxdata</A>
+</TD>
+<TD>
+
+Auxiliary data can be used to pass in any auxiliary
+ information to the underlying OS. For example in VDK environement
+ generic VDK thread template that is used to create lwip threads is
+ passed to kernel interface during initialziation.
+</TD>
+</TR>
+
+
+</TABLE>
+
+
+</BODY>
+</HTML>
+
+
+ 
+<br><hr><div id="ker_sem_id_t"><H1>typedef ker_sem_id_t</H1></div>
+</P>
+<H2>Definition</H2>
+<P class = "INDENTED">
+typedef &nbsp unsigned int &nbsp ker_sem_id_t
+</P>
+<H2>Description</H2>
+<P class = "INDENTED">
+ker_sem_id_t is the type for the identifier of a Semaphore synchronization
+ object.The kernel api returns a ker_sem_id_t when a new object
+ is allocated by a call on the <a href="kernel_api.html#ker_get_semaphore">
+ ker_get_semaphore</a> function and is used on the other function calls to
+ identify which synchronization object is being operated on.
+
+</P>
+<br>
+<hr> 
+<div id="kernel_results_e"><H1>enum kernel_results_e</H1></div>
+
+
+<H2>Enum Members</H2>
+<TABLE BORDER="1">
+
+<TR>
+<TH  ALIGN="left" WIDTH=10%>Name</TH>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+ker_err_sem_cre
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+ker_err_sem_timeout
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+ker_err_sem_id
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+ker_err_ints_off
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+ker_err_int_priority
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+ker_err_thread_cre
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+ker_err_thread_id
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+ker_err_thread_priority
+</TD>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+ker_err_1
+</TD>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+ker_err_panic
+</TD>
+</TR>
+</TABLE>
+
+
+
+ 
+<H2>Description</H2>
+<P class = "INDENTED">
+Kernel APIs typically return 0 upon success.The below 
+ error enumeration and the circumstances in which it may be returned
+ by the kernel api functions.
+ <dl>
+
+ <dt> <div id="sem_obj_cre_err" >ker_err_sem_cre </dt>
+ <dd>
+      <a href="kernel_api.html#ker_get_semaphore">ker_get_semaphore</a> returns this error
+      when operating system
+      is not able to create an synchronization object because of lack of
+      memory or a system
+      limit is reached.
+ </dd>
+
+ <dt> <div id="sem_obj_timeout" >ker_err_sem_timeout  </dt>
+ <dd>
+      <a href="kernel_api.html#ker_pend_semaphore">ker_pend_semaphore</a> returns this
+      error when a timeout occurs
+      on a synchronization object.
+ </dd>
+
+ <dt> <div id="sem_obj_invalid_id" >ker_err_sem_id </dt>
+ <dd>
+      <a href="kernel_api.html#ker_pend_semaphore">ker_pend_semaphore</a>,
+      <a href="kernel_api.html#ker_post_semaphore">ker_post_semaphore</a>
+        and <a href="kernel_api.html#ker_rel_semaphore">ker_rel_semaphore</a>
+      may return this error when an invalid synchronization object is
+      passed to them. It is not mandatory for these functions to detect an
+      invalid object identifier,
+      but if they do detect an invalid object identifier they must return
+      this error.
+ </dd>
+ <dt> <div id="ints_off" >ker_err_ints_off </dt>
+ <dd>
+      <a href="kernel_api.html#ker_sleep">ker_sleep</a>
+      may return this error when a call is made on the function while
+      interrupts are disabled.
+      It is not mandatory for the <a href="kernel_api.html#ker_sleep">ker_sleep</a> function
+      to detect and return this error.
+ </dd>
+</dl>
+
+</P>
+<br>
+<hr> 
+<div id="ker_priority_level_e"><H1>Enum </H1></div>
+
+<H2>Enum Members</H2>
+<TABLE BORDER="1">
+
+<TR>
+<TH  ALIGN="left" WIDTH=10%>Name</TH>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel0
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel1
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel2
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel3
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel4
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel5
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel6
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel7
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel8
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel9
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel10
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel11
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel12
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel13
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel14
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevel15
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+kPriorityLevelAll
+</TD>
+</TR>
+
+
+</TABLE>
+
+
+
+ 
+<H2>Description</H2>
+<P class = "INDENTED">
+The Priority level enumeration defines the priority levels that
+  are accepted by the <a href="kernel_api.html#ker_disable_interrupts">
+  ker_disable_interrupts</a> and <a href="kernel_api.html#ker_enable_interrupts">
+  ker_enable_interrupts </a> functions. Prioroty level is used enable or disable
+  interrupts up to the specified priority level.The priority level
+  directly maps to the core interrupt priority level. kernel api 
+  implementations must clearly document any special behavior with
+  respect to a given priority level. <code>kPriorityLevel0</code> is
+  the highest priority level and <code>kPriorityLevel15</code> is
+  lowest for ADSP-BF5xx family.
+  <p>
+  There are two special priority levels.<code>kPriorityLevelAll</code>
+  is a special priority level which disables all interrupts,except NMI,
+  Emulation and Reset. In multi-threaded environments
+  <code>kPriorityLevelUnSchedule</code> disables the scheduler, so that
+  thread switching is disabled. Kernel API implementations should
+  document the usage of interrupts for implementing
+  kPriorityLevelUnSchedule support.
+
+  <p>
+  Priority level enumerations will be different for different processor
+  architectures.
+
+ <p>
+ <h3> Priority level mappings across ADI family of processors</h3>
+
+ <table border="1">
+ <th colspan="3"> Blackfin Family (BF5xx) </th>
+ <tr>
+    <td><strong> Priority level </strong></td>
+    <td><strong> BFxxx interrupt level </strong></td>
+    <td><strong> Description  </strong></td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel0 </td>
+     <td> Emulation (EMU) </td>
+     <td> Invalid Priority level to Enable or Disable Interrupts </td>
+
+ </tr>
+ <tr>
+     <td> kPriorityLevel1 </td>
+     <td> Reset (RST) </td>
+     <td> Invalid Priority level to Enable or Disable Interrupts </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel2 </td>
+     <td> Non Maskable Interrupt (NMI) </td>
+     <td> Invalid Priority level to Enable or Disable Interrupts </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel3 </td>
+     <td> Exception (EVX) </td>
+     <td> Invalid Priority level to Enable or Disable Interrupts </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel4 </td>
+     <td> Reserved </td>
+     <td> Invalid Priority level to Enable or Disable Interrupts </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel5 </td>
+     <td> Hardware Error (IVHW) </td>
+     <td> Valid Priority Level </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel6 </td>
+     <td> Core Timer (IVTMR) </td>
+     <td> Valid Priority Level </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel7 </td>
+     <td> General Purpose Interrupt (IVG7) </td>
+     <td> Valid Priority Level </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel8 </td>
+     <td> General Purpose Interrupt (IVG8) </td>
+     <td> Valid Priority Level </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel9 </td>
+     <td> General Purpose Interrupt (IVG9) </td>
+     <td> Valid Priority Level </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel10 </td>
+     <td> General Purpose Interrupt (IVG10) </td>
+     <td> Valid Priority Level </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel11 </td>
+     <td> General Purpose Interrupt (IVG11) </td>
+     <td> Valid Priority Level </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel12 </td>
+     <td> General Purpose Interrupt (IVG12) </td>
+     <td> Valid Priority Level </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel13 </td>
+     <td> General Purpose Interrupt (IVG13) </td>
+     <td> Valid Priority Level </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel14 </td>
+     <td> General Purpose Interrupt (IVG14) </td>
+     <td> Valid Priority Level </td>
+ </tr>
+ <tr>
+     <td> kPriorityLevel15 </td>
+     <td> General Purpose Interrupt (IVG15) </td>
+     <td> Valid Priority Level </td>
+ </tr>
+
+ <tr>
+     <td> kPriorityLevelAll </td>
+     <td> Disables All interrupts </td>
+     <td> Valid Priority Level </td>
+ </tr>
+
+ </table>
+
+</P>
+<br>
+<hr>
+<div id="ker_get_semaphore"><H1>ker_get_semaphore</H1></div>
+
+
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_get_semaphore(const unsigned int initialCount, const unsigned int maximumCount)</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_get_semaphore is used obtain the identifier for a new semaphore
+ object.
+
+ ker_get_semaphore transfers the ownership of the semaphore object
+ from the operating system to the application. In all further
+ interactions this object ID is used as the communication means
+ between the application and the OS. The OS should not reuse or free
+ the memory associated with the synchronization object until the
+ object ownership is returned to the OS by the stack calling
+ <a href="kernel_api.html#ker_rel_semaphore">ker_rel_semaphore</a> function
+ for the identifier.<p>
+
+ ker_get_semaphore initializes the new semaphore object that is created.
+
+ Operating system may fail to fulfill the ker_get_semaphore request because
+ of any of the following:
+ <ul>
+ <li> There is no memory to allocate another semaphore object.
+ <li> An operating system maximum resource limit has been reached.
+ </ul>
+ <p>
+ If the underlying operating system does not support the dynamic
+ creation of synchronization objects then the kernel api implementation will be
+ responsible for managing the allocation of a pool of statically
+ allocated objects. The kernel implementation  documentation must explain
+ how the maximum number of needed synchronization objects can be
+ managed.
+ <p> Example <br>
+ The object ID returned by the ker_get_semaphore is used in TCP/IP
+ component for synchronization and signaling.
+ <a href="kernel_api.html#ker_pend_semaphore"> ker_pend_semaphore
+ </a> is used to block the current executing entity until the sync
+ object is posted
+ using <a href="kernel_api.html#ker_post_semaphore">ker_post_semaphore</a> function.
+ Typically in a multithreaded environment if a read request on a socket
+ could not be satisfied at the point of a call, then the thread will
+ be blocked on a sync object until some data is available.
+ Once some data is available the associated sync object is posted, so
+ that the corresponding thread resumes execution.
+ <p>
+ The implementation of the synchronization objects is OS specific. But
+ it should fulfill the <a href="#SyncCriteria">synchronization object
+ criteria</a>.The kernel interface can implement synchronization object
+ functionality using binary semaphores, mutex's, events or any other
+ specific mechanisms. All the interactions with the external components
+ are through the <a href="kernel_api.html#ker_sem_id_t">ker_sem_id_t</a> obtained by
+ ker_get_semaphore function.
+ <p>
+ ker_get_semaphore must ensure that the initial count of the new semaphore is
+ as specified by the <code>initialCount </code> and Maximum count as
+ specified by  <code> maximumCount </code>
+<p>
+ ker_get_semaphore returns <a href="#sem_obj_cre_err">
+ ker_err_sem_cre </a> error when operating system is unable to
+ return a new synchronization object because of lack of memory or
+ system maximum limit is reached.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+syncObjectID
+</TD>
+<TD ALIGN="left">
+<A HREF="kernel_api.html#ker_sem_id_t">ker_sem_id_t</A>
+</TD>
+<TD ALIGN="left">
+returns a valid synchronization
+ object identifier if the call is successful.
+ 
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+initialCount
+</TD>
+<TD ALIGN="left">
+unsigned int
+</TD>
+<TD ALIGN="left">
+specifies the initial count of the semaphore.
+ 
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+maximumCount
+</TD>
+<TD ALIGN="left">
+unsigned int
+</TD>
+<TD ALIGN="left">
+specifies the maximum count of the semaphore.
+
+ 
+</TD>
+</TR>
+
+
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns the semaphore id upon success. Retuns -1 upon failure.
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_rel_semaphore"><H1>ker_rel_semaphore</H1></div>
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_rel_semaphore(ker_sem_id_t  sem_id)</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_rel_semaphore releases a semaphore object and returns ownership of
+ the object to the underlying operating system. The object must have
+ been obtained from a previous call to the <a href="kernel_api.html#ker_get_semaphore">
+ ker_get_semaphore</a> function.It is preferred (but it is not mandatory) that
+ any attempt to release an object that has been already released or
+ provide an object identifier that was not obtained through ker_get_semaphore
+ should return the <a href="#sem_obj_invalid_id">ker_err_sem_id</a> error.
+ <p>
+
+ When an object is released, the kernel becomes the owner of the
+ object and it may destroy the underlying operating system object
+ immediately. If multiple threads are pending on a semaphore, and the
+ semaphore is released the behavior is un-specified.
+ <p>
+ The kernel interface implementation may elect to re-use an released synchronization object
+ to satisfy subsequent requests to <a href="kernel_api.html#ker_get_semaphore">
+ ker_get_semaphore</a>. In such a scenario the kernel interface must ensure that
+ the state of the re-used object is set to the object attributes
+ specified in ker_get_semaphore before returning the object to the caller.
+
+ <p>It is preferable (but not mandatory) that the kernel interface implementation should not re-use
+ object identifiers even if the underlying object is re-used.
+ <p>
+
+ ker_rel_semaphore may return the <a href="#sem_obj_invalid_id">
+ker_err_sem_id</a> error if an invalid synchronization object identifier
+ is passed. However it is not mandatory that this specific return code
+ is issued.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+sem_id
+</TD>
+<TD ALIGN="left">
+<A HREF="kernel_api.html#ker_sem_id_t">ker_sem_id_t</A>
+</TD>
+<TD ALIGN="left">
+Identifies the synchronization object that
+ is to be released.
+
+ 
+</TD>
+</TR>
+
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns 0 upon success. Returns
+ <a href="#sem_obj_invalid_id">ker_err_sem_id</a>
+ if the passed semaphore is 
+invalid.
+
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_pend_semaphore"><H1>ker_pend_semaphore</H1></div>
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_pend_semaphore(ker_sem_id_t sem_id,  unsigned int timeout_period)</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_pend_semaphore enables the caller to acquire a semaphore object.
+ If the semaphore object count is zero the caller will block until
+ it does become available or until the specified number of milliseconds
+ have passed. If the specified number of milliseconds is zero then the
+ caller will remain blocked until the object is acquired.<p>
+
+ If the semaphore is available (count > 0), then ker_pend_semaphore
+ immediately returns after atomically decrementing the associated count
+ value.Once the count reaches zero, all subsequent ker_pend_semaphore will
+ block.A ker_post_semaphore operation will increment the semaphore count and
+ activate a blocked execution entity.
+
+ Each acquired object is released by <a href="kernel_api.html#ker_post_semaphore">
+ ker_post_semaphore</a> function.<p>
+
+ If the requested object does not become available during the specified
+ number of milliseconds then ker_pend_semaphore will unblock and return
+ the error code <a href="#sem_obj_timeout" >ker_err_sem_timeout</a>.
+ <p>
+
+ In a multi-threaded environment multiple execution entities may be
+ pended for a single semaphore at some point of time.
+ In such a scenario if a <a href="kernel_api.html#ker_post_semaphore">ker_post_semaphore</a>
+ occurs then the kernel interface will unblock a single pended execution
+ entity. The choice of execution entity is not specified.<p>
+
+ In multi-threaded environments kernel interface must ensure that calls to
+ ker_pend_semaphore from different threads must execute in atomic manner,
+ i.e., one thread's ker_pend_semaphore execution should not corrupt another
+ thread's ker_pend_semaphore on the same object.
+
+ <p>The behavior of the ker_pend_semaphore function is undefined if an
+ invalid object identifier is supplied to it.
+ <p>
+ ker_pend_semaphore may return a <a href="#sem_obj_invalid_id">ker_err_sem_id
+ </a> result code if an invalid semaphore identifier is passed to it.
+ <p>
+
+ ker_pend_semaphore must return a <a href="#sem_obj_timeout">
+ ker_err_sem_timeout</a> error when the requested ker_pend_semaphore times out.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%> Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+sem_id
+</TD>
+<TD ALIGN="left">
+<A HREF="kernel_api.html#ker_sem_id_t">ker_sem_id_t</A>
+</TD>
+<TD ALIGN="left">
+Identifies the object on which the current
+ calling unit wishes to acquire.
+
+ 
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+timeout_period
+</TD>
+<TD ALIGN="left">
+unsigned int
+</TD>
+<TD ALIGN="left">
+is the timeout period in millisecond the call will
+ block
+ for while waiting to acquire the semaphore. If timeout_period is zero then
+ ker_pend_semaphore
+ will wait indefinitely to acquire the semaphore.
+
+ 
+</TD>
+</TR>
+
+
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns 0 upon success. Returns <a href=#sem_obj_timeout>ker_err_sem_timeout</a> upon timeout, and <a href=#sem_obj_invalid_id>ker_err_sem_id</a> for invalid semaphore id.
+</DD>
+</DL>
+
+
+
+<br>
+<hr>
+<div id="ker_post_semaphore"><H1>ker_post_semaphore</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_post_semaphore(ker_sem_id_t  sem_id)</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_post_semaphore releases (or signals) the specified synchronization
+ object. Releasing the object sets the state of the object to be
+ AVAILABLE.
+ If any execution entities are pending on acquiring this object, then
+ the change
+ of state from NOT_AVAILABLE to AVAILABLE allows one of the pending
+ entities to be unblocked.
+ When more than one execution entity is waiting on acquiring the object,
+ then the choice of
+ entity to be unblocked is determined by the kernel interface.
+ <p>
+ IOE synchronization objects are mutually exclusive i.e. they have
+ binary state and when a
+ thread acquires a synchronization object the state of the object is
+ changed to
+ be NOT_AVAILABLE. The state of the object remains NOT_AVAILABLE until
+ <a href="kernel_api.html#ker_post_semaphore">ker_post_semaphore</a> is called for that
+ object.
+ When the object state is NOT_AVAILABLE then all further requests by
+ <a href="kernel_api.html#ker_pend_semaphore">ker_pend_semaphore</a> will be blocked by
+ the kernel interface.
+ <p>
+ If an object is already available, a
+ <a href="kernel_api.html#ker_post_semaphore">ker_post_semaphore</a>
+ will not have any effect on the state of the object.
+ <p>
+ ker_post_semaphore on an unknown object identifier or an object that has
+ been released through
+ <a href="kernel_api.html#ker_rel_semaphore">ker_rel_semaphore</a> may generate a
+ <a href="#sem_obj_invalid_id" >ker_err_sem_id </a>
+ result code.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+sem_id
+</TD>
+<TD ALIGN="left">
+<A HREF="kernel_api.html#ker_sem_id_t">sem_id</A>
+</TD>
+<TD ALIGN="left">
+Identifies the synchronization object that is
+ to be signaled.
+</TD>
+</TR>
+
+
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns 0 upon success and <a href=#sem_obj_invalid_id>ker_err_sem_id</a>upon invalid semaphore id.
+
+</DD>
+</DL>
+
+<br>
+<hr>
+<div id="ker_isr_post_semaphore"><H1>ker_isr_post_semaphore</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_isr_post_semaphore(ker_sem_id_t  sem_id)</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_isr_post_semaphore performs the same functionality as that of 
+ker_post_semaphore, but its intended to be used from the interrupt routines.
+ker_isr_post_semaphore releases (or signals) the specified synchronization
+object. Releasing the object sets the state of the object to be
+ AVAILABLE.
+ If any execution entities are pending on acquiring this object, then
+ the change
+ of state from NOT_AVAILABLE to AVAILABLE allows one of the pending
+ entities to be unblocked.
+ When more than one execution entity is waiting on acquiring the object,
+ then the choice of
+ entity to be unblocked is determined by the kernel interface.
+ <p>
+ IOE synchronization objects are mutually exclusive i.e. they have
+ binary state and when a
+ thread acquires a synchronization object the state of the object is
+ changed to
+ be NOT_AVAILABLE. The state of the object remains NOT_AVAILABLE until
+ <a href="kernel_api.html#ker_post_semaphore">ker_post_semaphore</a> 
+ or <a href="kernel_api.html#ker_isr_post_semaphore">ker_isr_post_semaphore</a> is called for that
+ object.
+ When the object state is NOT_AVAILABLE then all further requests by
+ <a href="kernel_api.html#ker_pend_semaphore">ker_pend_semaphore</a> will be blocked by
+ the kernel interface.
+ <p>
+ If an object is already available, a
+ <a href="kernel_api.html#ker_isr_post_semaphore">ker_isr_post_semaphore</a>
+ will not have any effect on the state of the object.
+ <p>
+ ker_isr_post_semaphore on an unknown object identifier or an object that has
+ been released through
+ <a href="kernel_api.html#ker_rel_semaphore">ker_rel_semaphore</a> may generate a
+ <a href="#sem_obj_invalid_id" >ker_err_sem_id </a>
+ result code.
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+sem_id
+</TD>
+<TD ALIGN="left">
+<A HREF="kernel_api.html#ker_sem_id_t">sem_id</A>
+</TD>
+<TD ALIGN="left">
+Identifies the synchronization object that is
+ to be signaled.
+</TD>
+</TR>
+
+
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns 0 upon success and <a href=#sem_obj_invalid_id>ker_err_sem_id</a>upon invalid semaphore id.
+
+</DD>
+</DL>
+
+
+
+
+<!------------------ -->
+
+<br>
+<hr>
+<div id="ker_disable_interrupts"><H1>ker_disable_interrupts</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_disable_interrupts(int priority_level)</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_disable_interrupts disables interrupts up to the priority level
+ specified. <code>kPriorityLevelAll</code> disables all interrupts,
+ except NMI,Emulation and Reset interrupts. No interrupts will be
+ serviced after ker_disable_interrupts has been invoked until a matching
+ call on
+ <a href="kernel_api.html#ker_enable_interrupts">ker_enable_interrupts</a> is made.
+ <p>
+ The kernel interface is expected to support nested disabling of interrupts
+ i.e.
+ the users of the kernel interface must
+ ensure that for every
+ <a href="kernel_api.html#ker_disable_interrupts">ker_disable_interrupts</a> call there
+ exists a
+ corresponding <a href="kernel_api.html#ker_enable_interrupts">ker_enable_interrupts</a> call.
+ Interrupts will only be enabled after a matching number
+ <a href="kernel_api.html#ker_enable_interrupts">ker_enable_interrupts</a> calls.
+ <p>The kernel interface is
+ not expected to correct any improper or incorrect
+ usage of the <a href="kernel_api.html#ker_disable_interrupts">ker_disable_interrupts</a>
+ or <a href="kernel_api.html#ker_enable_interrupts">ker_enable_interrupts</a> functions.
+ Disabling interrupts will normally prevent any thread switching from
+ occurring
+ unless the application explicitly causes a task switch.
+ <p>
+ The kernel interface is not responsible for interrupt misses which may
+ arise
+ if interrupts are left disabled for anything but very short periods.
+ It should be noted
+ part of the kernel interface code itself may execute with interrupts
+ disabled.
+ <p> Disable or Enable interrupts only mask or unmask the interrupts.
+ that are enabled before.
+
+ IOE component implementations must clearly document any special
+ behavior with respect to a given priority level. The documentation
+ shoule also specify the consequences of directly manipulating the
+ processors interrupt registers.
+
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+priority_level
+</TD>
+<TD ALIGN="left">
+<A HREF="kernel_api.html#ker_priority_level_e">priority_level_e</A>
+</TD>
+<TD ALIGN="left">
+All interrupts at or below this level
+ will be disabled.
+
+ 
+</TD>
+</TR>
+
+
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns 0 upon success. Returns ker_err_int_priority upon invalid priority.
+
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_enable_interrupts"><H1>ker_enable_interrupts</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_enable_interrupts(int priority_level)</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_enable_interrupts re-enables interrupts after a call on
+ <a href="kernel_api.html#ker_disable_interrupts">ker_disable_interrupts</a>.
+ After execution of the function interrupts are re-enabled and serviced.
+ Any invocation of ker_enable_interrupts without a prior use of
+ ker_disable_interrupts should be ignored by
+ the kernel interface.
+ ker_enable_interrupts will enable interrupts up to the given priority level.
+ Typically the passed priority level will be same as used in
+ ker_disable_interrupts. If the enabling priority level is different from
+ that of ker_disable_interrupts then ker_enable_interrupts must enable interrupts
+ up to the given priority level.
+ <p>
+ The kernel interface is expected to support nested disabling of interrupts
+ i.e.
+ the users of the kernel interface must
+ ensure that for every
+ <a href="kernel_api.html#ker_disable_interrupts">ker_disable_interrupts</a> call there exists
+ a
+ corresponding <a href="kernel_api.html#ker_enable_interrupts">ker_enable_interrupts</a> call.
+ Interrupts will only be enabled after a matching number
+ <a href="kernel_api.html#ker_enable_interrupts">ker_enable_interrupts</a> calls.
+ <p>The kernel interface is
+ not expected to correct any improper or incorrect
+ usage of the <a href="kernel_api.html#ker_disable_interrupts">ker_disable_interrupts</a>
+ or <a href="kernel_api.html#ker_enable_interrupts">ker_enable_interrupts</a> function.
+ <p> Disable or Enable interrupts only mask or unmask the interrupts.
+ that are enabled before.
+
+ kernel component implementations must clearly document any special
+ behavior with respect to a given priority level. The documentation
+ should also specify the kernel component behavior if application directly
+ manipulates the processors interrupt registers.
+
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+priority_level
+</TD>
+<TD ALIGN="left">
+<A HREF="kernel_api.html#ker_priority_level_e">int</A>
+</TD>
+<TD ALIGN="left">
+All interrupts at or below this level
+ will be enabled. For Blackfin family priority_level_e defines the valid priority
+ levels.
+
+ 
+</TD>
+</TR>
+
+
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns 0 upon success, Returns ker_err_int_priority upon invalid priority. 
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_sleep"><H1>ker_sleep</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_sleep(const unsigned int sleep_time)</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+Blocks the execution entity for the specified number of milliseconds.
+<p>The kernel interface may detect that interrupts have been disabled when
+ the
+ function has been called and may optionally return the
+ <a href="#mutex_obj_ints_off" >ker_err_ints_off </a> result code.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+sleep_time
+</TD>
+<TD ALIGN="left">
+unsigned int
+</TD>
+<TD ALIGN="left">
+Specifies the number of milliseconds to block for.
+
+ 
+</TD>
+</TR>
+
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns 0 upon success.
+</DD>
+</DL>
+
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_set_lasterror"><H1>ker_set_lasterror</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_set_lasterror(int last_error)</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_set_lasterror sets the supplied last error value to the
+ executing thread or process specific error of the OS. The
+ ker_set_lasterror and ker_get_lasterror calls provides means to store
+ and retrieve per-thread errors in multi-threaded environments.
+ <p>
+ Example:
+ TCP/IP stack uses this function to supply the socket errors thrown
+ with in socket API. As stack is a library and it has no way to
+ keep track of the socket errors thrown by the threads in a multi
+ threaded environments. This function is used by the stack to supply
+ the socket error to the operating system in hand. Operating system
+ must preserve this error value and supply back to the application
+ when they query for it.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+last_error
+</TD>
+<TD ALIGN="left">
+int
+</TD>
+<TD ALIGN="left">
+supplies the error value.
+
+ 
+</TD>
+</TR>
+
+
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns 0 upon success.
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_get_lasterror"><H1>ker_get_lasterror</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_get_lasterror()</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_get_lasterror returns the last error value for the
+ current executing thread.<a href="kernel_api.html#ker_set_lasterror">ker_set_lasterror</a>
+ sets the error value and typically stores in the executing threads
+ context. ker_get_lasterror returns the last error value set for the requested
+ current thread.The error values are application specific.
+ <p>
+ Example:
+ TCP/IP stack uses this the SetSockError function to supply the socket
+ errors thrown within the socket API.
+ The GetSockError function is used by the stack to obtain the last store
+ socket error for the currently executing thread. The IOE interface
+ implementation is responsible for preserving this error value separately
+ for
+ each thread and returning it on the ker_get_lasterror function call.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns the last error value.
+
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_get_systime"><H1>ker_get_systime</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_get_systime()</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_get_systime returns the current system time in milliseconds since
+ the system boot.
+
+
+</P>
+<H2>Parameters</H2>
+
+
+
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns the systems time in milli-seconds since the system boottime.
+
+</DD>
+</DL>
+
+
+
+<hr>
+
+<H2>Thread API</H2>
+<P> </P>
+<P>
+ Thread API extends the primitive OS services towards the multi-threaded
+ systems. It abstracts the underlying multi-threaded opearting system
+ and faciliates easy migration of components and applications across
+ different multithreaded operating environments.
+
+
+
+</P>
+
+
+<TABLE  BORDER="1">
+
+<TR>
+<TH WIDTH="20">Name</TH>
+<TH>Description</TH>
+</TR>
+
+
+
+<TR>
+<TD>
+<A HREF="#ker_create_thread">ker_create_thread</A>
+</TD>
+<TD>
+ker_create_thread creates a seperate executing entity in the given operating
+ environment at a given priority level.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_get_current_thread">ker_get_current_thread</A>
+</TD>
+<TD>
+ker_get_current_thread returns the current threadID of the executing thread.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_destroy_thread">ker_destroy_thread</A>
+</TD>
+<TD>
+ker_destroy_thread destroys the thread and cleans up the memory
+ associated with that thread.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_set_thread_priority">ker_set_thread_priority</A>
+</TD>
+<TD>
+ker_set_thread_priority sets the priority of a thread.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_get_thread_priority">ker_get_thread_priority</A>
+</TD>
+<TD>
+ker_get_thread_priority sets the priority of a thread.kernel interface
+ implementations specify the supported priority levels.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_disable_scheduler">ker_disable_scheduler</A>
+</TD>
+<TD>
+ker_disable_scheduler is used to disable scheduler.
+</TD>
+</TR>
+
+
+<TR>
+<TD>
+<A HREF="#ker_enable_scheduler">ker_enable_scheduler</A>
+</TD>
+<TD>
+ker_enable_scheduler is used to enable scheduler.
+</TD>
+</TR>
+
+<TR>
+<TD>
+<A HREF="#ker_set_auxdata">ker_set_auxdata</A>
+</TD>
+<TD>
+Use to pass in any auxiliary information to the kernel implementation. In VDK
+port thread template id is passed as the auxiliary information.
+</TD>
+</TR>
+
+<TR>
+<TD>
+<A HREF="#ker_get_auxdata">ker_get_auxdata</A>
+</TD>
+<TD>
+Returns the auxiliary information set by the environment. Kernel implemtations may choose not to return it.
+</TD>
+</TR>
+
+</TABLE>
+
+
+
+
+
+
+</BODY>
+</HTML>
+
+
+ 
+<H2>Description</H2>
+ <dl>
+
+ <dt> <div id="thr_obj_cre_err" >ker_err_thread_cre </dt>
+ <dd>
+      <a href="kernel_api.html#ker_create_thread">ker_create_thread</a> returns
+      this error when operating system is not able to create a
+      thread object because of lack of memory or a system
+      limit is reached.
+ </dd>
+ <dt> <div id="thr_obj_id_err" >ker_err_thread_id </dt>
+ <dd>
+  <a href="kernel_api.html#ker_destroy_thread">ker_destroy_thread</a> or
+  <a href="kernel_api.html#ker_get_thread_priority">ker_get_thread_priority</a> or
+  <a href="kernel_api.html#ker_set_thread_priority">ker_set_thread_priority</a>
+  returns this error when an invalid thread identifier is passed.
+ </dd>
+
+ <dt> <div id="thr_obj_id_err" >ker_err_thread_id </dt>
+ <dd>
+  <a href="kernel_api.html#ker_create_thread">ker_create_thread</a> or
+  <a href="kernel_api.html#ker_set_thread_priority">ker_set_thread_priority</a>
+  may return this error if invalid priority is passed.
+ </dd>
+</dl>
+
+</P>
+<br>
+<div id="thread_errors"></div>
+
+
+<br>
+<hr>
+<div id="ker_create_thread"><H1>ker_create_thread</H1></div>
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_create_thread(void* th_entry_point,void* th_args, int stackSize, const void* th_stack_area, int priority, char *name
+)</TD></TR>
+</TABLE>
+<p>
+<H2>Description</H2>
+<P>
+CreateThread creates a seperate executing entity in the given operating
+ environment at a given priority level. Execution of the supplied via
+ a function pointer.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+th_entry_point
+</TD>
+<TD ALIGN="left">
+void*
+</TD>
+<TD ALIGN="left">
+is the start address of the thread, in C terms it is
+ a pointer to a function taking one argument of type void* and
+ returning void.
+
+ 
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+th_args
+</TD>
+<TD ALIGN="left">
+void*
+</TD>
+<TD ALIGN="left">
+is the argument for this thread.
+
+ 
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+th_stack_sz
+</TD>
+<TD ALIGN="left">
+int
+</TD>
+<TD ALIGN="left">
+is an estimate of the size of  stack required for
+ the thread.It may be -1 in which case a default size is used and
+ stackArea is ignored.
+
+ 
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+th_stack_area
+</TD>
+<TD ALIGN="left">
+void*
+</TD>
+<TD ALIGN="left">
+is the address of an area of memory to be used as
+ this thread's stack. A component may document the fact that it ignores
+ this parameter.(eg a VDK-based system cannot use it) or that it treats
+ the NULL address as a request to provide a stack area itself.
+
+ 
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+priority
+</TD>
+<TD ALIGN="left">
+int
+</TD>
+<TD ALIGN="left">
+is what you expect it to be. The kernel interface
+ implementations specify the priority values.
+
+ 
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+name
+</TD>
+<TD ALIGN="left">
+char
+</TD>
+<TD ALIGN="left">
+is an optional string to be attached to this thread.
+ Some kernels allow you to name threads and they include the name in
+ scheduler tracing or table dumps.Supplying a NULL or zero-length string
+ to a component that supports the naming of threads means that the
+ component will invent a name.
+
+ 
+</TD>
+</TR>
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns the thread id of the newly created thread upon success.
+
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_get_current_thread"><H1>ker_get_current_thread</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_get_current_thread()</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_get_current_thread returns the current threadID of the executing thread.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+<DD>
+None
+</DD>
+
+
+
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns the thread id of the current excecuting thread.
+
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_destroy_thread"><H1>ker_destroy_thread</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_destroy_thread(int thread_id)</TD></TR>
+</TABLE>
+
+</P>
+<H2>Description</H2>
+<P>
+ker_destroy_thread destroys the thread and cleans up the memory
+ associated with that thread. Any specific issues with respect to
+ destroying should be documented by the kernel interface implementation.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+thread_id
+</TD>
+<TD ALIGN="left">
+int
+</TD>
+<TD ALIGN="left">
+thread_id of the thread to be destroyed.
+
+ 
+</TD>
+</TR>
+
+
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns 0 upon success. If the thread id is wrong it will return ker_err_thread_id.
+
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_set_thread_priority"><H1>ker_set_thread_priority</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_set_thread_priority(int thread_id,int thread_priority)</TD></TR>
+</TABLE>
+<p>
+<H2>Description</H2>
+<P>
+ker_set_thread_priority sets the priority of a thread. kernel interface
+ implementations specify the supported priority levels.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+threadID
+</TD>
+<TD ALIGN="left">
+int
+</TD>
+<TD ALIGN="left">
+ is the thread_id.
+ 
+</TD>
+</TR>
+
+
+<TR>
+<TD ALIGN="left">
+thread_priority
+</TD>
+<TD ALIGN="left">
+int
+</TD>
+<TD ALIGN="left">
+is the new priority of the thread.
+ 
+</TD>
+</TR>
+
+
+
+
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns 0 upon success. If the thread id is invalid it return ker_err_thread_id.
+
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_get_current_thread"><H1>ker_get_current_thread</H1></div>
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_get_thread_priority(int thread_id)</TD></TR>
+</TABLE>
+<p>
+<H2>Description</H2>
+<P>
+ker_get_thread_priority sets the priority of a thread.kerel interface
+ implementations specify the supported priority levels.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+
+
+<TABLE BORDER="1">
+
+
+<TR>
+<TH  ALIGH="left" WIDTH=10%>Name</TH>
+<TH  ALIGH="left" WIDTH=20%>Type</TH>
+<TH  ALIGH="left">Description</TH>
+</TR>
+
+<TR>
+<TD ALIGN="left">
+thread_id
+</TD>
+<TD ALIGN="left">
+int
+</TD>
+<TD ALIGN="left">
+ is the thread id.
+ 
+</TD>
+</TR>
+
+</TABLE>
+
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns priority of the thread identified by the id. If the id is invalid it
+return ker_err_thread_id.
+
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_disable_scheduler"><H1>ker_disable_scheduler</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_disable_scheduler()</TD></TR>
+</TABLE>
+<p>
+<H2>Description</H2>
+<P>
+ker_disable_scheduler is used to disable scheduler. By Disabling the
+ scheduler thread switching will get disabled,i.e., current thread
+ will not relinquish CPU though high priority threads are ready.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+ 
+
+<P class = "INDENTED"> None </P>
+
+ 
+
+<H2>Returns</H2>
+<DL>
+<DD>
+Returns 0 upon success.
+</DD>
+</DL>
+
+
+
+
+
+
+
+<br>
+<hr>
+<div id="ker_enable_scheduler"><H1>ker_enable_scheduler</H1></div>
+
+
+<H2>Prototype</H2>
+<P class = "INDENTED">
+<TABLE  BORDER="0">
+<TR><TD valign="top" align="right">
+<b>C:</b>&nbsp&nbsp&nbsp
+</TD><TD align="right" valign="top">
+int &nbsp</TD><TD>
+ker_enable_scheduler()</TD></TR>
+</TABLE>
+<p>
+<H2>Description</H2>
+<P>
+EnableScheduler is used to enable scheduler. By enabling the
+ scheduler thread switching will be enabled,i.e., Any highest
+ priority ready-to-run thread will be scheduled.
+
+ 
+
+</P>
+<H2>Parameters</H2>
+
+ 
+
+<P class = "INDENTED"> None </P>
+
+ 
+
+<H2>Returns</H2>
+<DL>
+<DT>
+<DD>
+Returns 0 upon success.
+
+</DD>
+</DL>
+
+
+
+
+
+

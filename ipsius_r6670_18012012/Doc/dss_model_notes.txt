@@ -1,0 +1,369 @@
+
+class BasicIE
+{
+};
+
+
+class SetupAskIE : public BasicIE
+{
+
+};
+
+
+// ---------------------------------------
+
+...
+
+
+class L3Packet
+{
+	list<BasicIE*> m_parsed;  // список элементов, к которым были обращени€
+	
+	template<class T>
+	static std::string TypeToName(T *p = 0)
+	{
+	    return FormatTypeidName(typeid(T).name());
+	}
+	
+
+public:
+
+
+template<class T>
+bool FindIE(T* &p)
+{
+	// проверка: T унаследован от BasicIE
+    enum { CInherCheck = boost::is_base_of<BasicIE, T>::value };
+    BOOST_STATIC_ASSERT( CInherCheck );
+
+   // ...
+}
+
+
+};
+
+
+// ------------------
+
+L3Packet p;
+
+SetupAskIE *pAsk;
+
+if (p.FindIE(pAsk)) 
+{
+   // ...
+}
+
+
+    BearerCapability* p = dynamic_cast<BearerCapability*>
+       (pack.FindIe( BearerCapability::GetId() ));// исключени€ отсюда перехватываютс€ и обрабатываютс€
+
+
+// ---------------------
+
+class I
+{
+   virtual void Fn() = 0;
+   
+   virtual void OnSetup(L3Packet *p) = 0;
+};
+
+class UpFSM : public I
+{
+   I *m_pCurrState;
+   
+public:
+
+  // I implement
+  void Fn()
+  {     
+     CurrState()->Fn();
+  }
+  
+};
+
+class L3Call
+{
+   UpFSM m_upFsm;
+   CallRef m_ref;
+   
+public:
+
+    // ...
+};
+
+class L3Calls
+{
+    list<L3Call> m_calls;
+    
+public:
+
+   // ...
+}
+
+
+/*
+class L3Packet
+{
+public:
+   L3Packet(...)
+   {
+      // парсинг
+      // ...
+      
+      L3Call m_pCall = calls.Find(m_callRef);
+   }
+   
+   void UpRoute(L3Calls &calls)  // генераци€ по типу пакета сообщени€
+   { 
+            
+      switch m_type
+      {
+          case SETUP: m_pCall.UpFsm()->OnSetup(this);
+          case ...:   
+      }
+   }
+   
+   virtual void AcceptedIE(IE *p) = 0;
+
+
+};  */
+
+class L3PacketSetup : public L3Packet
+{
+public:
+
+};
+
+
+// -----------------------
+
+L3Packet *p = CreatePacket(GlobalObject, L2Packet);  // ??
+if (p) p->Process();
+
+
+p->AddIE(new SetupIE(..., ..., ...));
+
+
+
+1. подход к FSM такой же как в тестах
+2. есть объект L3Call, который содержит CallRef, и имеет р€д FSM
+3. глобальный объект L3Calls суть list<L3Call>
+4. иерархи€ L3Packet, фабрика дл€ создани€ с потока, всю специфику в полиморфмные методы
+5. ошибки в пакете пытатьс€ локализовать на месте, без исключений
+6. все IE, имеют конструктор дл€ создани€ с потока + конструктор с набором конкретных параметров дл€ этого типа
+7. тип L3acket пакет имеет функцию, провер€ющую допустимость IE данного типа в этом типе пакета
+
+
+
+
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+
+
+
+// регистрировать тип - !!!!
+
+#define REGISTRATE(name) namespace { \
+    L3Packet* Create_##name((IPacket* p, L3Calls& c)) {return new name##( p, c );} \
+    bool name##Reg = L3PacketFactory::Instace().RegisterIe(name##::GetId(), Create_##name); \
+}
+
+//-------------------------------------------------------------------------------------------
+
+class Alerting : public L3Packet  // L3Packet<ALERTING>, class PacketAlerting
+{
+    Alerting(IPacket* pack, L3Calls& calls) : L3Packet(pack, calls){}
+
+    static MessgeType GetId() {return ALERTING;}  // в базовый класс, MessgeType -- очеп€тка
+
+    void UpRout()  // override
+    {
+        m_pCall->FsmReciver(this);  // m_pCall->FsmUp().OnAlerting(this)
+    }
+
+    bool ValidateIeMt() // override   // ValidateIeMt(IE &ie)
+    {
+        //таблична€ проверка
+    }
+};
+
+REGISTRATE(Alerting);  // PACKET_REGISTER(PacketAlerting)
+
+
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+
+
+class Base
+{
+public:
+    virtual ~Base(){}
+};
+
+//----------------------------
+
+template <Id id>
+class BaseType: public Base
+{
+protected:
+
+enum Id
+{
+    ALERT,
+    SETUP,
+};
+
+public:
+    virtual ~BaseType(){}
+    static Id GetId() {return id;} 
+};
+
+//----------------------------
+
+class IMetaInterface
+{
+public:
+    Base* CreateInstance() = 0;
+};
+
+//----------------------------
+
+template<class T>
+class MetaType : public IMetaInterface
+{
+public:
+
+    Base* CreateInstance()  // override
+    {
+       return new T;
+    }
+
+}
+
+
+//----------------------------
+
+class Factory
+{
+    std::map<Id, IMetaInterface*> m_factory;
+
+public:
+
+    template<class T>
+    bool RegType() 
+    { 
+         // проверка на повторную регистрацию
+         // ...
+         
+         // проверка что T унаследован от Base
+         // ...
+         
+         // register
+         m_factory.insert( std::make_pair(T::GetId(), new MetaType<T>) );
+         
+         return true; 
+    }
+
+    Base* Create(Id id) { return (*( m_fn.find(id) )).second(); }
+
+    static Factory& Instance() 
+    {
+        static Factory factory;  // thru new 
+        return factory;
+    }
+};
+
+//----------------------------
+
+class Alert : public BaseType<ALERT>
+{
+
+};
+
+namespace
+{
+   bool regAlertXXXX = Factory::Instance().RegType<Alert>();
+}
+
+
+// фабрику сделать полем какого-то объекта 
+
+static void Fn(Factory f)
+{
+    f.RegType<Alert>();
+    f.RegType<Call>();
+    // ...    
+}
+
+
+//------------------------------------------------------------------
+
+  DSS FSM concept
+
+//------------------------------------------------------------------
+
+
+
+class IDssCallEvents
+{
+   // events
+   virtual void OnHold(DssPacket *p) = 0;
+   // ...
+
+};
+
+class DssCallState : public IDssCallEvents
+{
+   DssCall *m_pCall;
+   
+   virtual void DefaultHandler(...) {}
+   
+   // events
+   void OnHold(DssPacket *p) { DefaultHandler(...); }
+
+   // ...
+};
+
+// ----------------------------------------
+
+class DssCall : public IDssCallEvents
+{
+    DssCallState *m_pCurrState;
+    
+    friend class InCall;
+    friend class InHold;
+    // ...
+    
+    // состо€ние -- есть вызов, поставить на удержание
+    void HoldCall(DssPacket *p)  // тело только в cpp
+    {
+       SwitchState(new InHold(...));
+    }
+    
+public:
+
+   void OnHold(DssPacket *p)
+   {
+      m_pCurrState->OnHold(p);
+   }
+        
+};
+
+// ----------------------------------------
+
+// в хидере
+class InCall : public DssCallState
+{
+  
+public:
+
+   // можно описывать в хидере
+   void OnHold(DssPacket *p) { m_pCall->HoldCall(p); }
+
+};
+
+class InHold : public DssCallState
+{
+   // ...
+}

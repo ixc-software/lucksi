@@ -1,0 +1,208 @@
+// CS_Exec "HwFinder.isc"
+
+//CS_Exec "Aoz.isc"
+// CS_Exec "EmulForPult.isc"
+
+HaltOnQtWarning(f)
+TraceSessions = f 
+
+ObjCreate NObjRespMeter "meter"
+meter.Start 25 3
+
+ListThreads
+
+Reg.RegCalls = f
+Reg.RegTelnet = t
+// Reg.RunSelfTest 
+
+// CS_Exit 
+
+// TestAsyncException()
+//TestException()
+// CS_Exit 
+
+ObjCreate NObjSipUserAgent sip true
+//	.ResipLogMode = Detail
+	.SetupTransport(Udp, 5064)
+	
+	.AddAccessPoint("pult", "sip:alex@192.168.0.245", "alex")  // .245 
+	.pult.SetAsDefaultReceiver
+	.Enabled = t	
+
+// ----------------------------------------------------------
+
+ObjCreate NObjHwFinder HwFinder true 
+.LogLevel = 3
+.OnlyLocalIP = f
+.AllowUpdate = t
+.BoardFilter.Include "2001" // , 75, 76"
+.FirmwarePath = "~IPSIUS_RELEASE~/FWU/DevIpTdm/"    // путь к прошивкам 
+.Enabled = true
+.Alias(2001, "pult_2001")
+
+// ----------------------------------------------------------
+
+/*
+ObjCreate NObjViewDebug view true
+	.Prof.SetThemeName "~IPSIUS_RELEASE~/ArmSdFatFs/PultGfx/Theme0/"
+	.Active = true
+
+CS_Exit
+*/
+
+
+// ----------------------------------------------------------
+
+
+ObjCreate NObjPult pult true
+
+	.LogLevel = 3 
+	
+	// --------------------------------------------------
+
+	.SoundMode = CmpMode	
+	.Sound.BoardAlias = "pult_2001"
+	.Sound.Board.UseInternalEcho = f
+	.Sound.Board.DebugMode = f
+	.Sound.Board.TraceCofidec = f
+	.Sound.Board.RtpDropCount = 1 
+
+	.Sound.Global.DevTraceInd = f
+	.Sound.Global.DevTraceHost = "192.168.0.1:56001"
+	.Sound.Global.DevWatchdogEnabled = f
+	.Sound.Global.DevResetOnFatalError = f	
+
+	// --------------------------------------------------
+	
+	.SoundMode = NullMode	
+		
+	.SoundMode = LocalMode		
+	//.Sound.Type = QtSimpleType
+    .Sound.IO.SetSoundQtSimple(0, 0)
+	.Sound.SaveWave = f 
+	.Sound.LogLevel = 3
+	
+	// .Sound.SndOutputDelayMs 100
+	// .Sound.MixerCycBuffMul 10 
+		
+
+	// --------------------------------------------------
+
+	.KeyboardType = KbMcu
+	.KbDriver.Com = 1
+	.KbDriver.OpTimeout = 1
+
+	.KeyboardType = KbEmul
+	.KbDriver.EmbedDisp = true
+	.KbDriver.PosX = 600
+	.KbDriver.PosY = 100
+	
+	
+	.KbDriver.Timing.PressedMs     = 20
+	.KbDriver.Timing.StartRepeatMs = 800
+	.KbDriver.Timing.RepeatMs      = 600
+					
+	.ViewSettings.Embeded = t // t/f
+	.ViewSettings.Width  = 600  // 400
+	.ViewSettings.Height = 360  // 240 
+	.ViewSettings.SetThemeName "~IPSIUS_RELEASE~/ArmSdFatFs/PultGfx/Theme0/" //  "~IPSIUS_RELEASE~/PultGfx/Theme0/"
+	
+	.ViewSettings.UseNull f  
+			
+	// --------------------------------------------------
+	
+    .PhBook.SetPhotoPath "~IPSIUS_RELEASE~/ArmSdFatFs/PultGfx/ph/"
+    .PhBook.Clear
+    
+    .PhBook.Create("Чапманн", "шпионка", "ph chapman.jpg")
+    .PhBook.AddNumber("110")
+    .PhBook.AddNumber("120")    
+    .PhBook.AddDirectKey(0, 0, true)
+    .PhBook.AddDirectKey(1, 1, true)
+    
+    .PhBook.Create("Dead-Moroz", "GNU leader", "ph stallman.jpg")
+    .PhBook.AddNumber("5020")
+    .PhBook.AddDirectKey(2, 0, false)
+    
+    .PhBook.Create("Шура", "б-тъ", "ph sasha.jpg")
+    .PhBook.AddNumber("5999")
+    .PhBook.AddDirectKey(3, 0, t)
+        
+	.PhBook.List
+	
+	
+	.NumDialer.Clear 
+	.NumDialer.Set 3000 0 "*"
+	.NumDialer.AddDirection "5"  4
+	.NumDialer.AddDirection "51" 3
+		
+	// --------------------------------------------------
+
+	.SipPoint = sip.pult
+	
+	// --------------------------------------------------
+	
+	.CS_Set Settings
+	
+	.HandsfreeMicLevel 50
+	.HandsetMicLevel   50
+	.RingingLevel      100
+	
+    .StatusDebugMode t  
+    .EchoSetup "ace.ini"
+    
+	.TraceKbdDriver f
+	.TraceStates    t
+	.TraceCallMng   f 
+    .SetRingtoneGen 425 -15 0 0 300 400
+    
+    .IgnoreCaseOpen t 
+
+	.CS_SetBack
+    
+	// --------------------------------------------------
+	
+	//.SetLocale "ru" 
+	// .SetLocale "uk"
+		
+	TestAsyncCmd t 50
+		
+	.Enabled = true
+		
+	.Body.RuntimeInfo 
+	
+	.Body.WaitTillActivated
+	
+	// .Body.ExecSndTest t 
+	// .Body.ExecLedTest
+	.Body.ExecMenuTest 
+
+    // call history 	
+	.Body.AddCallHistoryRec "110" t 1 100
+	.Body.AddCallHistoryRec "110" t 2 -1
+	.Body.AddCallHistoryRec "110" f 3 15
+
+	.Body.AddCallHistoryRec "5020" f 8  4
+	.Body.AddCallHistoryRec "5020" f 9  24
+	.Body.AddCallHistoryRec "5020" t 10 100
+	.Body.AddCallHistoryRec "5020" t 11 -1
+	.Body.AddCallHistoryRec "5020" f 12 15
+	
+	.Body.AddCallHistoryRec "4712" t 30 100
+	.Body.AddCallHistoryRec "4712" t 31 -1
+	.Body.AddCallHistoryRec "4712" f 32 15
+	.Body.AddCallHistoryRec "4712" f 50 15
+	
+	.Body.ListCallHistory 
+	
+		
+    meter.Info
+    		
+
+CS_Exit	
+
+
+
+	
+
+	

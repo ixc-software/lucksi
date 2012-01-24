@@ -1,0 +1,118 @@
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of Accept</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>ACCEPT</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="accept_exp.html"> Example</A><HR>
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+accept - accept a connection on a socket
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="lwip/sockets.h">lwip/sockets.h</A>&gt;</B>
+
+<P>
+<B>int accept(int </B><I>s</I><B>, struct sockaddr *</B><I>addr</I><B>, int *</B><I>addrlen</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+The argument <I>s</I> is a socket that has been created with
+<B><A HREF="socket.html">socket</A></B>,
+bound to an address with <B><A HREF="bind.html">bind</A></B>, and is listening
+for connections after a <B><A HREF="listen.html">listen</A></B>.
+
+
+The <B>accept</B> function extracts the first connection request on the queue 
+of pending connections, creates a new socket with the same properties as
+<I>s</I> and allocates a new file descriptor for the socket.  If no pending
+connections are present on the queue, and the socket is not marked as
+non-blocking, <B>accept</B> blocks the caller until a connection is present.
+If the socket is marked non-blocking and no pending connections are present on 
+the queue, <B>accept</B> returns the error as described below. 
+The accepted socket may not be used to accept more connections.
+The original socket <I>s</I> remains open.
+
+The argument <I>addr</I> is a result parameter that is filled in with the 
+address of the connecting entity, as known to the communications layer. 
+The exact format of the <I>addr</I> parameter is determined by the domain in
+which the communication is occurring.  The <I>addrlen</I> is a value-result 
+parameter; it should initially contain the amount of space pointed to by <I>addr</I>; on return it will contain the actual length (in bytes) of the address
+returned.  This call is used with connection-based socket types, currently
+with <B>SOCK_STREAM</B>.<B></B>
+
+
+It is possible to
+<B><A HREF="select.html">select</A></B> a socket for the purposes of doing an
+<B>accept</B> by selecting it for read.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUES</H2>
+
+The call returns -1 on error and the specific error number can be obtained by
+calling the function <a href="GetSocketError.html">GetSocketError</a>. In 
+multi-threaded environments the last error number is held seperately for 
+each thread.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+The descriptor is invalid.
+<DT><B>ENOTSOCK</B> <font color="red"> Not Supported </font>
+
+<DD>
+Argument is not a valid socket.
+<DT><B>EOPNOTSUPP</B> <font color="red">Not Supported </font>
+
+<DD>
+The referenced socket is not of type
+<B>SOCK_STREAM</B>.<B></B>
+
+<DT><B>EFAULT</B>
+
+<DD>
+The
+<I>addr</I>
+
+parameter is not in a writable part of the user address space.
+<DT><B>EWOULDBLOCK</B> <font color="red">Not Supported </font>
+
+<DD>
+The socket is marked non-blocking and no connections are
+present to be accepted.
+</DL>
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="bind.html">bind</A></B>, 
+<B><A HREF="connect.html">connect</A></B>,
+<B><A HREF="listen.html">listen</A></B>,
+<B><A HREF="select.html">select</A></B>,
+<B><A HREF="socket.html">socket</A></B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUES</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

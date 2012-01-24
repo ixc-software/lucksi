@@ -1,0 +1,74 @@
+CS_Print "DssTest groupe started..."
+
+ObjCreate NObjIsdnTestRunner isdnGroupe true    
+        
+    //.BeginReactivationL3Test    
+    //.Run       
+    
+    .BeginCheckConnectionDisconnectionRoutine
+    .Profile.TraceTest = true
+    
+    .Profile.L3TraceOption.Enabled = true
+    .Profile.L3TraceOption.IeList = true    
+    .Run
+    
+    .BeginCheckBchannelsBusy
+    //.Profile.TraceTest = true
+    .Run
+
+    .BeginCheckBchannelsBusy
+    //.Profile.TraceTest = true
+    .Run
+    
+    .BeginCheckReloadDrv
+    //.Profile.TraceTest = true
+    .Run
+    
+    .BeginCheckReloadLapd
+    //.Profile.TraceTest = true
+    .Run
+    
+    .BeginCheckReloadUser
+    //.Profile.TraceTest = true
+    .Run
+    
+    .BeginSimulLiveTest
+    //.Profile.GeneralProfile.TraceTest = true
+    .Run
+    
+    .BeginDeactivationTest
+    //.Profile.TraceTest = true
+    .Run                            
+    
+    .BeginRestartTest
+    //.Profile.TraceTest = true
+    .Profile.RestartFromUserSide = true
+    .Run
+    
+    .BeginRestartTest
+    //.Profile.GeneralProfile.TraceTest = true
+    .Profile.RestartFromUserSide = false
+    .Run
+    
+    .BeginWrongL3PacketTest    
+    .Profile.DurationSec = 10
+    .Profile.RndPackPercent = 70
+    .Profile.VerboseTimeSec = 30
+    .Profile.RndPatternGenProf.Seed = 122
+    .Run
+    
+    .BeginLapdTest
+    .Profile.MaxDurationMsec = 350000
+    .Profile.TraceTest = true
+    .Profile.L2TraceOption.On = true
+    .Profile.L2TraceOption.PacketRaw = false
+    .Run  
+    
+    .ObjDelete
+    
+CS_Print "DssTest groupe finished"
+
+
+        
+    
+    

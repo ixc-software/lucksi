@@ -1,0 +1,90 @@
+
+// All objects of this test should have prefix "mc"
+
+CS_Print "Stage: Init ------------------------------------- "
+// Remove all ROOT children
+CS_Set
+.ObjDeleteChildren
+
+CS_Set
+
+Metaxxx						// error: Not found 
+
+ObjCreate NObjTestType mcObj true
+.AddChild
+.CS_Set Child0					// now mcObj.Child0>
+
+// ---------------------------------------------------------
+CS_Print "Stage:  MetaMethods, MetaFields, MetaEnums test - "
+
+// Methods
+MetaMethods					// OK: ROOT methods	
+MetaMethods invalid_type			// error: Type not found
+MetaMethods NObjString				// OK
+MetaMethods NObjString invalid_method		// OK: But no info displayed
+
+mcObj.Child0.MetaMethods			// Child0 methods
+.MetaMethods 					// Child0 methods
+.MetaMethods NObjString				// NObjString methods
+.MetaMethods = NObjString			// OK 
+
+MetaMethods NObjTestTypeInner Inc		// OK
+MetaMethods NObjTestTypeInner "Inc"		// OK
+MetaMethods NObjTestTypeInner "Inc()"		// OK: But no info displayed, because
+						// "()" is considered as a part of name
+MetaMethods NObjTestTypeInner CS_Exec		// CS_Exec( ... )
+
+
+// Enums
+MetaEnums					// OK: But ROOT has no enums
+MetaEnums invalid_type				// error: Type not found  
+
+mcObj.Child0.MetaEnums				// Child0 methods
+.MetaEnums 					// Child0 methods
+.MetaEnums NumberState				// error: Type not found
+.MetaEnums NObjTestTypeInner NumberState	// OK
+MetaEnums NObjTestTypeInner "Binaries"		// OK
+MetaEnums NObjTestTypeInner invalid_name	// OK: But no info displayed
+MetaEnums = NObjTestTypeInner			// OK
+
+
+// Fields
+MetaFields					// OK: But ROOT has no fields
+MetaFields invalid_type				// error: Type not found
+mcObj.Child0.MetaFields				// OK
+.MetaFields					// OK
+.MetaFields IsUserUpdated			// error: Type not found
+.MetaFields NObjTestTypeInner IsUserUpdated	// OK
+MetaFields NObjTestTypeInner "NumberAsString"	// OK
+MetaFields NObjTestTypeInner invalid_name	// OK: But no info displayed
+MetaFields = NObjString				// OK
+
+// ---------------------------------------------------------
+CS_Print "Stage:  MetaTypes and MetaTypeInfo test ---------"
+
+CS_Set mcObj					// now mcObj
+
+// MetaTypes
+MetaTypes 					// OK: all types
+.MetaTypes 					// OK: all types
+
+MetaTypes true					// OK: full info
+MetaTypes true true				// OK: full info with inherited
+MetaTypes true true true 			// OK: full (+user types) info with inherited
+MetaTypes true true true "extra param"		// error: extra parameter
+MetaTypes 1					// error: Bad bool
+
+// MetaTypeInfo
+MetaTypeInfo					// OK: all types info
+.MetaTypeInfo					// OK: NobjTestType type info
+.MetaTypeInfo invalid_type			// error: Type not found
+.MetaTypeInfo NObjTestType			// OK: 1 field, 2 methods
+.MetaTypeInfo NObjTestType true			// OK: with NamedObject methods
+.MetaTypeInfo NObjTestType true	text		// error: Extra parameter
+
+// ---------------------------------------------------------
+CS_Print "Stage: Delete all created objects --------------- "
+
+ObjList
+
+mcObj.ObjDelete 

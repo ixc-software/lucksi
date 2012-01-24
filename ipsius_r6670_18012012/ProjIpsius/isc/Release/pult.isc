@@ -1,0 +1,123 @@
+
+.HaltOnQtWarning(f)
+
+ObjCreate NObjSipUserAgent sip true
+//	.ResipLogMode = Detail	
+
+    .SetupTransport(Udp, 5064)
+    //.AddTransport(5064)	
+			
+	//.AddAccessPoint("pult", "sip:alex@192.168.0.24", "alex")
+	.AddAccessPoint("pult", "sip:5052@192.168.0.245:5060", "5052")
+	.pult.SetAsDefaultReceiver
+	.Enabled = t	
+
+ObjCreate NObjPult pult true
+
+	.LogLevel = 3
+    
+    .ViewSettings.SetThemeName "../PultGfx/Theme0/"
+	
+	// --------------------------------------------------
+
+	//.SoundMode = NullMode		
+	.SoundMode = LocalMode
+
+    .Sound.IO.SetSoundQtAlsa(0, 2)    
+	
+
+	//.Sound.SndOutputDelayMs = 400
+	//.Sound.SaveWave = t		
+
+	// --------------------------------------------------	
+
+	.KeyboardType = KbMcu	 
+	.KbDriver.Com = 1
+	.KbDriver.OpTimeout = 1
+
+	//.KeyboardType = KbEmul
+	//.KbDriver.EmbedDisp = t
+	
+	.KbDriver.Timing.PressedMs     = 20
+	.KbDriver.Timing.StartRepeatMs = 800
+	.KbDriver.Timing.RepeatMs      = 600
+    
+    //.KbDriver.KbGPIOEnabled = t
+    //.KbDriver.GPIOPriorityHi = f
+    //.KbDriver.GPIOSleepMs = 50
+					
+	.ViewSettings.Embeded = f // t/f
+	.ViewSettings.Width = 800
+	.ViewSettings.Height = 480
+    .ViewSettings.FullScreen = true
+	.ViewSettings.SetThemeName "../PultGfx/Theme0/"
+			
+	// --------------------------------------------------
+	
+    .PhBook.SetPhotoPath "../PultGfx/ph/"
+    .PhBook.Clear
+    
+    .PhBook.Create("Чапманн", "шпионка", "ph chapman.jpg")
+    .PhBook.AddNumber("110")
+    .PhBook.AddNumber("120")    
+    .PhBook.AddDirectKey(0, 0, true)
+    .PhBook.AddDirectKey(1, 1, true)
+    
+    .PhBook.Create("Dead-Moroz", "GNU leader", "ph stallman.jpg")
+    .PhBook.AddNumber("5020")
+    .PhBook.AddDirectKey(2, 0, false)
+    
+    .PhBook.Create("Шура", "б-тъ", "ph sasha.jpg")
+    .PhBook.AddNumber("5999")
+    .PhBook.AddDirectKey(3, 0, t)
+        
+	.PhBook.List
+	
+	
+	.NumDialer.Clear 
+	.NumDialer.Set 3000 10000 "*"
+	.NumDialer.AddDirection "5" 4
+	
+	// --------------------------------------------------
+
+	.SipPoint = sip.pult		
+	
+	// --------------------------------------------------
+	
+	.CS_Set Settings
+	
+	.HandsfreeMicLevel 0
+	.HandsetMicLevel   25
+	.RingingLevel      50
+	.HandsetReverse t
+	.IgnoreCaseOpen t	
+
+	
+    .StatusDebugMode t  
+    .EchoSetup "ace.ini"
+    
+	.TraceKbdDriver f
+	.TraceStates    f
+	.TraceCallMng   f 
+    //.SetRingtoneGen 425 -15 0 0 300 400
+
+	.CS_SetBack
+    
+	// --------------------------------------------------
+	
+	.SetLocale "ru" 
+	//.SetLocale "uk"
+		
+	TestAsyncCmd t 1000
+		
+	.Enabled = true
+		
+	//.Body.RuntimeInfo 
+//CS_Exit	
+
+
+
+
+	
+
+	

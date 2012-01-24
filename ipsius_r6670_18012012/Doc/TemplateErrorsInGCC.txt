@@ -1,0 +1,355 @@
+How to fix up template errors in GCC.
+
+1)
+code:
+
+	template<class SomeClass>
+	class ParentClass
+	{
+	public:
+		template<class Params>
+		int Action(Params const& p) {}
+	} 
+	
+	template<class SomeClass2>
+	class ChildClass : public ParentClass<SomeClass2>
+	{
+		void SomeFunc()
+		{
+			Action(Params());
+		}	
+	}
+
+error: 
+
+	there are no arguments to 'Action' that depend on a template parameter, 
+	so a declaration of 'Action' must be available
+
+solution:
+
+	template<class SomeClass2>
+	class ChildClass : public ParentClass<SomeClass2>
+	{
+		typedef ParentClass<SomeClass2> Base;
+		
+		void SomeFunc()
+		{
+			Base::Action(Params());
+		}	
+	}
+
+
+2) All about "typename"
+2a)
+code:
+
+	template<class TTimestamp, class TTag, class TData, class TConvert>
+    	class LogRecordT : boost::noncopyable
+    	{
+    	public:
+
+        	typedef typename TTimestamp                RecordTimestamp;	 // (I)
+        	typedef TTimestamp::CaptureModeType        RecordTimestampMode;  // (II)
+	
+		// ...
+	}
+
+errors:
+	(I):
+		a) expected nested-name-specifier before 'TTimestamp'
+		b) expected ';' before 'RecordTimestamp'
+	(II)	
+		c) ISO forbids declaration of 'CaptureModeType' with no type
+
+solution:
+
+	template<class TTimestamp, class TTag, class TData, class TConvert>
+    	class LogRecordT : boost::noncopyable
+    	{
+    	public:
+
+        	typedef TTimestamp                			RecordTimestamp; 
+        	typedef typename TTimestamp::CaptureModeType		RecordTimestampMode;
+	
+		// ...
+	}
+
+
+2b)
+code:
+
+	template<class TRecord>
+	class IRecordFilter : public Utils::IBasicInterface
+	{
+	public:
+        	virtual bool RecordAccepted(typename TRecord *pRecord) = 0; // ERROR
+    	};
+
+errors:
+
+	a) expected nested-name-specifier before 'TRecord'
+	b) expected ',' or '...' before '*' token
+
+solution:
+
+	virtual bool RecordAccepted(TRecord *pRecord) = 0;
+
+
+2c)
+code:
+
+	typedef std::map<TRecordTag, TData> TagsMap;
+
+	void SomeFunc()
+	{
+		TagsMap::iterator i = m_tagsMap.find(tag); // ERROR
+	}
+
+error:
+
+	expected `;' before 'i'
+
+solution:
+
+	void SomeFunc()
+	{
+		typedef typename TagsMap::iterator TMI;
+        	TMI i = m_tagsMap.find(tag);
+
+		// OR
+
+		typename TagsMap::iterator i = m_tagsMap.find(tag);
+	}
+
+
+2d)
+code:
+	1) 	template<class TRecord, class TThreadContextCheck = NullThreadContextCheck>
+    		class LogSessionT : 
+        		boost::noncopyable,
+        		public ILogSession<typename TRecord>  // ERRROR
+	{}
+
+
+error:
+
+	template argument 1 is invalid
+
+solution:
+
+	1) public ILogSession<TRecord>
+
+
+NOTE: "typename" should be used only with subtypes.
+
+3) 
+code:
+	
+	template<> 
+	void OnNoEventHandle(const EvLinkConnect &e){}
+
+errors: 
+
+	a) explicit specialization in non-namespace scope 'class IsdnTest::InternalFsmBaseForOutCall<TDrived>'
+	b) enclosing class templates are not explicitly specialized
+	c) 'OnNoEventHandle' is not a template function
+	d) invalid function declaration 
+
+solution:
+
+	template<class> 
+	void OnNoEventHandle(const EvLinkConnect &e){}
+
+4)
+code:
+
+	namespace iLogQStr
+	{
+    		// ѕринудительное инстанцирование классов
+    
+    		template class iLog::LogRecordT<Timestamp, int, QString, iLogQStr::Convert>;
+	}
+
+error:
+
+	explicit instantiation of 'class LogRecordT<iLog::Timestamp, int, QString, iLogQStr::Convert>' 
+	in namespace 'iLogQStr' (which does not enclose namespace 'iLog')
+
+solution:
+
+	Change namespace name to iLog (native namespace of the template class).
+
+5)
+code:
+
+	struct InsertIterToValue
+        {
+            template<class TIter>
+            struct Solve
+            {
+                typedef typename TIter::container_type::value_type TValue;
+            };
+        };
+
+	typedef typename mpl::if_<
+                    typename boost::is_void<typename TIter::value_type>::type, 
+                    InsertIterToValue, 
+                    TrivialIterToValue
+                >::type TIterValue;
+
+                typedef typename TIterValue::Solve<TIter>::TValue TValue; // ERROR
+
+error:
+
+	a) non-template 'Solve' used as template
+	b) note: use 'typename boost::mpl::if_<typename boost::is_void<typename TIter::value_type>::type,
+	   Utils::Converter<TDataConverter>::InsertIterToValue, 
+	   Utils::Converter<TDataConverter>::TrivialIterToValue>::type::template Solve' to indicate that it is a 
+	   template
+	c) declaration does not declare anything
+
+solution:
+
+	typedef typename TIterValue::template Solve<TIter>::TValue TValue;
+
+6)
+code:
+
+	template<class T> class shared_ptr
+	{
+		T *m_pT;
+	public:
+		shared_ptr(shared_ptr<Y> const &r)
+		: m_pT(r.m_pT)							// ok
+		{}
+
+		template<class Y> shared_ptr(shared_ptr<Y> const &r)
+		: m_pT(r.m_pT)							// ERROR
+		{}
+
+
+
+	}
+
+error:
+	m_pT in r is private
+
+solution:
+	
+	template<class T> class shared_ptr
+	{
+		template<class> friend class shared_ptr;
+
+		// ...
+	};
+ 
+7)
+code:
+
+	template<class TIter>				// ERROR (II)
+    	class IterTypeToValueType
+    	{
+        	struct TrivialIterToValue
+        	{
+            		template<class TIter>		// ERROR (I)
+            		struct Solve
+            		{
+                		typedef typename TIter::value_type TValue;
+            		};
+        	};
+	
+		// ...
+	};
+
+error:
+
+	I) declaration of 'class TIter'
+	II)  shadows template parm 'class TIter'
+
+solution:
+
+	template<class TIter>
+    	class IterTypeToValueType
+    	{
+        	struct TrivialIterToValue
+        	{
+            		template<class TIterator>
+            		struct Solve
+            		{
+                		typedef typename TIterator::value_type TValue;
+            		};
+        	};
+	
+		// ...
+	};
+
+	Note: Do not use the same names for the template parameters' names in the main and inner classes
+
+8) 
+solution:
+
+	template<int BuffSize>
+	class StackStringT:
+        	public ComparableT<StackStringT<BuffSize> >
+	{
+		// ...
+	};
+
+9)
+code:
+
+    template<class T>
+    class NamedObjectType : public INamedObjectType
+    {
+
+        template<bool blockCreate>
+        struct Create
+        {
+            // ...
+        };
+
+        template<>
+        struct Create<true>
+        {
+            // ...
+        };
+
+
+	// ...
+
+    };
+
+
+error:
+
+	error: explicit specialization in non-namespace scope 'class DRI::NamedObjectType<T>'
+	error: enclosing class templates are not explicitly specialized
+	error: template parameters not used in partial specialization:
+
+
+solution:
+
+    template<class T>
+    class NamedObjectType : public INamedObjectType
+    {
+
+	template<bool blockCreate, typename = void>
+        struct Create
+        {
+            // ...
+        };
+
+        template<typename TDummi>
+        struct Create<true, TDummi>
+        {
+            // ...
+        };
+
+	// ...
+
+    };
+
+    note: partial specialization is allowed
+
+
+

@@ -1,0 +1,403 @@
+:PRINT "Stage: Init ------------------------------------- "
+
+> CS_Set
+:OK
+
+> .ObjDeleteChildren
+Method/property 'ObjDeleteChildren' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 9 (command # 3)
+:ERROR DRI::CommandDriPrepareError
+
+> CS_xxx
+Method/property 'CS_xxx' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 11 (command # 4)
+:ERROR DRI::CommandDriPrepareError
+
+> ObjCreate                 NObjTestType cscObj1
+:OK
+
+> ObjCreate                 NObjTestType cscObj2
+:OK
+
+> cscObj1.ObjCreate         NObjTestType cscObj2
+:OK
+
+> cscObj1.cscObj2.ObjCreate NObjTestType cscObj21
+:OK
+
+> cscObj1.ObjCreate         NObjTestType cscObj11
+:OK
+
+> cscObj1.ObjCreate         NObjTestType cscObj12
+:OK
+
+:PRINT "Stage:  Path test ----------------------------- "
+
+> CS_Set cscObj1
+:OK
+
+> CS_Set "cscObj1.cscObj2"
+:OK
+
+> CS_Set
+:OK
+
+> CS_Set cscObj1.cscObj2
+:OK
+
+> CS_Set "cscObj1."
+Exception "cscObj1."; Domain::ObjectNameError in thread DomainClass:TestDomain/main (3936) @ s:\proj\ipsius\src\domain\ObjectName.h:80 in void __thiscall Domain::ObjectName::Init(const class QString &) @ ROOT.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 29 (command # 16)
+:ERROR DRI::CommandDriRuntimeError
+
+:PRINT "Stage:  CS_Set test ----------------------------- "
+
+> CS_Set cscObj1
+:OK
+
+> CS_Set cscObj11
+Exception "Bad path! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (3936) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 35 (command # 19)
+:ERROR DRI::CommandDriRuntimeError
+
+> .CS_Set cscObj11
+:OK
+
+> .CS_Set cscObj2
+Exception "Bad path / no property! @ cscObj1.cscObj11"; DRI::ExecuteException in thread DomainClass:TestDomain/main (3936) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ cscObj1.cscObj11.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 37 (command # 21)
+:ERROR DRI::CommandDriRuntimeError
+
+> CS_Set cscObj2
+:OK
+
+> CS_Set cscObj1
+:OK
+
+> CS_Set cscObj12
+Exception "Bad path! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (3936) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 40 (command # 24)
+:ERROR DRI::CommandDriRuntimeError
+
+> .CS_Set cscObj2
+:OK
+
+> .CS_Set ".cscObj21"
+Exception "cscObj1.cscObj2..cscObj21"; Domain::ObjectNameError in thread DomainClass:TestDomain/main (3936) @ s:\proj\ipsius\src\domain\ObjectName.h:80 in void __thiscall Domain::ObjectName::Init(const class QString &) @ cscObj1.cscObj2.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 43 (command # 26)
+:ERROR DRI::CommandDriRuntimeError
+
+> .CS_Set cscObj21
+:OK
+
+> CS_Set ".cscObj2"
+Exception ".cscObj2"; Domain::ObjectNameError in thread DomainClass:TestDomain/main (3936) @ s:\proj\ipsius\src\domain\ObjectName.h:80 in void __thiscall Domain::ObjectName::Init(const class QString &) @ ROOT.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 45 (command # 28)
+:ERROR DRI::CommandDriRuntimeError
+
+> CS_Set invalid_cscObject
+Exception "Bad path! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (3936) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 47 (command # 29)
+:ERROR DRI::CommandDriRuntimeError
+
+> CS_Set
+:OK
+
+> CS_Set cscObj1
+:OK
+
+> CS_Set
+:OK
+
+> CS_xxx
+Method/property 'CS_xxx' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 49 (command # 31)
+:ERROR DRI::CommandDriPrepareError
+
+> CS_Set cscObj2
+:OK
+
+:PRINT "Stage:  Transaction test ------------------------ "
+
+:PRINT "SubStage:  CS_Begin/CS_End test ----------------- "
+
+> CS_End
+CS_End without CS_Begin
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 55 (command # 34)
+:ERROR DRI::CommandDriTransactionError
+
+> CS_Begin
+:OK
+
+> CS_Set cscObj2
+:OK
+
+> CS_Set cscObj1
+:OK
+
+> CS_End
+:OK
+
+> .CS_Set cscObj11
+:OK
+
+> CS_Begin
+Inner CS_Begin
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 65 (command # 42)
+:ERROR DRI::CommandDriTransactionError
+
+> CS_Begin false
+:OK
+
+> CS_Set cscObj1
+:OK
+
+> .CS_Set cscObj11
+:OK
+
+> CS_End
+:OK
+
+> .CS_Set cscObj12
+Exception "Bad path / no property! @ cscObj1.cscObj11"; DRI::ExecuteException in thread DomainClass:TestDomain/main (3936) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ cscObj1.cscObj11.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 69 (command # 45)
+:ERROR DRI::CommandDriRuntimeError
+
+> CS_Begin
+Inner CS_Begin
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 73 (command # 48)
+:ERROR DRI::CommandDriTransactionError
+
+> CS_Begin false
+:OK
+
+> CS_Set
+:OK
+
+> CS_unknown_command
+Method/property 'CS_unknown_command' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 74 (command # 49)
+:ERROR DRI::CommandDriPrepareError
+
+> CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 75 (command # 50)
+:ERROR DRI::CommandDriAborted
+
+> CS_End
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 76 (command # 51)
+:ERROR DRI::CommandDriAborted
+
+> CS_Begin false
+:OK
+
+> CS_unknown_command
+Method/property 'CS_unknown_command' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 79 (command # 53)
+:ERROR DRI::CommandDriPrepareError
+
+> CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 80 (command # 54)
+:ERROR DRI::CommandDriAborted
+
+> CS_End
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 81 (command # 55)
+:ERROR DRI::CommandDriAborted
+
+> .CS_Set cscObj1
+:OK
+
+> CS_Begin true
+:OK
+
+> CS_unknown_command
+Method/property 'CS_unknown_command' not found
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 86 (command # 58)
+:ERROR DRI::CommandDriPrepareError
+
+> CS_Set
+:OK
+
+> CS_End
+:OK
+
+> .CS_Set cscObj11
+Exception "Bad path! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (3936) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 90 (command # 61)
+:ERROR DRI::CommandDriRuntimeError
+
+:PRINT "SubStage:  CS_Discard test ---------------------- "
+
+> CS_Discard
+CS_Discard without CS_Begin
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 95 (command # 63)
+:ERROR DRI::CommandDriTransactionError
+
+> CS_Begin
+Discarded!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 97 (command # 64)
+:ERROR DRI::CommandDriDiscarded
+
+> CS_Set cscObj1
+Discarded!
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 98 (command # 65)
+:ERROR DRI::CommandDriDiscarded
+
+> CS_Discard
+:OK
+
+> .CS_Set cscObj11
+Exception "Bad path! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (3936) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 101 (command # 67)
+:ERROR DRI::CommandDriRuntimeError
+
+:PRINT "Stage:  CS_Timeout test ------------------------- "
+
+> CS_Timeout
+Exception "Can't invoke for CS_Timeout"; DRI::InvokeException in thread DomainClass:TestDomain/main (3936) @ ..\Src\DRI\MetaInvoke.cpp:159 in void __thiscall DRI::MetaInvoke::Invoke(void) @ ROOT.CS_Timeout
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 106 (command # 69)
+:ERROR DRI::CommandDriRuntimeError
+
+:PRINT "Stage:  CS_Exec test ---------------------------- "
+
+> CS_Exec
+Exception "Can't invoke for CS_Exec"; DRI::InvokeException in thread DomainClass:TestDomain/main (3936) @ ..\Src\DRI\MetaInvoke.cpp:159 in void __thiscall DRI::MetaInvoke::Invoke(void) @ ROOT.CS_Exec
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 111 (command # 71)
+:ERROR DRI::CommandDriRuntimeError
+
+> CS_Exec "TestExtern.isc"
+:OK
+
+:PRINT "Extern script loaded ..."
+
+> ObjCreate NObjTestType macroObj1 true
+:OK
+
+> .ObjCreate NObjTestType macroObj11 true
+:OK
+
+> .ObjCreate NObjTestType macroObj111
+:OK
+
+> CS_Set
+:OK
+
+> CS_Exec "TestMacroPrint.isc" "print1 = 1; print2 = 2; set1 = macroObj1; set2 = macroObj11"
+:OK
+
+:PRINT "Macro printing ... "
+
+:PRINT "Params: 1st = [ 1 ] and 2nd = [ 2 ]; 1.2 = 1.2; 2.2 = 2.2"
+
+> CS_Set macroObj1
+:OK
+
+> CS_Set "macroObj1.macroObj11"
+:OK
+
+> CS_Exec "TestMacroPrint.isc" "print2 = 2; print1 = 1; set1 = macroObj1; set2 = macroObj11"
+:OK
+
+:PRINT "Macro printing ... "
+
+:PRINT "Params: 1st = [ 1 ] and 2nd = [ 2 ]; 1.2 = 1.2; 2.2 = 2.2"
+
+> CS_Set macroObj1
+:OK
+
+> CS_Set "macroObj1.macroObj11"
+:OK
+
+> CS_Exec "TestMacroPrint.isc" "print1 = 1st param; print2 = 2nd param; set1 = macroObj1; set2 = macroObj11"
+:OK
+
+:PRINT "Macro printing ... "
+
+:PRINT "Params: 1st = [ 1st param ] and 2nd = [ 2nd param ]; 1.2 = 1st param.2nd param; 2.2 = 2nd param.2nd param"
+
+> CS_Set macroObj1
+:OK
+
+> CS_Set "macroObj1.macroObj11"
+:OK
+
+> CS_Exec "TestMacroPrint.isc" "print1 = 1.1; print2 = 2.2; set1 = macroObj1.macroObj11; set2 =  macroObj111"
+:OK
+
+:PRINT "Macro printing ... "
+
+:PRINT "Params: 1st = [ 1.1 ] and 2nd = [ 2.2 ]; 1.2 = 1.1.2.2; 2.2 = 2.2.2.2"
+
+> CS_Set macroObj1.macroObj11
+:OK
+
+> CS_Set "macroObj1.macroObj11.macroObj111"
+:OK
+
+> CS_Exec "TestMacroPrint.isc" "print1 = 1; print2 = 2; set2 = macroObj11"
+Exception "Unknown defined name: set1, in line 'CS_Set %set1%'"; DRI::DriDefineAndMacroList::DriDefineError in thread DomainClass:TestDomain/main (3936) @ ..\Src\DRI\DriDefineAndMacroList.cpp:131 in void __cdecl DRI::DriDefineAndMacroList::DefineErr(const class QString &,const class QString &,const class QString &) @ ROOT.CS_Exec
+:LOCATION TestExtern.isc, line 15 (command # 10)
+:ERROR DRI::CommandDriRuntimeError
+
+> macroObj1.ObjDelete
+:OK
+
+> CS_Exec "TestMacroPrint.isc__"
+Exception "Path wasn't found in list or file doesn't exist: "S:/proj/Ipsius/ProjAllTests/Release/TestMacroPrint.isc__; S:/proj/Ipsius/ProjAllTests/isc/TestMacroPrint.isc__""; DRI::DriIncludeDirList::InvalidPath in thread DomainClass:TestDomain/main (3936) @ ..\Src\DRI\DriIncludeDirList.cpp:33 in void __cdecl DRI::DriIncludeDirList::ThrowException(const class QString &,const class QString &) @ ROOT.CS_Exec
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 115 (command # 73)
+:ERROR DRI::CommandDriRuntimeError
+
+> CS_Exec "TestMacroPrint.isc" "a;;;"
+Exception "Missed '=', in 'a;;;'"; DRI::DriDefineAndMacroList::DriMacroError in thread DomainClass:TestDomain/main (3936) @ ..\Src\DRI\DriDefineAndMacroList.cpp:144 in void __cdecl DRI::DriDefineAndMacroList::MacroErr(const class QString &,const class QString &,const class QString &) @ ROOT.CS_Exec
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 116 (command # 74)
+:ERROR DRI::CommandDriRuntimeError
+
+> CS_Set
+:OK
+
+> CS_Begin true
+:OK
+
+> CS_Exec "TestExecInTransaction.isc"
+:OK
+
+> .CS_Set cscObj11
+Exception "Bad path! @ ROOT"; DRI::ExecuteException in thread DomainClass:TestDomain/main (3936) @ ..\Src\Domain\NamedObject.cpp:501 in void __thiscall Domain::NamedObject::ThrowRuntimeException(const class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &) const @ ROOT.CS_Set
+:LOCATION S:/proj/Ipsius/ProjAllTests/isc/TestCS_Commands.isc, line 122 (command # 78)
+:ERROR DRI::CommandDriRuntimeError
+
+> CS_End
+:OK
+
+> CS_Set cscObj1
+:OK
+
+> .CS_Set cscObj11
+:OK
+
+:PRINT "Stage: Delete all created objects --------------- "
+
+> ObjList
+ROOT : NObjRoot #
+    Security : NObjSecRoot #
+    Log : NObjLogManager #
+    TelnetServer : NObjTelnetServerDRI #
+    ThreadMonitor : NObjThreadMonitor #
+    Reg : NObjReg #
+    cscObj1 : NObjTestType
+    cscObj2 : NObjTestType
+:OK
+
+> cscObj1.ObjDelete
+:OK
+
+> cscObj2.ObjDelete
+:OK
+
+:PRINT "Stage: Finish. CS_Exit test --------------------- "
+
+> CS_Exit
+:OK
+
+
+Commands in total 117, with errors 32, service 170, scripted 28
+Aborted by request

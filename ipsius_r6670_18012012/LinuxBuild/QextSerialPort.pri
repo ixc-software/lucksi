@@ -1,0 +1,11 @@
+
+unix{
+	DEFINES += _TTY_POSIX_
+	DEFINES += QT_NO_DEBUG_OUTPUT
+}
+
+INCLUDEPATH += $$QSERIALDEVICE
+
+debug:LIBS += $$QSERIALDEVICE/$$TARGET_DIR_PREFIX/libqextserialportd.a
+release:LIBS += $$QSERIALDEVICE/$$TARGET_DIR_PREFIX/libqextserialport.a
+	 

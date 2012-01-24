@@ -1,0 +1,6 @@
+
+ObjCreate NObjMachineId "Pcid" true
+
+.GenPcid
+//.GenPcidDmiDecode "../dmidecode.txt"
+DomainExit

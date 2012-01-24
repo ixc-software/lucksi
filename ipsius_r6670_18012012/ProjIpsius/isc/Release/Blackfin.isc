@@ -1,0 +1,40 @@
+CS_Exec "Header.isc"
+
+CS_Set
+ObjCreate  NObjResipLog "ResipLog"
+// ResipLog.LogLevel = 3
+// ResipLog.SetTraceType(All, Debug)
+
+ObjCreate NObjSipUserAgent sip true
+	.LogLevel = 0						 // включение/отключение трассировки
+	.AddTransport(5064)
+	.AddAccessPoint("dss1", "sip:9999@192.168.0.240", "9999") // nane, uri, password
+	.dss1.SetAsDefaultReceiver
+	.Enabled = true
+
+ObjCreate NObjHwFinder HwFinder true				// создаем HwFinder
+.LogLevel = 3										// включение/отключение трассировки
+.BoardFilter.Include "2001"						// указываем номера плат, которые будут обслуживаться 
+//.BoardFilter.Exclude "17"                         // указываем номера плат, которые не будут обслуживаться 
+.FirmwarePath = "~IPSIUS_RELEASE~/FWU/DevIpTdm/"    // путь к прошивкам 
+.Enabled = true										// запускаем HwFinder
+.Alias(2001, "Board1")								// создание алиаса для платы
+
+#define GatewayName ipsius // имя шлюза 
+
+ObjCreate NObjDss1ToSip %GatewayName% true  // создание шлюза
+.LogLevel = 3								// включение/отключение трассировки
+
+.SipPoint = sip.dss1
+.FromSip.CallingAddrNoDigit = UsePilotNumber
+.FromSip.PilotNumber = "2222"
+
+.ToSip.UseSourceNameInContact = t
+.ToSip.UseSourceNameInFrom = f
+.ToSip.UseSourceNameAsDisplay = t
+
+// создание Dss1Trunk 
+CS_Exec "Dss1Trunk.isc" "GatewayName = %GatewayName%; TrunkName = Trunk1; BoardName = Board1; HwType = E1; Side = TE; UseAlaw = true; LiuSyncMaster = false"
+//CS_Exec "Dss1Trunk.isc" "GatewayName = %GatewayName%; TrunkName = Trunk2; BoardName = Board2; HwType = E1; Side = TE; UseAlaw = true; LiuSyncMaster = false"
+
+%GatewayName%.Enabled = true  // включаем шлюз

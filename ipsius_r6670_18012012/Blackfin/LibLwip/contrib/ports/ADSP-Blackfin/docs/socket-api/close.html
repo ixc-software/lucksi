@@ -1,0 +1,74 @@
+
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of close</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>CLOSE</H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A HREF="socket_exp.html"> Example</A><HR>
+
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+close - closes the socket associated with the descriptor.
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="lwip/sockets.h">lwip/sockets.h</A>&gt;</B>
+
+<P>
+<B>int close(int </B><I>s</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Closes the socket associated with the passed socket descriptor <I>s</I>.The
+passed socket descriptor must be returned by the<B><A HREF="socket.html">
+socket</A></B> call.
+
+If data is still present then close tries send the data on the socket before
+closing the connection.
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+On success, zero is returned.  On error, -1 is returned, and the specific error
+number can be obtained by calling the function <a href="GetSocketError.html">GetSocketError</a>. In a multi-threaded environment the last error number is held
+seperately for each thread.
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><B>EINVAL</B>
+
+<DD>
+The argument <I>s</I> is not a valid descriptor.
+</DL>
+<p>
+<A NAME="lbAI">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="accept.html">accept</A></B>,
+<B><A HREF="connect.html">connect</A></B>,
+<B><A HREF="socket.html">socket</A></B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAI">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

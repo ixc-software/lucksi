@@ -1,0 +1,41 @@
+
+- Создать класс команды и ответа
+
+- Реализовать класс ошибки и передавать в OnError() по ссылке
+
+- Сделать TransportUARTServer
+
+- SafeRef
+
+- inline-методы???
+
+- Переменные окружения:
+
+		hardware_id						- идентификатор "железа"
+		hardware_password
+
+		booter_version					- версия загрузчика
+		software_version				- версия программы
+
+		mac_address						- MAC-адрес
+		ip_address						- IP-адрес
+		subnet_mask						- маска подсети
+		use_dhcp						- флаг получения IP-адреса и маски подсети с DHCP-сервера
+		broadcast_port					- порт для идентификации "железа"
+
+		wait_connection_timeout			- задержка перед загрузкой программы
+		socket_listener_polling_period	- период опроса сокета на предмет новых соединений
+		protocol_polling_period			- период опроса протокола
+		transport_polling_period		- период опроса транспорта
+		session_clearing_period			- период очистки старых сессий
+
+		config_version
+
+- Реализовать сохранение конфига
+
+- Компоненты:
+
+		Драйвер UART
+		TCP/IP-стек с поддержкой DHCP
+		Boot-код
+		Флешер

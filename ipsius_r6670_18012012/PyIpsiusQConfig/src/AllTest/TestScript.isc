@@ -1,0 +1,14 @@
+
+// comment 1
+
+CS_Print "Running test script ... " // comment 2
+
+CS_Print "Test script param: {param}"		// comment "3"
+
+       // "comment 4"
+		// comment 5
+
+CS_Print "// not a comment"
+
+CS_Print "Test end"
+

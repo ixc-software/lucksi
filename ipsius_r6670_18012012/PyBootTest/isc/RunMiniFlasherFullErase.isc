@@ -1,0 +1,11 @@
+CS_Print %_0%
+
+ObjCreate NObjMiniFlasher flasher true
+    .ComPort = %_1%
+    .BaudRate = 115200
+    .ConnectRepeatInterval = 500
+    .ConnectTimeout = 10000
+
+    .UartBoot %_2%
+    .EraseFlash 
+    .LoadImg  %_3% 0

@@ -1,0 +1,39 @@
+#define TraceClient false
+#define TraceServer false
+
+#define HwType %_2%
+#define HwNum %_3%
+#define MAC %_4%
+
+//#define Ip %_5%
+//#define Gateway "192.168.0.32"  //_6
+//#define NetMask "255.255.255.0" //_7
+
+//#define Pwd "DefaultTestPwd"
+
+//--------------------------------------------------------------------------
+
+
+CS_Exec "AutoReset.isc" "Addr = %_1%"
+
+
+// Настройка общих параметров объектов-заданий
+ObjCreate NObjCommonBfTaskProfile commonProfile true        
+    .BoardAddress = %_1%
+    .TraceClient = %TraceClient%
+    .TraceServer = %TraceServer%
+    .ObtainCbpPort
+
+//-------------------------------------------------------------------------
+
+ObjCreate NObjBfTaskSetParams setFactory true
+    
+    .Init commonProfile
+    
+    .SetFactoryParams(%HwType%, %HwNum%, %MAC%);    
+    //.SetOptNetwork(%Ip%, %Gateway%, %NetMask%);    
+    //.SetOptUserPwd(%Pwd%);
+    //.CheckAfter = true
+    
+    .Run // старт задачи    
+

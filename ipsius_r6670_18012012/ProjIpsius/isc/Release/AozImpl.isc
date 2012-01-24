@@ -1,0 +1,17 @@
+// BoardName   - имя платы, которая будет использована в интерфейсе Dss1Trunk
+// FirstNumber  - с этого номера начинается нумерация абонентов платы
+// HiTdmChPart  - верхняя (true) нижняя (false) половина каналов используется для звука
+// UseAlaw      - // A/U закон для RTP потока
+// DevTraceInd  - on/off device trace
+
+// Добавление устройства
+.AddBoard(%BoardName%, %HiTdmChPart%)     
+.%BoardName%.CS_Set
+.Global.DevTraceInd = %DevTraceInd%
+.Board.UseAlaw = %UseAlaw%
+.SetupUserInfo(%FirstNumber%, true)
+.SbpSettings.TimeoutCheckInterval = 0//1000
+
+
+
+

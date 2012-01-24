@@ -1,0 +1,40 @@
+CS_Exec "Header.isc"
+
+ObjCreate  NObjResipLog "ResipLog"
+ResipLog.Type = None
+
+ObjCreate NObjCallMeeting ipsius true       
+.LogLevel = 3					// trace on/of 
+.WaitConnectionTimeout = 60000	// timer will be started when call began, afrer timer expired inactive
+                                // call will be rejected
+
+.TryingTimeout = 5000-7000      // after timer expired 'Ringing' will be sended
+.AlertingTimeout = 10000-25000  // after timer expired call is ready for connection, 
+                                // if other ready call exist connection will be executed
+								
+//.MaxTalkDurationMin = 120     // max talk duration	
+.ConnectImmediately = true      // if ready call exists, new incoming call is connected immediately
+.Sip.LocalHost = 5062           // local sip port
+//.StateStoreUpdateTimeoutMin = 5
+
+// you have to define ip filter, calls from other ip will be rejected
+.AddCallingIpFilter "127.0.0.1"
+
+// load table of country codes. Columns: "code",  "country"
+.LoadCountriesTable "../CallMeetingData/countries.txt" 
+
+// if you want to know current table, then call .
+//.SaveCountriesTable "./path_to_target/file.txt" 
+
+// load table of customers. Columns: "customer",  "number".
+.LoadCustomersTable "../CallMeetingData/customers.txt" 
+// if you want to know current table of customers, then call .
+//.SaveCustomersTable "./path_to_target/file.txt"
+
+// load table of rules
+.LoadRulesTable "../CallMeetingData/rules.txt"
+// if you want to know current table of rules, then call .
+//.SaveRulesTable "./path_to_target/file.txt"
+
+.Start
+TestStackTrace

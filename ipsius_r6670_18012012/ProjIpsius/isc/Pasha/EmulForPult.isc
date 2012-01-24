@@ -1,0 +1,31 @@
+#define SIP_TEST_OUT_PORT 5082
+#define SIP_TEST_IN_PORT  5084
+
+#define FIRST_BOARD_PORT  5062
+#define SECOND_BOARD_PORT 5064
+
+#define FIRST_BOARD_NUMBER 75
+#define SECOND_BOARD_NUMBER 76
+
+#define FIRST_BOARD_NAME  "b1"
+#define SECOND_BOARD_NAME "b2"
+
+
+
+ObjCreate NObjEmulRunner Emul true
+	.CreateEmulPair("Pair", %FIRST_BOARD_NUMBER%, %SECOND_BOARD_NUMBER%)
+	.Pair.Board_0.BoardSettings.SetDefaultParams(1, %FIRST_BOARD_NUMBER%, "91:92:93:94:93:F0")
+	.Pair.Board_0.BoardSettings.SetNetwork(false, "127.0.0.1", "127.0.0.1", "255.255.255.0")	
+	.Pair.Board_0.UseBooter = false
+	
+	.Pair.Board_1.BoardSettings.SetDefaultParams(1, %SECOND_BOARD_NUMBER%, "91:92:93:94:93:F1")
+	.Pair.Board_1.BoardSettings.SetNetwork(false, "127.0.0.1", "127.0.0.1", "255.255.255.0")
+	.Pair.Board_1.UseBooter = false	
+	.StartAllEmul	
+
+CS_Exec "Blackfin.isc" "GatewayName = User; LocalHost = %FIRST_BOARD_PORT%; ProxyHost = %SIP_TEST_IN_PORT%; BoardName = %FIRST_BOARD_NAME%; Side =TE; StartRtpPort = 8000"
+CS_Exec "Blackfin.isc" "GatewayName = Net; LocalHost = %SECOND_BOARD_PORT%; ProxyHost = %SIP_TEST_IN_PORT%; BoardName = %SECOND_BOARD_NAME%; Side =NT; StartRtpPort = 9000"
+
+User.WaitWhileNoactive(120000) 
+Net.WaitWhileNoactive(120000)
+

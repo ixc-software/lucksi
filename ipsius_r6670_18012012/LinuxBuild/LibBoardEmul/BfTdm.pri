@@ -1,0 +1,6 @@
+SOURCES += \
+        BfTdm/TdmRegMapping.cpp
+
+
+
+

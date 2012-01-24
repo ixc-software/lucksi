@@ -1,0 +1,297 @@
+
+// All objects of this test should have prefix "oc" or have auto-gen name
+
+// Method ObjDeleteChildren was temporary removed from the system
+
+CS_Print "Stage: Init ------------------------------------- "
+// Remove all ROOT children
+CS_Set
+.ObjDeleteChildren
+
+Objxxx						// error: Invalid command
+
+// -----------------------------------------------------
+CS_Print "Stage: ObjCreate test --------------------------- "
+CS_Print "SubStage: Create single objects and object trees - "
+
+CS_Set						// now ROOT>
+
+ObjCreate					// error: Type is empty
+ObjCreate ocObj1				// error: Invalid type "ocObj1"
+ObjCreate NObjTestType 123ocObj3		// error: Invalid object name
+
+ObjCreate NObjTestType ocObj1	        	// create object
+ObjCreate NObjTestType ocObj1	        	// error: Dublicate name
+ObjCreate NObjTestType              		// create, with auto-gen name
+
+ObjCreate NObjTestTypeInner     		// error: Non-creatable
+
+// Can't create a list of objects, only one by one
+ObjCreate NObjTestType ocObj2; ocObj3		// ocObj2 created, ocObj3 is considered as 
+						// next command and failed
+// ObjCreate NObjTestType ocObj2, ocObj3	// error
+ObjCreate NObjTestType "ocObj2, ocObj3" 	// error: Invalid name
+
+// Create object tree by reseting path
+ObjCreate NObjTestType ocObj3 true      	// create "ocObj3", set it current (ocObj3>)
+.ObjCreate NObjTestType ocObj31
+.ObjCreate NObjTestType ocObj32 true		// now ocObj3.ocObj32>
+.ObjCreate NObjTestType ".ocObj321"		// error: "ocObj3.ocObj32..ocObj321" 		
+.ObjCreate NObjTestType ocObj321		// OK
+
+// Create object tree from one point
+ObjCreate                NObjTestType ocObj4
+ocObj4.ObjCreate         NObjTestType ocObj41
+ocObj4.ocObj41.ObjCreate NObjTestType ocObj411
+
+ocObj4.ocObj42.ObjCreate NObjTestType ocObj421	 // error: ocObj42 not found
+
+ObjList false -1				 // check created objects 
+
+// -----------------------------------------------------
+CS_Print "Stage: Find from ROOT test"
+
+CS_Set						// now ROOT
+.CS_Set						// OK
+.ocObj4.Number					// OK
+._unknown_object_.Number			// Error
+.ocObj41.Number					// Error
+
+// -----------------------------------------------------
+CS_Print "Stage: Modify object test. ObjView & ObjList test "
+
+CS_Print "SubStage: Call methods test --------------------- "
+CS_Set						// now ROOT>
+
+// NObjTestType::AddChild(), NObjTestType::RemoveChild(int childIndex)
+// NObjTestTypeInner::Inc() , NObjTestTypeInner::Dec()
+
+// Use ocObj3 hierarchy: 3, 31, 32, 321
+CS_Set ocObj3.ocObj32.ocObj321			// now ocObj3.ocObj32.ocObj321>
+.AddChild					// OK
+.AddChild()					// OK
+.AddChild ()					// OK
+.AddChild(1)					// error: DriMethodExtraParams
+
+.Child0.Number					// 0
+.Child0.Inc
+.Child0.Number					// 1
+.Child0.Dec
+.Child0.Number					// 0
+
+//.RemoveChild					// OK: used default parameter, 
+//						// Child0 removed
+.RemoveChild 0					// OK
+
+.RemoveChild(1)					// OK
+.RemoveChild 2					// OK
+.RemoveChild(7)					// error
+// All children removed ---^
+
+// -----------------------------------------------------
+CS_Print "SubStage: Read/write properties test ------------ "
+
+// Use ocObj4 hierarchy: 4, 41, 411
+CS_Set ocObj4					// now coObj4>
+
+Number						// error: Not found
+.Number						// OK: read
+.NonExistsProp					// error: Not found
+
+.Number 105					
+.ObjView					// 105
+
+.Number "110"					
+.ObjView					// 110
+
+.Number = 115					
+.ObjView					// 115
+
+.Number = "120"					
+.ObjView					// 120
+
+.Number (125)					// error: "()"					
+.ObjView					// 120
+
+.Number "text"					// OK: but property wasn't set
+.ObjView					// 120
+
+.Number = -1                  			// error: Property setter exception
+
+.ocObj41.Number 130				// OK
+.ocObj41.ObjView				// 130
+
+.ocObj41.AddChild
+
+.CS_Set "ocObj41.Child0"			// now ocObj4.ocObj41.Child0>
+.ObjView					// read of all fields - OK
+
+.IsUserUpdated true				// error: Can't set read only field
+
+// -----------------------------------------------------
+CS_Print "SubStage: ObjView test -------------------------- "
+// ObjView(bool withTypes, QString propertyName)
+
+.ObjView					// OK: check set values
+.ObjView true					// with types
+.ObjView false Number  				// view only property Number					
+.ObjView true Binary  				// view only property Binary with type
+.ObjView true Invalid_Field			// OK: But no field info displayed
+.ObjView true Number true			// error: Extra parameter
+.ObjView = false				// OK
+
+
+ocObj4.ocObj41.RemoveChild(0)			// OK: remove all children for further tests
+// All children removed ---^
+
+// -----------------------------------------------------
+CS_Print "SubStage: ObjList test -------------------------- "
+
+.ObjList   					// list
+
+// List with/without properties
+.ObjList true 99
+.ObjList false -1 
+
+
+// -----------------------------------------------------
+CS_Print "SubStage: NObjPropertyTest read/write test ------ "
+
+ObjCreate NObjPropertyTest propTest true	// propTest>
+MetaTypeInfo NObjPropertyTest
+.Str "new string"			// OK
+.Str
+
+.Str newString				// OK
+.Str
+
+.Str new string				// error
+.Str
+
+.Color clBlue				// OK
+.Color
+
+.Color _invalid_color_			// OK: But color remains clBlue
+.Color
+
+// .Bin Bit2				// Not implemented
+.Bin
+
+.Time "01:05:06"			// OK
+.Time
+
+.Time 02:39:56				// OK
+.Time
+
+.Time _invalid_time_			// Error: BadTime
+.Time					// Time wasn't changed
+
+.Time 25:61:78				// Error: BadTime
+.Time					
+
+.Time 1:1:1				// Error: BadTime (invalid format)
+.Time					
+
+.Date "01.12.2009"			// OK
+.Date
+
+.Date "1.2.2009"			// Error: BadDate (invalid format)
+.Date					// Date wasn't changed
+
+.Date _inalid_date_			// Error: BadDate
+.Date
+
+.DT "13.05.2009 05:37:45"		// OK
+.DT
+
+.DT "13.5.2009 05:37:45"		// Error: BadDateTime (invalid format)
+.DT					// Date wasn't changed
+
+.DT _invalid_dt_			// Error: BadDateTime
+.DT
+
+.ObjDelete
+
+// -----------------------------------------------------
+CS_Print "Stage: ObjDelete and ObjDeleteChildren test ----- "
+
+CS_Set ocObj2					// now ocObj2>
+.AddChild
+.AddChild
+.AddChild
+.AddChild
+
+ObjList false -1 
+
+ocObj2.Child0.ObjDelete  			// error: Object ocObj2.Child0 is non-creatable
+ocObj2.Child7.ObjDelete   			// error: Object doesn't exist
+ocObj2.ObjDeleteChildren     			// error
+ocObj2.ObjDelete				// OK
+
+ObjList false -1 
+
+// Create object with mixed content and try to delete all children
+ObjCreate NObjTestType ocObjMixt true		// now ocObjMixt>
+.ObjCreate NObjTestType ocObjMixt1		// inner creatable
+.AddChild					// inner non-creatable
+.ObjDeleteAllChildren				// error: Object has non-creatable child(ren)
+.ocObjMixt1.ObjDelete 				// OK
+
+// Delete from different pathes, check that relative path will be reset after self-deleted
+CS_Set ocObj3.ocObj32				// now ocObj3.ocObj32>
+.ocObj321.ObjDelete 				// OK
+.ObjDelete					// OK: Now ocObj3>
+.ocObj31.ObjDelete 				// OK <<--------------
+
+// Try to delete one object twice
+.ocObj31.ObjDelete 				// error: Bad path
+
+.ObjCreate NObjTestType ".ocObj33"		// error: Bad path
+.ObjCreate NObjTestType ocObj33			// OK
+ocObj3.ocObj33.ObjDelete 			// OK
+
+ocObj4.ocObj41.ObjDelete 			// OK: Delete all ocObj41 children
+
+ocObj4.ObjCreate NObjTestType ocObj42
+CS_Set ocObj4
+.ObjDeleteChildren				// OK
+
+// Try to delete ROOT
+CS_Set
+.ObjDelete					// error: Can't delete ROOT
+
+ObjList false -1 
+
+.ObjDeleteChildren				// OK: Just ROOT remains
+
+ObjList false -1
+
+// -------------------------------
+CS_Print "Stage: Async methods test ----------------------- "
+
+ObjCreate NObjTestType ocObjDel
+
+ocObjDel.AddChild
+ocObjDel.AddChild
+ocObjDel.AddChild
+ocObjDel.AddChild
+
+ocObjDel.ObjList
+
+ocObjDel.RemoveChild(5)   			// error: Object not found
+ocObjDel.RemoveChild(0)
+ocObjDel.RemoveChild(3)
+
+ocObjDel.ObjList
+
+// -------------------------------
+CS_Print "Stage: Delete all created objects --------------- "
+
+ObjList
+
+ocObj1.ObjDelete 
+NObjTestType1.ObjDelete 
+ocObj3.ObjDelete 
+ocObj4.ObjDelete 
+ocObjMixt.ObjDelete 
+ocObjDel.ObjDelete 

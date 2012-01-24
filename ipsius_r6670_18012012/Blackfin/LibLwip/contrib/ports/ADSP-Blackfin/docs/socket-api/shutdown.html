@@ -1,0 +1,95 @@
+
+<HTML>
+	<HEAD>
+		<TITLE>Manpage of Shutdown</TITLE>
+	    <link rel="stylesheet" type = "text/css" href="styles.css">
+</HEAD>
+
+<BODY>
+<H1>SHUTDOWN <font color="red"> Not supported </font> </H1>
+<BR><A HREF="#index">Index</A>&nbsp;&nbsp;
+<A HREF="index.html">Return to Main Contents</A>&nbsp;&nbsp;
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+shutdown - shut down part of a full-duplex connection
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>#include &lt;<A HREF="lwip/sockets.h">lwip/sockets.h</A>&gt;</B>
+
+<P>
+<B>int shutdown(int </B><I>s</I><B>, int </B><I>how</I><B>);</B>
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+The
+<I>shutdown</I>
+
+call causes all or part of a full-duplex connection on the socket
+associated with
+<I>s</I>
+
+to be shut down.  If
+<I>how</I>
+
+is 0, further receives will be disallowed.  If
+<I>how</I>
+
+is 1, further sends will be disallowed.  If
+<I>how</I>
+
+is 2, further sends and receives will be disallowed.
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+The call returns -1 on error and the specific error number can be obtained by
+calling the function <a href="GetSocketError.html">GetSocketError</a>. In 
+multi-threaded environments the last error number is held seperately for 
+each thread.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>ERRORS</H2>
+
+<DL COMPACT>
+<DT><DT><B>EBADF</B>
+
+<DD>
+<DD>
+<I>s</I>
+
+is not a valid descriptor.
+<DT><B>ENOTSOCK</B>
+
+<DD>
+<I>s</I>
+
+is a file, not a socket.
+<DT><B>ENOTCONN</B>
+
+<DD>
+The specified socket is not connected.
+</DL>
+<p>
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="connect.html">connect</A></B>,
+<B><A HREF="socket.html">socket</A></B>
+
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAF">ERRORS</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

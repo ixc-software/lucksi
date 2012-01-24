@@ -1,0 +1,48 @@
+
+
+//CS_Exec "EmulTest/RunEmul.isc" "FIRST_BOARD_NUMBER = %FIRST_BOARD_NUMBER%; SECOND_BOARD_NUMBER = %SECOND_BOARD_NUMBER%; FIRST_BOARD_PORT = %FIRST_BOARD_PORT%; SECOND_BOARD_PORT = %SECOND_BOARD_PORT%; FIRST_BOARD_NAME = %FIRST_BOARD_NAME%; SECOND_BOARD_NAME = %SECOND_BOARD_NAME%; SIP_TEST_IN_PORT = %SIP_TEST_IN_PORT%;"
+
+ObjCreate  NObjResipLog ResipLog
+//ResipLog.SetTraceType(All, None)
+
+ObjCreate NObjHwFinder HwFinder true 
+.LogLevel = 3
+.OnlyLocalIP = true
+.AllowUpdate = false
+.BoardFilter.Include "%FIRST_BOARD_NUMBER%, %SECOND_BOARD_NUMBER%"
+.FirmwarePath = "~IPSIUS_RELEASE~/FWU/DevIpTdm"    // путь к прошивкам 
+.Enabled = true
+.Alias(75, %FIRST_BOARD_NAME%)
+.Alias(76, %SECOND_BOARD_NAME%)
+
+ObjCreate NObjEmulRunner Emul true
+    .CreateEmulPair("Pair", %FIRST_BOARD_NUMBER%, %SECOND_BOARD_NUMBER%)
+	.Pair.Board_0.UseBooter = false
+    .Pair.Board_0.BoardSettings.SetDefaultParams(1, %FIRST_BOARD_NUMBER%, "91:92:93:94:93:F0")
+    .Pair.Board_0.BoardSettings.SetNetwork(false, "127.0.0.1", "127.0.0.1", "255.255.255.0")    
+    .Pair.Board_1.BoardSettings.SetDefaultParams(1, %SECOND_BOARD_NUMBER%, "91:92:93:94:93:F1")
+    .Pair.Board_1.BoardSettings.SetNetwork(false, "127.0.0.1", "127.0.0.1", "255.255.255.0")    
+	.Pair.Board_1.UseBooter = false
+    .StartAllEmul   
+
+ObjCreate NObjSipUserAgent sip1 true
+	.LogLevel = 3
+	.SetupTransport(Udp, %FIRST_BOARD_PORT%)
+	.AddAccessPoint("point", "sip:first@127.0.0.1:%SECOND_BOARD_PORT%") 
+	.point.SetAsDefaultReceiver
+	.point.EnableRegistration = f
+	.Enabled = true
+
+ObjCreate NObjSipUserAgent sip2 true
+	.LogLevel = 3
+	.SetupTransport(Udp, %SECOND_BOARD_PORT%)
+	.AddAccessPoint("point", "sip:second@127.0.0.1:%FIRST_BOARD_PORT%") 
+	.point.SetAsDefaultReceiver
+	.point.EnableRegistration = f	
+	.Enabled = true
+
+CS_Exec "EmulTest/Blackfin.isc" "GatewayName = User; SipPoint = sip1.point; BoardName = %FIRST_BOARD_NAME%; Side =TE; StartRtpPort = 9500"
+CS_Exec "EmulTest/Blackfin.isc" "GatewayName = Net;  SipPoint = sip2.point; BoardName = %SECOND_BOARD_NAME%; Side =NT; StartRtpPort = 7500"
+
+User.WaitWhileNoactive(120000) 
+Net.WaitWhileNoactive(120000)

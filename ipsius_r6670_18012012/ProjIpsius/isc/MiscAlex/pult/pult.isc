@@ -1,0 +1,120 @@
+// parameters:
+// PultName   
+// SipPoint
+
+ObjCreate NObjPult %PultName% true
+
+	.LogLevel = 3
+
+	.SoundMode = LocalMode
+	
+	// --------------------------------------------------
+
+    .KeyboardType = KbEmul
+	.KbDriver.EmbedDisp = true
+	
+	.KbDriver.Timing.PressedMs     = 20
+	.KbDriver.Timing.StartRepeatMs = 800
+	.KbDriver.Timing.RepeatMs      = 600
+					
+	.ViewSettings.Embeded = t // t/f
+	.ViewSettings.Width = 400
+	.ViewSettings.Height = 240 
+	.ViewSettings.SetThemeName "~IPSIUS_RELEASE~/ArmSdFatFs/PultGfx/Theme0/"
+	
+	.ViewSettings.UseNull f  
+			
+	// --------------------------------------------------
+	
+    .PhBook.SetPhotoPath "~IPSIUS_RELEASE~/ArmSdFatFs/PultGfx/ph/"
+    
+    .PhBook.Clear
+
+    /*    
+    .PhBook.Create("Чапманн", "шпионка", "ph chapman.jpg")
+    .PhBook.AddNumber("110")
+    .PhBook.AddNumber("120")    
+    .PhBook.AddDirectKey(0, 0, true)
+    .PhBook.AddDirectKey(1, 1, true)
+    
+    .PhBook.Create("Dead-Moroz", "GNU leader", "ph stallman.jpg")
+    .PhBook.AddNumber("5020")
+    .PhBook.AddDirectKey(2, 0, false)
+    
+    .PhBook.Create("Шура", "б-тъ", "ph sasha.jpg")
+    .PhBook.AddNumber("5999")
+    .PhBook.AddDirectKey(3, 0, t)
+
+    .PhBook.Create("SJphone", "SJphone", "asterisk.jpg")
+    .PhBook.AddNumber("130")
+    .PhBook.AddDirectKey(4, 0, true) 
+    
+	.PhBook.List
+    
+    */
+    
+    .CS_Set PhBook
+    
+    .Create "RingInf"
+    .AddNumber "101"
+    .AddDirectKey 0 
+    
+    .Create "RingAndDrop"
+    .AddNumber "102"
+    .AddDirectKey 1 
+    
+    .Create "RingAndTalk"
+    .AddNumber "103"
+    .AddDirectKey 2 
+
+    .Create "RingAndTalkInf"
+    .AddNumber "104"
+    .AddDirectKey 3 
+    
+    .Create "Callback"
+    .AddNumber "105"
+    .AddDirectKey 4 
+
+    .Create "TalkAndHold"
+    .AddNumber "106"
+    .AddDirectKey 5 
+            
+    .List
+    CS_SetBack 
+        
+	
+	
+	.NumDialer.Clear 
+	.NumDialer.Set 3000 0 "*"
+	.NumDialer.AddDirection "5"  4
+	.NumDialer.AddDirection "51" 3
+		
+	// --------------------------------------------------
+	
+	.SipPoint = %SipPoint%
+
+	// --------------------------------------------------
+	
+	.CS_Set Settings
+	
+	.HandsfreeMicLevel 50
+	.HandsetMicLevel   50
+	.RingingLevel      100
+	
+    .StatusDebugMode t  
+        
+	.TraceKbdDriver f
+	.TraceStates    f
+	.TraceCallMng   f 
+    // .SetRingtoneGen 425 -15 0 0 300 400
+
+	.CS_SetBack
+    
+	// --------------------------------------------------
+	
+	//.SetLocale "ru" 
+	// .SetLocale "uk"
+		
+	
+
+	

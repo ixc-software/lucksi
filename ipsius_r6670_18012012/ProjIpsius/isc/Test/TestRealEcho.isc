@@ -1,0 +1,59 @@
+CS_Set
+
+// input params:
+// BoardNum 
+// BChannel 
+// EchoTaps
+
+
+#define BoardName DirectCall
+
+ObjCreate NObjHwFinder HwFinder true                // создаем HwFinder
+.TraceEnabled = true                                // включение/отключение трассировки
+.AllowUpdate = false                                // не выполнять обновления
+.BoardFilter.Include %BoardNum%                     // указываем номера плат, которые будут обслуживаться 
+//.FirmwarePath = "~IPSIUS_RELEASE~\FWU\DevIpTdm\"    // путь к прошивкам 
+.Enabled = true                                     // запускаем HwFinder
+.Alias(%BoardNum%, %BoardName%)                 // создание алиаса для платы
+
+#define GatewayName Dss1 // имя шлюза
+#define LocalHost // IP + порт SIP шлюза (передается в скрипт в качестве параметра)
+
+
+ObjCreate NObjDss1ToSip %GatewayName% true       // создание шлюза (имя шлюза передается в скрипт в качестве параметра)
+.TraceInd = true
+.CallingAddrNoDigit = UsePilotNumber
+.PilotNumber = 2222
+
+
+// gatway config:
+#define TrunkName Trunk0
+CS_Exec "User/Dss1Trunk.isc" "TrunkName = %TrunkName%; BoardName = %BoardName%; HwType = E1; Side = TE; UseAlow = true; LiuSyncMaster = false"
+%GatewayName%.Enabled = true  
+
+%GatewayName%.%TrunkName%.i0.Board.EchoTape = 0	// <-- set echo here
+%GatewayName%.%TrunkName%.i0.Board.UseInternalEcho = false
+
+
+ObjCreate NObjDirectCall directCall true
+    .Init(%GatewayName%.%TrunkName%.i0);
+    
+    //optional settings
+    .MinRtpPort = 1000
+    .MaxRtpPort = 10000
+    .Channel = %BChannel%
+    .OutFile = "TestResult/voice_echo0_realchip_x-copy.wav"
+    .WaveOut = true
+    .SetCodec("PCMA") // используется источником сигнала
+    //.SetSourceGen(0, 600)
+    .SetSourceFile("TestResult/Voice.wav", true)   
+    
+    
+    .WaitInterfaceReady(30000)
+    
+    HwFinder.ListBoards(false)
+
+    //Start
+    .Run(30000)
+    
+    %GatewayName%.%TrunkName%.i0.ChannelInfo(%BChannel%, true)

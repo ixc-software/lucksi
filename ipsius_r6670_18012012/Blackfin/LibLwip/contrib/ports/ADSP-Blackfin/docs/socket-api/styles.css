@@ -1,0 +1,12 @@
+/* This file gives a general layout  for various html files */
+
+	h1 { font-family: Times New Roman, arial; color:black; }
+	p  { font-size: 15pt; color=blue; }
+	td { font-family:  verdana; font-size: 10pt; } 
+	link { color: #FF00FF; }
+	alink { color: #F0FFF0; }
+	vlink { color: #FFFFFF; }
+	.special { color: red; }
+	code { font-family: Courier, arial; color:blue; }
+	note { color: red }
+	/*em { background-color: #00FFEE; }*/

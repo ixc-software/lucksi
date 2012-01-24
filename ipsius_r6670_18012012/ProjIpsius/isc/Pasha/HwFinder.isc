@@ -1,0 +1,12 @@
+CS_Set
+
+ObjCreate NObjHwFinder HwFinder true 
+.LogLevel = 3
+.OnlyLocalIP = false
+.AllowUpdate = true
+.BoardFilter.Include "2001" // , 75, 76"
+.FirmwarePath = "~IPSIUS_RELEASE~/FWU/DevIpTdm/"    // путь к прошивкам 
+//.FirmwarePath = "D:\Dev\IpsiusRelease\FWU\DevIpTdm\"
+.Enabled = true
+
+.Alias(2001, "bfPult")

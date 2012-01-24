@@ -1,0 +1,110 @@
+
+class pult:
+	start:
+		print "pult started..."
+		treatInCallAs     Release		
+		treatInCallByTo   Talk TalkScript
+		treatInCallByTo   Cancel CancelScript		
+//		treatInCallByFrom Talk trainer
+
+// -----------------------------------------------------
+
+class trainer:
+	start:		
+		print "trainer started..."
+
+		wait 2000
+		handsfree
+		wait 2000
+//		createCall Cancel  CancelScript		
+		createCall Release ReleaseScript		
+//		createCall Talk    TalkScript		
+
+// -----------------------------------------------------
+
+class Talk:
+
+	i.Incoming:
+		print "receive incoming call"	
+        wait 5000
+		handsfree
+
+    i.Talk:
+		print "answer incoming call"
+		
+	i.Busy:
+        pass
+		
+    i.Free:
+        wait 2000
+        end
+
+    o.Trying:
+		connectToConv lp self
+
+    o.Ringing:
+		print "pult call allerting"
+		
+    o.Talk:
+        print "pult call accepted"
+		wait 5000
+        releaseCall self
+
+	o.Busy:
+		pass
+		
+    o.Free:
+        wait 2000
+		end
+
+// -----------------------------------------------------
+
+class Release:
+
+	i.Incoming:
+		print "receive incoming call"
+        wait 2000
+		print "release incoming call without talk"
+        releaseCall self
+
+	i.Busy:
+		pass
+		
+    i.Free:
+		end
+
+    o.Trying:
+		connectToConv lp self
+
+    o.Ringing:
+		print "pult call allerting"
+		
+	o.Busy:
+		pass
+				
+    o.Free:
+		end
+
+// -----------------------------------------------------
+
+class Cancel:
+
+	i.Incoming:
+		print "receive incoming call"	
+	
+	i.Busy:
+		pass
+		
+    i.Free:
+		end
+
+    o.Trying:
+		connectToConv lp self
+
+    o.Ringing:
+		print "pult call allerting"
+		wait 2000		
+		releaseCall self
+
+    o.Free:
+		end

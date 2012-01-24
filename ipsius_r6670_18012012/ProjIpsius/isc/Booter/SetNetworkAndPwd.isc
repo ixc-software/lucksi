@@ -1,0 +1,29 @@
+
+#define Gateway "192.168.0.32"  //_4
+#define NetMask "255.255.255.0" //_5
+
+#define TraceClient true
+#define TraceServer true
+
+//--------------------------------------------------------------------------
+
+// Настройка общих параметров объектов-заданий
+ObjCreate NObjCommonBfTaskProfile commonProfile true        
+    .BoardAddress = %BoardAddress%
+    .TraceClient = %TraceClient%
+    .TraceServer = %TraceServer%
+    .ObtainCbpPort
+
+//-------------------------------------------------------------------------
+
+
+ObjCreate NObjBfTaskSetParams setUserSettings true
+    
+    .Init commonProfile
+       
+    .SetOptNetwork(%UseDhcp%, %Ip%, %Gateway%, %NetMask%);        
+    .SetOptUserPwd(%Pwd%);
+    .CheckAfter = true
+    
+    .Run // старт задачи    
+
