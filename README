@@ -1,6 +1,6 @@
 BUILD for linux (ubuntu, fedora)
 
-1. Mount .iso with env for build
+1. Mount .iso with env for build (used for Fedora) or use IpsiusEnv.zip scripts and packages for Ubuntu and go 2.
 
    mkdir /media/i686-gcc-env
    mount -o loop /PATH_TO/i686-gcc-env.iso /media/i686-gcc-env
