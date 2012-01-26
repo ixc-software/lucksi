@@ -1,1 +1,13 @@
-HOW TO build lucksi software
+BUILD for linux (ubuntu, fedora)
+
+1. Mount .iso with env for build
+
+   mkdir /media/i686-gcc-env
+   mount -o loop /PATH_TO/i686-gcc-env.iso /media/i686-gcc-env
+   
+2. cd /PATH_TO/ipsius_r6670_18012012/ProjIpsius/
+   ./_build_gcc.sh release (use argument release - for build; release clean - for rebuild; debug - for build debug version)
+   
+3. run tests
+   modify RunTests.sh and put correct path there
+   ./RunTests.sh
