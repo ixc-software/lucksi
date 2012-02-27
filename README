@@ -79,4 +79,4 @@ Open _vc_2008.bat and set paths to qt and boost, run, in VS/qt open moc.pro and 
 copy and replace moc.exe to qtsourcesDIR/bin/
 
 download ProjIpsius.rar from github, extract and re-write same in ipsius dir.
-download _vc_200b.bat from github, set correct paths to your env and run it, in VS files/open project and open ProjIpsius project, build Release.
+download _vc_2008.1.bat from github, set correct paths to your env and run it, in VS files/open project and open ProjIpsius project, build Release.
