@@ -11,3 +11,72 @@ BUILD for linux (ubuntu, fedora)
 3. run tests
    modify RunTests.sh and put correct path there
    ./RunTests.sh
+   
+**************************************************************************
+Build for windows
+
+Visual Studio 2008 (c++)
+qt 4.7.4 with sources
+qt-vs-addin-1.1.9 (download from github)
+boost_1_47_0
+ipsiusEnv.rar (download from github)
+zlib-1.2.5.tar.gz (download from github)
+python
+
+resiprocate from https://svn.resiprocate.org/rep/resiprocate/main
+apply patch resip.patch (download from github)
+open RESIPDIR/recon/recon_9_0.sln with VS and build release and debug versions of: ares, dum, rutil, resiprocate
+create folder RESIPDIR/lib and copy just builded libs in there (rename debug libs by adding "d" to the name). so you
+should have RESIPDIR/lib contain files:
+rutild.lib
+rutil.lib
+resiprocated.lib
+resiprocate.lib
+aresd.lib
+ares.lib
+dumd.lib
+dum.lib
+
+*******************
+boost
+
+run bootstrap.bat
+run b2.exe
+
+*******************
+
+1. Create dir for your libs and place all builded libs inside, for example ./IpsiusEnv.  
+
+1. zlib
+http://www.winimage.com/zLibDll/zlib124_masm_obj.zip extract in /zlib-1.2.5 with replace
+extract zlib-1.2.5.tar.gz
+open ./zlib-1.2.5/contrib/vstudio/vc9/zlibvc.sln
+Build release and debug versions.
+Create folder ./IpsiusEnv/zlib/lib. Copy builded libs there.
+release version of zlibwapi.lib rename to zlib.lib, debug version rename like zlibd.lib
+
+Make dir ./IpsiusEnv/zlib/zlib. Copy following files in there:
+./zlib-1.2.5/contrib/minizip/ioapi.h
+./zlib-1.2.5/contrib/minizip/unzip.h
+./zlib-1.2.5/zconf.h
+./zlib-1.2.5/zlib.h
+
+Open ./zlib/_vc_2008.bat and set correct paths to QT and zlib sources.
+Run ./zlib/_vc_2008.bat
+In QT menu select 'open qt project' and open ./zlib/unzip.pro`
+Build release and debug versions of unzip.lib
+Copy results in folder ./IpsiusEnv/zlib/lib, rename debug version to ./unzipd.lib
+
+2. Copy folder ./QextSerialPort to ./IpsiusEnv. 
+Open ./IpsiusEnv/QextSerialPort/_vc_2008.bat and set correct paths to QT.
+Run ./IpsiusEnv/QextSerialPort/_vc_2008.bat
+In QT menu select 'open qt project' and open ./IpsiusEnv/QextSerialPort/qextserialport.pro
+Build release and debug versions. Make dir ./IpsiusEnv/QextSerialPort/lib
+and copy builded libs in there, rename debug version like ./qextserialportd.lib 
+
+3. Copy folder IpsiusEnv/ProjMocExt-4.7.4 and replace with it same folder in project's ipsius folder.
+Open _vc_2008.bat and set paths to qt and boost, run, in VS/qt open moc.pro and build release
+copy and replace moc.exe to qtsourcesDIR/bin/
+
+download ProjIpsius.rar from github, extract and re-write same in ipsius dir.
+download _vc_200b.bat from github, set correct paths to your env and run it, in VS files/open project and open ProjIpsius project, build Release.
