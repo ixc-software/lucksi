@@ -1,0 +1,102 @@
+Index: resip/dum/BaseCreator.cxx
+===================================================================
+--- resip/dum/BaseCreator.cxx	(revision 9291)
++++ resip/dum/BaseCreator.cxx	(working copy)
+@@ -106,6 +106,9 @@
+       {
+          contact.uri() = mUserProfile->getOverrideHostAndPort();
+       }
++	  if (mUserProfile->hasOverrideContactUserName())
++		contact.uri().user() = mUserProfile->getOverrideContactUserName();
++	  else
+       contact.uri().user() = from.uri().user();
+ 
+       // .jjg. there isn't anything in the outbound [11] draft that says we 
+Index: resip/dum/DialogUsageManager.cxx
+===================================================================
+--- resip/dum/DialogUsageManager.cxx	(revision 9291)
++++ resip/dum/DialogUsageManager.cxx	(working copy)
+@@ -193,7 +193,7 @@
+    return n;
+ }
+ 
+-void
++const Transport*
+ DialogUsageManager::addTransport( TransportType protocol,
+                                   int port,
+                                   IpVersion version,
+@@ -203,7 +203,7 @@
+                                   SecurityTypes::SSLType sslType,
+                                   unsigned transportFlags)
+ {
+-   mStack.addTransport(protocol, port, version, StunDisabled, ipInterface,
++   return mStack.addTransport(protocol, port, version, StunDisabled, ipInterface,
+                        sipDomainname, privateKeyPassPhrase, sslType,
+                        transportFlags);
+ }
+Index: resip/dum/DialogUsageManager.hxx
+===================================================================
+--- resip/dum/DialogUsageManager.hxx	(revision 9291)
++++ resip/dum/DialogUsageManager.hxx	(working copy)
+@@ -111,7 +111,7 @@
+ 
+       void forceShutdown(DumShutdownHandler*);
+ 
+-      void addTransport( TransportType protocol,
++      const Transport* addTransport( TransportType protocol,
+                          int port=0, 
+                          IpVersion version=V4,
+                          const Data& ipInterface = Data::Empty, 
+Index: resip/dum/Profile.cxx
+===================================================================
+--- resip/dum/Profile.cxx	(revision 9291)
++++ resip/dum/Profile.cxx	(working copy)
+@@ -378,6 +378,25 @@
+ }
+ 
+ void 
++Profile::setOverrideContactUserName(const resip::Data &userName)
++{
++	mOverrideContactUserName = userName;
++}
++
++bool 
++Profile::hasOverrideContactUserName() const
++{
++	return !mOverrideContactUserName.empty();	
++}
++
++const resip::Data& 
++Profile::getOverrideContactUserName() const
++{
++	return mOverrideContactUserName;
++}
++
++
++void 
+ Profile::setOverrideHostAndPort(const Uri& hostPort)
+ {
+    mOverrideHostPort = hostPort;   
+Index: resip/dum/Profile.hxx
+===================================================================
+--- resip/dum/Profile.hxx	(revision 9291)
++++ resip/dum/Profile.hxx	(working copy)
+@@ -106,6 +106,10 @@
+       virtual int get1xxRetransmissionTime() const;
+       virtual void unset1xxRetransmissionTime();   
+ 
++	  virtual void setOverrideContactUserName(const resip::Data &userName);
++	  virtual bool hasOverrideContactUserName() const;
++	  virtual const resip::Data& getOverrideContactUserName() const;
++
+       ///overrides the value used to populate the contact
+       ///?dcm? -- also change via entries? Also, dum currently uses(as a uas)
+       ///the request uri of the dialog constructing request for the local contact
+@@ -280,6 +284,7 @@
+       bool mHasUserAgent;            
+       Data mUserAgent;
+       
++	  resip::Data mOverrideContactUserName;
+       bool mHasOverrideHostPort;
+       Uri  mOverrideHostPort;
+       
